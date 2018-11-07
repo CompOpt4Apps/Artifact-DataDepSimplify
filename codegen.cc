@@ -106,6 +106,8 @@ void driver(string list)
  // Looping over examples listed in the input file (JSON files)
  for(; getline( inL, inputFileName );){ 
 
+  std::cout<<"\n---- Processing "<<inputFileName<<"\n";
+
   int totalDeps = 0, unSatFound = 0, maySatFound = 0, simplyUnSat = 0, i = 0, 
       ct, nUniqueRels, origCompLess=0, withEqLess=0;
   string line="";
@@ -217,6 +219,20 @@ void driver(string list)
       }
       delete useRule;
   }
+
+
+  std::cout<<"\n---- Done processing "<<inputFileName<<" number of super set deps = "<<superSets.size()<<"\n";
+
+
+
+
+  // Turn the relation into a set and project out extra iterators
+
+
+
+
+  // Get the Omega set and Use omega to generate inspector code
+ 
 
 
 
