@@ -227,9 +227,15 @@ void driver(string list)
 
 
   // Turn the iegenlib::relation into a iegenlib::set and project out extra iterators
+  for(int i=0; i < superSets.size(); i++){
+    Relation *relP = dependences[superSets[i]].simpRel;
+    Set *eqSet = new Set( relationStr2SetStr(
+                          relP->prettyPrintString(),
+                          relP->inArity(), relP->outArity()) );
+
+    
+  }
   
-
-
 
   // Get the Omega set and Use omega to generate inspector code
  
