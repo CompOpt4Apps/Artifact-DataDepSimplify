@@ -1,0 +1,10 @@
+/home/kingmahdi/workstation/simplification/CMakeFiles/rebuild_cache.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/edit_cache.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/ic0_csc_performance.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/fs_csc_performance.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/ichol_HLevel.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/ichol_wavefront.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/simplification.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/triangular_wavefront.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/triangular.dir
+/home/kingmahdi/workstation/simplification/CMakeFiles/triangular_HLevel.dir

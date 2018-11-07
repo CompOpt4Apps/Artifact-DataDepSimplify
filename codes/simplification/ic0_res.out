@@ -1,0 +1,112 @@
+
+
+---------- Started Reading Matrix: data/G3_circuit.mtx
+>>>>>>>>>>>> Data Read Total Duration = 1.82199
+-- Running the algorithm sequentially for #1 times:
+
+>>>>>> Run #1:
+>>>>>> Execution time = 0.0978153
+
+>>>>>>>>>>>> Median of Execution times = 0.0978153
+>>>>>>>>>>>> Averaged Execution time = 0.0978153
+
+-- Normal Level Set, running the algorithm with #8 threads in parallel for #1 times:
+
+>>>>>> Run #1:
+>>>>>> Inspector (Dependence) time = 0.705762
+>>>>>> Inspector (Build Level Set) time = 0.153354
+>>>>>> Executor time  = 0.0411309
+>>>>>> Execution time (totally) = 0.900246
+
+>>>>>>>>>>>> Median of Inspector Dependence times = 0.705762
+>>> Normalized to Serial execution = 0.138595
+>>>>>>>>>>>> Median of Inspector Build Level Set times = 0.153354
+>>> Normalized to Serial execution = 0.637841
+>>>>>>>>>>>> Median of Execution times (without inspector) = 0.0411309
+>>> Normalized to Serial execution = 2.37815
+>>>>>>>>>>>> Median of Total Execution times = 0.900246
+>>> Normalized to Serial execution = 0.108654
+
+
+---------- Started Reading Matrix: data/af_shell3.mtx
+>>>>>>>>>>>> Data Read Total Duration = 3.73509
+-- Running the algorithm sequentially for #1 times:
+
+>>>>>> Run #1:
+>>>>>> Execution time = 4.88734
+
+>>>>>>>>>>>> Median of Execution times = 4.88734
+>>>>>>>>>>>> Averaged Execution time = 4.88734
+
+-- Normal Level Set, running the algorithm with #8 threads in parallel for #1 times:
+
+>>>>>> Run #1:
+>>>>>> Inspector (Dependence) time = 5.11643
+>>>>>> Inspector (Build Level Set) time = 0.591178
+>>>>>> Executor time  = 0.765648
+>>>>>> Execution time (totally) = 6.47326
+
+>>>>>>>>>>>> Median of Inspector Dependence times = 5.11643
+>>> Normalized to Serial execution = 0.955225
+>>>>>>>>>>>> Median of Inspector Build Level Set times = 0.591178
+>>> Normalized to Serial execution = 8.26712
+>>>>>>>>>>>> Median of Execution times (without inspector) = 0.765648
+>>> Normalized to Serial execution = 6.38328
+>>>>>>>>>>>> Median of Total Execution times = 6.47326
+>>> Normalized to Serial execution = 0.755005
+
+
+---------- Started Reading Matrix: data/bmwcra_1.mtx
+>>>>>>>>>>>> Data Read Total Duration = 2.69109
+-- Running the algorithm sequentially for #1 times:
+
+>>>>>> Run #1:
+>>>>>> Execution time = 10.3166
+
+>>>>>>>>>>>> Median of Execution times = 10.3166
+>>>>>>>>>>>> Averaged Execution time = 10.3166
+
+-- Normal Level Set, running the algorithm with #8 threads in parallel for #1 times:
+
+>>>>>> Run #1:
+>>>>>> Inspector (Dependence) time = 11.0026
+>>>>>> Inspector (Build Level Set) time = 0.100976
+>>>>>> Executor time  = 1.62149
+>>>>>> Execution time (totally) = 12.725
+
+>>>>>>>>>>>> Median of Inspector Dependence times = 11.0026
+>>> Normalized to Serial execution = 0.937649
+>>>>>>>>>>>> Median of Inspector Build Level Set times = 0.100976
+>>> Normalized to Serial execution = 102.168
+>>>>>>>>>>>> Median of Execution times (without inspector) = 1.62149
+>>> Normalized to Serial execution = 6.36239
+>>>>>>>>>>>> Median of Total Execution times = 12.725
+>>> Normalized to Serial execution = 0.810728
+
+
+---------- Started Reading Matrix: data/crankseg_2.mtx
+>>>>>>>>>>>> Data Read Total Duration = 2.81876
+-- Running the algorithm sequentially for #1 times:
+
+>>>>>> Run #1:
+>>>>>> Execution time = 129.225
+
+>>>>>>>>>>>> Median of Execution times = 129.225
+>>>>>>>>>>>> Averaged Execution time = 129.225
+
+-- Normal Level Set, running the algorithm with #8 threads in parallel for #1 times:
+
+>>>>>> Run #1:
+>>>>>> Inspector (Dependence) time = 132.113
+>>>>>> Inspector (Build Level Set) time = 0.122283
+>>>>>> Executor time  = 21.3297
+>>>>>> Execution time (totally) = 153.565
+
+>>>>>>>>>>>> Median of Inspector Dependence times = 132.113
+>>> Normalized to Serial execution = 0.978139
+>>>>>>>>>>>> Median of Inspector Build Level Set times = 0.122283
+>>> Normalized to Serial execution = 1056.77
+>>>>>>>>>>>> Median of Execution times (without inspector) = 21.3297
+>>> Normalized to Serial execution = 6.05846
+>>>>>>>>>>>> Median of Total Execution times = 153.565
+>>> Normalized to Serial execution = 0.8415

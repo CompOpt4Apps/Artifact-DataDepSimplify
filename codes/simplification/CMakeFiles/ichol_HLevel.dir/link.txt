@@ -1,0 +1,1 @@
+/usr/bin/g++      -m64 -DVERIFY -DMETIS -fopenmp   CMakeFiles/ichol_HLevel.dir/test/ic0_ordered.cpp.o  -o ichol_HLevel  -L/opt/intel/mkl/lib/intel64 -liomp5 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lm -ldl -lmetis -Wl,-rpath,/opt/intel/mkl/lib/intel64 
