@@ -226,15 +226,80 @@ void driver(string list)
 
 
 
-  // Turn the relation into a set and project out extra iterators
-
+  // Turn the iegenlib::relation into a iegenlib::set and project out extra iterators
+  
 
 
 
   // Get the Omega set and Use omega to generate inspector code
  
+/*
+
+------------------- Content of in.txt 
+symbolic n;
+symbolic rowIdx(2);
+symbolic rowIdx_(3);
+symbolic rowIdx__(4);
+symbolic rowIdx___(4);
+symbolic colPtr(1);
+symbolic colPtr_(1);
+symbolic colPtr__(5);
+symbolic colPtr___(5);
+symbolic colPtr____(2);
+symbolic colPtr_____(2);
+
+S := { [i1, i2, i3, i4, o1, o2] : o2 = i3 && rowIdx(i1,i2) = o1 && rowIdx__(i1,i2,i3,i4) = rowIdx_(i1,i2,i3) && 0 <= i1 && 0 <= o1 && i2 <= i4 && colPtr____(i1,i2) <= i3 && rowIdx___(i1,i2,i3,i4) <= rowIdx__(i1,i2,i3,i4) && i1 < o1 && i1 + 1 < n && i2 < colPtr_(i1) && colPtr(i1) < i2 && i3 < colPtr_____(i1,i2) && i4 < colPtr_(i1) && o1 + 1 < n && o2 < colPtr___(i1,i2,i3,i4,o1) && colPtr__(i1,i2,i3,i4,o1) < o2 };
+
+codegen S;
+----------------------- end of in.txt
 
 
+----------------------- Using omega calculator in terminal to get the generated code
+
+
+kingmahdi@rose:~/workstation/pldi19/chill/build/omega/omega_calc$ ./omegacalc in.txt 
+>>> symbolic n;
+>>> symbolic rowIdx(2);
+>>> symbolic rowIdx_(3);
+>>> symbolic rowIdx__(4);
+>>> symbolic rowIdx___(4);
+>>> symbolic colPtr(1);
+>>> symbolic colPtr_(1);
+>>> symbolic colPtr__(5);
+>>> symbolic colPtr___(5);
+>>> symbolic colPtr____(2);
+>>> symbolic colPtr_____(2);
+>>> 
+>>> S := { [i1, i2, i3, i4, o1, o2] : o2 = i3 && rowIdx(i1,i2) = o1 && rowIdx__(i1,i2,i3,i4) = rowIdx_(i1,i2,i3) && 0 <= i1 && 0 <= o1 && i2 <= i4 && colPtr____(i1,i2) <= i3 && rowIdx___(i1,i2,i3,i4) <= rowIdx__(i1,i2,i3,i4) && i1 < o1 && i1 + 1 < n && i2 < colPtr_(i1) && colPtr(i1) < i2 && i3 < colPtr_____(i1,i2) && i4 < colPtr_(i1) && o1 + 1 < n && o2 < colPtr___(i1,i2,i3,i4,o1) && colPtr__(i1,i2,i3,i4,o1) < o2 };
+>>> 
+>>> codegen S;
+for(t1 = 0; t1 <= n-3; t1++) {
+  for(t2 = colPtr(t1)+1; t2 <= colPtr_(t1)-1; t2++) {
+    if (rowIdx(t1,t2) >= t1+1 && n >= rowIdx(t1,t2)+2) {
+      for(t3 = colPtr____(t1,t2); t3 <= colPtr_____(t1,t2)-1; t3++) {
+        for(t4 = t2; t4 <= colPtr_(t1)-1; t4++) {
+          if (rowIdx__(t1,t2,t3,t4) == rowIdx_(t1,t2,t3) && rowIdx__(t1,t2,t3,t4) >= rowIdx___(t1,t2,t3,t4)) {
+            t5=rowIdx(t1,t2);
+            if (colPtr___(t1,t2,t3,t4,t5) >= t3+1 && t3 >= colPtr__(t1,t2,t3,t4,t5)+1) {
+              s0(t1,t2,t3,t4,t5,t3);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+>>> 
+----------------------- end of terminal
+
+*/
+
+
+  // Post process the output of omega calculator
+  // Turn the generated inspectors for a code into a library call 
+  // with correct function name that driver is going to use
+  // ...
 
  } // End of input json file list loop
 
