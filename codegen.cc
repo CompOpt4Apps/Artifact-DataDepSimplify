@@ -263,55 +263,42 @@ void driver(string list)
  
 /*
 
-------------------- Content of in.txt 
-symbolic n;
-symbolic rowIdx(2);
-symbolic rowIdx_(3);
-symbolic rowIdx__(4);
-symbolic rowIdx___(4);
-symbolic colPtr(1);
-symbolic colPtr_(1);
-symbolic colPtr__(5);
-symbolic colPtr___(5);
-symbolic colPtr____(2);
-symbolic colPtr_____(2);
+------------------- Using omega calculator
 
-S := { [i1, i2, i3, i4, o1, o2] : o2 = i3 && rowIdx(i1,i2) = o1 && rowIdx__(i1,i2,i3,i4) = rowIdx_(i1,i2,i3) && 0 <= i1 && 0 <= o1 && i2 <= i4 && colPtr____(i1,i2) <= i3 && rowIdx___(i1,i2,i3,i4) <= rowIdx__(i1,i2,i3,i4) && i1 < o1 && i1 + 1 < n && i2 < colPtr_(i1) && colPtr(i1) < i2 && i3 < colPtr_____(i1,i2) && i4 < colPtr_(i1) && o1 + 1 < n && o2 < colPtr___(i1,i2,i3,i4,o1) && colPtr__(i1,i2,i3,i4,o1) < o2 };
+// Dependence from Forward Solve CSC (iegenlib::Set)
+D = { [In_2, In_4, Out_2] : Li(In_4) = Out_2 && 0 <= In_2 && 0 <= In_4 && 0 <= Li(In_4) && 0 <= Lp(In_2) && 0 <= Lp(In_2 + 1) && In_2 + 1 < n && In_2 < Li(In_4) && In_4 < nnz && In_4 < Lp(In_2 + 1) && Lp(In_2) < In_4 && Li(In_4) < n && Lp(In_2) < nnz && Lp(In_2 + 1) < nnz }
 
-codegen S;
------------------------ end of in.txt
+==> Converted to omega set
+S := { [In_2, In_4, Out_2] : Li(In_2, In_4) = Out_2 && 0 <= In_2 && 0 <= In_4 && 0 <= Li(In_2, In_4) && 0 <= Lp(In_2) && 0 <=  Lp_(In_2) && In_2 + 1 < n && In_2 < Li(In_2, In_4) && In_4 < nnz && In_4 <  Lp_(In_2) && Lp(In_2) < In_4 && Li(In_2, In_4) < n && Lp(In_2) < nnz &&  Lp_(In_2) < nnz };
 
 
------------------------ Using omega calculator in terminal to get the generated code
+******** Macroes that must be generated and stored while converting the inegenlib::Set to omega::Setneeded so they can be later used for inspector code:
+#define Li(In_2, In_4) Li[In_4]
+#define Lp(In_2) Lp[In_2]
+#define Lp_(In_2) Lp[In_2+1]
 
 
-kingmahdi@rose:~/workstation/pldi19/chill/build/omega/omega_calc$ ./omegacalc in.txt 
+// Input to omega_calc
+
 >>> symbolic n;
->>> symbolic rowIdx(2);
->>> symbolic rowIdx_(3);
->>> symbolic rowIdx__(4);
->>> symbolic rowIdx___(4);
->>> symbolic colPtr(1);
->>> symbolic colPtr_(1);
->>> symbolic colPtr__(5);
->>> symbolic colPtr___(5);
->>> symbolic colPtr____(2);
->>> symbolic colPtr_____(2);
+>>> symbolic nnz;
+>>> symbolic Li(2);
+>>> symbolic Lp(1);
+>>> symbolic Lp_(1);
 >>> 
->>> S := { [i1, i2, i3, i4, o1, o2] : o2 = i3 && rowIdx(i1,i2) = o1 && rowIdx__(i1,i2,i3,i4) = rowIdx_(i1,i2,i3) && 0 <= i1 && 0 <= o1 && i2 <= i4 && colPtr____(i1,i2) <= i3 && rowIdx___(i1,i2,i3,i4) <= rowIdx__(i1,i2,i3,i4) && i1 < o1 && i1 + 1 < n && i2 < colPtr_(i1) && colPtr(i1) < i2 && i3 < colPtr_____(i1,i2) && i4 < colPtr_(i1) && o1 + 1 < n && o2 < colPtr___(i1,i2,i3,i4,o1) && colPtr__(i1,i2,i3,i4,o1) < o2 };
+>>> S := { [In_2, In_4, Out_2] : Li(In_2, In_4) = Out_2 && 0 <= In_2 && 0 <= In_4 && 0 <= Li(In_2, In_4) && 0 <= Lp(In_2) && 0 <=  Lp_(In_2) && In_2 + 1 < n && In_2 < Li(In_2, In_4) && In_4 < nnz && In_4 <  Lp_(In_2) && Lp(In_2) < In_4 && Li(In_2, In_4) < n && Lp(In_2) < nnz &&  Lp_(In_2) < nnz };
 >>> 
 >>> codegen S;
-for(t1 = 0; t1 <= n-3; t1++) {
-  for(t2 = colPtr(t1)+1; t2 <= colPtr_(t1)-1; t2++) {
-    if (rowIdx(t1,t2) >= t1+1 && n >= rowIdx(t1,t2)+2) {
-      for(t3 = colPtr____(t1,t2); t3 <= colPtr_____(t1,t2)-1; t3++) {
-        for(t4 = t2; t4 <= colPtr_(t1)-1; t4++) {
-          if (rowIdx__(t1,t2,t3,t4) == rowIdx_(t1,t2,t3) && rowIdx__(t1,t2,t3,t4) >= rowIdx___(t1,t2,t3,t4)) {
-            t5=rowIdx(t1,t2);
-            if (colPtr___(t1,t2,t3,t4,t5) >= t3+1 && t3 >= colPtr__(t1,t2,t3,t4,t5)+1) {
-              s0(t1,t2,t3,t4,t5,t3);
-            }
-          }
+
+// Omega output code:
+
+if (nnz >= 3) {
+  for(t1 = 0; t1 <= n-2; t1++) {
+    if (nnz >= Lp_(t1)+1 && Lp(t1) >= 0) {
+      for(t2 = Lp(t1)+1; t2 <= Lp_(t1)-1; t2++) {
+        if (Li(t1,t2) >= t1+1 && n >= Li(t1,t2)+1) {
+          t3=Li(t1,t2);
+          s0(t1,t2,t3);
         }
       }
     }
@@ -319,8 +306,6 @@ for(t1 = 0; t1 <= n-3; t1++) {
 }
 
 >>> 
------------------------ end of terminal
-
 */
 
 
