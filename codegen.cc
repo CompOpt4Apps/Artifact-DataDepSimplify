@@ -226,18 +226,40 @@ void driver(string list)
 
 
 
-  // Turn the iegenlib::relation into a iegenlib::set and project out extra iterators
-  for(int i=0; i < superSets.size(); i++){
-    Relation *relP = dependences[superSets[i]].simpRel;
-    Set *eqSet = new Set( relationStr2SetStr(
-                          relP->prettyPrintString(),
-                          relP->inArity(), relP->outArity()) );
+  // Turn the iegenlib::relations into a iegenlib::set's and project out extra iterators
 
-    
+  for(int i=0; i < superSets.size(); i++){
+
+    Relation *relP = dependences[superSets[i]].simpRel;
+
+    // Project out extra iterators.
+    json npJ = data[0][0]["Do Not Project Out"];
+    parallelTvs.clear();
+    notProjectIters( relP, parallelTvs, npJ);
+    Relation* rel_sim = relP->simplifyForPartialParallel(parallelTvs);
+
+    // Turn the iegenlib::relation into a iegenlib::set
+    Set *eqSet = new Set( relationStr2SetStr(
+                          rel_sim->prettyPrintString(),
+                          rel_sim->inArity(), rel_sim->outArity()) );
+
+    string iegenSetString = eqSet->getString();
+    std::cout<<"\n Simplifies and trimed dep set = "<<iegenSetString<<"\n";
+
+
+    // Get the Omega set and Use omega to generate inspector code
+  
+
+
+    // Post process the output of omega calculator
+    // Turn the generated inspectors for a code into a library call 
+    // with correct function name that driver is going to use
+    // ...
+  
+
   }
   
 
-  // Get the Omega set and Use omega to generate inspector code
  
 /*
 
@@ -302,10 +324,6 @@ for(t1 = 0; t1 <= n-3; t1++) {
 */
 
 
-  // Post process the output of omega calculator
-  // Turn the generated inspectors for a code into a library call 
-  // with correct function name that driver is going to use
-  // ...
 
  } // End of input json file list loop
 
