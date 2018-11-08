@@ -1,0 +1,60 @@
+[
+  [
+    {
+      "Name" : "Forward solve CSC",
+      "CHILL analysis info" : 
+      [
+        {
+           "Script file" : "data/tempData/fs_csc.py",
+           "Source" : "data/fs_csc.c",
+           "Destination" : "data/tempData/fs_csc_mod.c",
+           "Procedure" : "fs_csc",
+           "Loop" : "0",
+           "Output file" : "data/tempData/fs_csc.txt",
+           "Private Arrays" : "",
+           "Reduction Statements" : "1"
+        }
+      ],
+
+      "Result" : "results/fs_csc.out",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "Li",
+           "Domain" : "{[i]:0<=i &&i<nnz}",
+           "Range" : "{[j]:0<=j &&j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "Lp",
+           "Domain" : "{[j]:0<=j &&j<n}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+        {
+          "Type" : "Triangularity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  Li(e1) < e2 => e1 < Lp(e2)",
+          "p" : "Lp(e1) < e2",
+          "q" : "e1 < Li(e2)"
+        }
+      ],
+
+      "Kernel Complexity" : "O(nnz^1)",
+
+      "Missing induction iterator constraints" :
+      [
+      ],
+      "Do Not Project Out" :
+      [
+        "In_2", "Out_2"
+      ]
+    }
+  ]
+]

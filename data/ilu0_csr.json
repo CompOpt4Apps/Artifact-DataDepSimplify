@@ -1,0 +1,91 @@
+[
+  [
+    {
+      "Name" : "Incomplete LU CSR",
+      "CHILL analysis info" : 
+      [
+        {
+           "Script file" : "data/tempData/ilu0_csr.py",
+           "Source" : "data/ilu0_csr.c",
+           "Destination" : "data/tempData/ilu0_csr_mod.c",
+           "Procedure" : "ilu0_csr",
+           "Loop" : "0",
+           "Output file" : "data/tempData/ilu0_csr.txt",
+           "Private Arrays" : "f",
+           "Reduction Statements" : ""
+        }
+      ],
+
+      "Result" : "results/ilu0.out",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "colidx",
+           "Domain" : "{[i]:0<=i &&i<nnz}",
+           "Range" : "{[j]:0<=j &&j<m}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "rowptr",
+           "Domain" : "{[j]:0<=j &&j<m}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "diagptr",
+           "Domain" : "{[j]:0<=j &&j<m}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+
+      "Kernel Complexity" : "O(nnz^3/n^2)",
+
+      "User Defined" :
+      [
+        {
+          "Type" : "CoMonotonicity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 = e2 => rowptr(e1) <= diagptr(e2)",
+          "p" : "e1 = e2",
+          "q" : "rowptr(e1) <= diagptr(e2)"
+        },
+        {
+          "Type" : "CoMonotonicity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 < e2 => diagptr(e1) < rowptr(e2)",
+          "p" : "e1 < e2",
+          "q" : "diagptr(e1) < rowptr(e2)"
+        }
+      ],
+
+      "Missing induction iterator constraints" :
+      [
+        {
+           "Indunction iterator" : "j1",
+           "Iterators to add" : ["j1", "j2"],           
+           "Constraints to add" : "In_4 < j1 && j1 < rowptr(1+In_2) && diagptr(colidx(In_4)) < j2 && j2 < rowptr(1+colidx(In_4)) && colidx(j1) = colidx(j2)"
+        },
+        { 
+           "Indunction iterator" : "j1p",
+           "Iterators to add" : ["j1p", "j2p"],  
+           "Constraints to add" : "Out_4 < j1p && j1p < rowptr(1+Out_2) && diagptr(colidx(Out_4)) < j2p && j2p < rowptr(1+colidx(Out_4)) && colidx(j1p) = colidx(j2p)"
+        },
+        { 
+           "Indunction iterator" : "j2p",
+           "Iterators to add" : ["j1p", "j2p"],  
+           "Constraints to add" : "diagptr(colidx(Out_4)) < j2p && j2p < rowptr(1+colidx(Out_4)) && colidx(j1p) = colidx(j2p)"
+        }
+      ],
+
+      "Do Not Project Out" :
+      [
+        "In_2", "Out_2"
+      ]
+    }
+  ]
+]

@@ -1,0 +1,54 @@
+[
+  [
+    {
+      "Name" : "Gauss-Seidel CSR",
+      "CHILL analysis info" : 
+      [
+        {
+           "Script file" : "data/tempData/gs_csr.py",
+           "Source" : "data/gs_csr.c",
+           "Destination" : "data/tempData/gs_csr_mod.c",
+           "Procedure" : "gs_csr",
+           "Loop" : "0",
+           "Output file" : "data/tempData/gs_csr.txt",
+           "Private Arrays" : "",
+           "Reduction Statements" : ""
+        }
+      ],
+
+      "Result" : "results/gs_csr.out",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "colidx",
+           "Domain" : "{[i]:0<=i &&i<nnz}",
+           "Range" : "{[j]:0<=j &&j<m}",
+           "Bijective" : "false",
+           "Monotonicity" : "iegenlib::Monotonic_NONE"
+        },
+        { 
+           "Name" : "rowptr",
+           "Domain" : "{[j]:0<=j &&j<m}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "iegenlib::Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+
+      ],
+
+      "Kernel Complexity" : "O(nnz^1)",
+
+      "Missing induction iterator constraints" :
+      [
+      ],
+      "Do Not Project Out" :
+      [
+        "In_2", "Out_2"
+      ]
+    }
+  ]
+]

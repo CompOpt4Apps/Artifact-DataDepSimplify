@@ -1,0 +1,88 @@
+[
+  [
+    {
+      "Name" : "Left Cholesky CSC",
+      "CHILL analysis info" : 
+      [
+        {
+           "Script file" : "data/tempData/staticleftChol_csc.py",
+           "Source" : "data/staticleftChol_csc.c",
+           "Destination" : "data/tempData/staticleftChol_csc_mod.c",
+           "Procedure" : "staticleftChol_csc",
+           "Loop" : "0",
+           "Output file" : "data/tempData/staticleftChol_csc.txt",
+           "Private Arrays" : "f",
+           "Reduction Statements" : ""
+        }
+      ],
+
+      "Result" : "results/staticleftChol_csc.out",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "lC",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_L}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "lR",
+           "Domain" : "{[i]: 0<=i && i<nnz_L}",
+           "Range" : "{[j]: 0<=j && j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "prunePtr",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_L}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "pruneSet",
+           "Domain" : "{[j]: 0<=j && j<nnz_L}",
+           "Range" : "{[j]: 0<=j && j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "finger",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_L}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+        {
+          "Type" : "Triangularity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 < prunePtr(e2) => pruneSet(e1) < e2",
+          "p" : "e1 < prunePtr(e2)",
+          "q" : "pruneSet(e1) < e2"
+        },
+        {
+          "Type" : "Triangularity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  lC(e1) < e2 => e1 < lR(e2)",
+          "p" : "lC(e1) < e2",
+          "q" : "e1 < lR(e2)"
+        }
+      ],
+
+      "Kernel Complexity" : "O(nnz^2/n^1)",
+
+      "Missing induction iterator constraints" :
+      [
+      ],
+      "Do Not Project Out" :
+      [
+        "In_2", "Out_2"
+      ]
+    }
+  ]
+]

@@ -1,0 +1,61 @@
+[
+  [
+    {
+      "Name" : "Forward solve CSR",
+
+      "CHILL analysis info" : 
+      [
+        {
+           "Script file" : "data/tempData/fs_csr.py",
+           "Source" : "data/fs_csr.c",
+           "Destination" : "data/tempData/fs_csr_mod.c",
+           "Procedure" : "fs_csr",
+           "Loop" : "0",
+           "Output file" : "data/tempData/fs_csr.txt",
+           "Private Arrays" : "",
+           "Reduction Statements" : ""
+        }
+      ],
+
+      "Result" : "results/fs_csr.out",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "colIdx",
+           "Domain" : "{[i]:0<=i &&i<nnz}",
+           "Range" : "{[j]:0<=j &&j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "rowPtr",
+           "Domain" : "{[j]:0<=j &&j<n}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+        {
+          "Type" : "Triangularity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 < rowPtr(e2) => colIdx(e1) < e2",
+          "p" : "e1 < rowPtr(e2)",
+          "q" : "colIdx(e1) < e2"
+        }
+      ],
+
+      "Kernel Complexity" : "O(nnz^1)",
+
+      "Missing induction iterator constraints" :
+      [
+      ],
+      "Do Not Project Out" :
+      [
+        "In_2", "Out_2"
+      ]
+    }
+  ]
+]

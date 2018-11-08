@@ -1,0 +1,8 @@
+data/gs_csr.json
+data/gs_bcsr.json
+data/fs_csr.json
+data/fs_csc.json
+data/ic0_csc.json
+data/spMV_Mul_csr.json
+data/staticleftChol_csc.json
+data/ilu0_csr.json
