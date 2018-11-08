@@ -1,0 +1,108 @@
+@unnumberedsubsec Copy_to_shared
+@deftypefn {Transform} {} copy_to_shared (string @var{start_loop}, string @var{array_name}, string @var{blockIndex},string @var{threadIndex},string @var{kernel_parameters})
+
+
+The @code{copy_to_shared} command copies the vector @var{array_name} to an shared memory. @var{start_loop} specifies the loop in which the shared memory access should be placed.
+
+
+@end deftypefn
+
+@multitable @columnfractions .50 .50 
+@item
+@b{Python Script}
+@smallformat
+@cartouche
+@verbatim
+read_IR( "mpeg4_cpu")
+
+N=4096
+M=4096
+W=16
+
+Ti=32
+Tj=32
+Tii=16
+Tjj=16
+Tk=4
+
+tile_by_index(["i","j"],[Ti,Tj],
+{'l1_control':"ii",'l2_control':"jj"},
+["ii","jj","i","j","k","l"], None)
+tile_by_index(["i","j"],[Tii,Tjj],
+{'l1_control':"iii",'l2_control':"jjj"},
+["ii","jj","iii","i","jjj","j","k","l"]
+,None)
+cudaize(0, "kernel_GPU",{'curr':W*W,
+'prev':(N+W)*(M+W),'result':N*M},
+["ii","jj"], ["i","j"], [])
+
+copy_to_shared("iii","prev",16)
+
+
+@end verbatim
+@end cartouche
+@end smallformat
+@tab @b{Original code}
+@smallformat
+@cartouche
+@verbatim
+#define N1 4096
+#define N2 4096
+#define WINDOW_SIZE 16
+
+void mpeg4_cpu(float result[N1][N2], 
+float prev[N2+WINDOW_SIZE][N2+WINDOW_SIZE], 
+float  curr[WINDOW_SIZE*WINDOW_SIZE])
+{
+	unsigned int i;
+	unsigned int j;
+	unsigned int k;
+	unsigned int l;
+
+for ( i = 0; i < N1; ++i)    
+ for ( j = 0; j < N2; ++j) 
+  for ( k = 0; k < WINDOW_SIZE; ++k) 
+   for ( l = 0; l < WINDOW_SIZE; ++l) 
+    result[i][j] += 
+    prev[i+k][j+l] *
+    curr[k*WINDOW_SIZE+l];
+}
+
+@end verbatim
+@end cartouche
+@end smallformat
+@end multitable
+
+@multitable @columnfractions .50 .50
+@item
+@b{Output on stdout}
+@smallformat
+@cartouche
+@verbatim
+
+0  int bx = blockIdx.x
+1  int by = blockIdx.y
+2  int tx = threadIdx.x
+3  int ty = threadIdx.y
+4  int iii
+5  int jjj
+6  int k
+7  int l
+8  __shared__ float _P1[47][48]
+
+
+@end verbatim
+@end cartouche
+@end smallformat
+@tab @b{Transformed code}
+@smallformat
+@cartouche
+@verbatim
+
+
+
+
+@end verbatim
+@end cartouche
+@end smallformat
+@end multitable

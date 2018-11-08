@@ -1,0 +1,249 @@
+[
+  [
+    {
+      "Name" : "CSC left LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [colNo] -> [colNop, ip, lp] : colNo = ip && colNo < colNop && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n && 0 <= ip and ip < colNop && lC(ip) <= lp and lp < lC_up(ip) }",
+
+      "Efficient Inspector complexity:" : "n*n = O( nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz ) )",
+      "Expected" : "{ [colNo] -> [colNop, ip, lp] : colNo = ip && colNo < colNop && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n && 0 <= ip and ip < colNop && lC(ip) <= lp and lp < lC_up(ip) }",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "c",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_A}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "r",
+           "Domain" : "{[i]: 0<=i && i<nnz_A}",
+           "Range" : "{[j]: 0<=j && j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "lC",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_L}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "lC_up",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_L}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "lR",
+           "Domain" : "{[i]: 0<=i && i<nnz_L}",
+           "Range" : "{[j]: 0<=j && j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "uC",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_U}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "uR",
+           "Domain" : "{[i]: 0<=i && i<nnz_U}",
+           "Range" : "{[j]: 0<=j && j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        }
+      ],
+      "User Defined" :
+      [
+
+        {
+          "Type" : "CoMonotonicity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 = e2 => lC(e1) <= lC_up(e2)",
+          "p" : "e1 = e2",
+          "q" : "lC(e1) <= lC_up(e2)"
+        },
+        {
+          "Type" : "CoMonotonicity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 < e2 => lC_up(e1) < lC(e2)",
+          "p" : "e1 < e2",
+          "q" : "lC_up(e1) < lC(e2)"
+        }
+      ],
+      "Do Not Project Out" :
+      [
+        "colNo", "colNop"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is a version of left LU. Dependence analysis",
+                  "of this code would identify 2 pairs of read/write",
+                  "or writ2/write data accesses (in s1 through s2) that",
+                  "may produce data dependences. Each of these pairs",
+                  "produce two conjunctions considering the ordering of",
+                  "accesses (Flow and Anti). Overall, there are XX distinct",
+                  "conjunctions for the complete dependence relation.",
+                  "",
+                  "for (int colNo = 0; colNo < n; ++colNo) {",
+                  "    //Uncompressing a col into a 1D array",
+                  "    std::fill_n(f,n,0);//Zero initialization",
+                  "    for (int nzNo = c[colNo]; nzNo < c[colNo + 1]; ++nzNo) {",
+                  "      f[r[nzNo]]=values[nzNo];//Copying nonzero of the col",
+                  "    }",
+                  "    for (int i = 0; i < colNo; ++i) {",
+                  "      // uncompressing the src col from the factorized part of L",
+                  "      std::fill_n(srcCol,n,0); //Zero initialization",
+                  "S1:   for (int l = lC[i]; l < lC_up[i] ; ++l) {",
+                  "S2:     srcCol[lR[l]]=f[i]*lValues[l];",
+                  "      }",
+                  "      //Applying update from the col of L matrix",
+                  "      for (int j = i+1; j < n; ++j) {",
+                  "        f[j] = f[j] - srcCol[j];",
+                  "      }",
+                  "    }",
+                  "    //copy the U part from f vector",
+                  "    int nnzUcur=uC[colNo];",
+                  "    for (int k = 0; k < colNo; ++k) {",
+                  "      if(f[k] != 0){",
+                  "        uR[ nnzUcur ]=k;",
+                  "        uValues[ nnzUcur ]=f[k];",
+                  "        nnzUcur++;",
+                  "      }",
+                  "    }",
+                  "    uC_up[colNo]=nnzUcur;",
+                  "    //copy the L part from f vector",
+                  "    int nnzLcur=lC[colNo];",
+                  "    for (int k = colNo; k < n; ++k) {",
+                  "      if(f[k] != 0){",
+                  "S3:     lR[ nnzLcur ]=k;",
+                  "S4:     lValues[ nnzLcur ]=f[k] / f[colNo];",
+                  "        nnzLcur++;",
+                  "      }",
+                  "    }",
+                  "S5: lC_up[colNo]=nnzLcur;",
+                  "}"
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lC_up[i]);  a write in S5 (lC_up[colNo]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [colNo] -> [colNop, ip, lp] : colNo = ip && colNop < colNo && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n && 0 <= ip and ip < colNop && lC(ip) <= lp and lp < lC_up(ip) }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lC_up[i]);  a write in S5 (lC_up[colNo]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [colNo] -> [colNop] : colNo = colNop && colNo < colNop && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S5 (lC_up[colNo]);  a write in S5 (lC_up[colNo]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [colNo] -> [colNop] : colNo = colNop && colNop < colNo && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S5 (lC_up[colNo]);  a write in S5 (lC_up[colNo]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [colNo,k, nnzLcur] -> [colNop, ip, lp] : nnzLcur = lp && colNo < colNop && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n && colNo <= k && k < n && lC(colNo) <= nnzLcur && nnzLcur < lC(colNo+1) && 0 <= ip and ip < colNop && lC(ip) <= lp and lp < lC_up(ip) }",
+
+      "Efficient Inspector complexity:" : "n*n*n = O( n^3 )",
+      "Efficient Inspector complexity after domain info (correlated mono adds an useful equlaity: colNo = ip):" : "O( n*n )",
+      "Expected" : "{ [colNo,k, nnzLcur] -> [colNop, ip, lp] : colNo = ip && nnzLcur = lp && c(colNo) = c(ip) && lC(colNo) = lC(ip) && lC_up(colNo) = lC_up(ip) && uC(colNo) = uC(ip) && nnzLcur = lp && colNo < colNop && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n && colNo <= k && k < n && lC(colNo) <= nnzLcur && nnzLcur < lC(colNo+1) && 0 <= ip and ip < colNop && lC(ip) <= lp and lp < lC_up(ip) }",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (lValues[l]);  a write in S4 (lValues[ nnzLcur ]);",
+                    "a read in S2 (lR[l]);  a write in S3 (lR[nnzLcur]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [colNo,k, nnzLcur] -> [colNop, ip, lp] : nnzLcur = lp && colNop < colNo && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n && colNo <= k && k < n && lC(colNo) <= nnzLcur && nnzLcur < lC(colNo+1) && 0 <= ip and ip < colNop && lC(ip) <= lp and lp < lC_up(ip) }",
+
+      "Efficient Inspector complexity:" : "O( n^3 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Correlated Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (lValues[l]);  a write in S4 (lValues[ nnzLcur ]);",
+                    "a read in S2 (lR[l]);  a write in S3 (lR[nnzLcur]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [colNo,k, nnzLcur] -> [colNop, kp, nnzLcurp] : nnzLcur = nnzLcurp && colNo < colNop && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n && colNo <= k && k < n && lC(colNo) <= nnzLcur && nnzLcur < lC(colNo+1) && colNop <= kp && kp < n && lC(colNop) <= nnzLcurp && nnzLcurp < lC(colNop+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S4 (lValues[nnzLcur]);  a write in S4 (lValues[ nnzLcur ]);",
+                    "a write in S3 (lR[nnzLcur]);  a write in S3 (lR[nnzLcur]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [colNo,k, nnzLcur] -> [colNop, kp, nnzLcurp] : nnzLcur = nnzLcurp && colNop < colNo && 0 <= colNo and colNo < n && 0 <= colNop and colNop < n && colNo <= k && k < n && lC(colNo) <= nnzLcur && nnzLcur < lC(colNo+1) && colNop <= kp && kp < n && lC(colNop) <= nnzLcurp && nnzLcurp < lC(colNop+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S4 (lValues[nnzLcur]);  a write in S4 (lValues[ nnzLcur ]);",
+                    "a write in S3 (lR[nnzLcur]);  a write in S3 (lR[nnzLcur]);"
+                  ]
+    }
+  ]
+]

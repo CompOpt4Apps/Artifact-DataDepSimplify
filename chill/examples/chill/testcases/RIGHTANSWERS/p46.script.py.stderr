@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "p46.script.py", line 20, in <module>
+    print_structure()
+NameError: name 'print_structure' is not defined

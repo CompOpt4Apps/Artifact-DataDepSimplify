@@ -1,0 +1,66 @@
+11/19/12 MMS
+Need GMP and Cloog for code generation.  Going to record how the installation
+for these worked in this README file to enable moving it over to
+new IEGenCC organization when we are ready.
+
+system info
+ganymede> uname -a
+Linux ganymede 3.4.11-1.fc16.x86_64 #1 SMP Sun Sep 16 13:50:06 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+
+ganymede> g++ --version
+g++ (GCC) 4.6.3 20120306 (Red Hat 4.6.3-2)
+
+11/24/12
+--------
+Getting it to work on the Mac.
+    wget was not installed on my Mac.
+    
+Maybe incorporate this build into CMakelists with this, http://www.kitware.com/media/html/BuildingExternalProjectsWithCMake2.8.html?
+I tried this http://stackoverflow.com/questions/5971921/building-a-library-using-autotools-from-cmake.
+
+# doesn't work, but see src/CMakelists.txt for what does work.
+ExternalProject_Add(libgmp
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/gmp-5.0.5
+    CONFIGURE_COMMAND mkdir ${CMAKE_CURRENT_SOURCE_DIR}/libs/installed; export CXXFLAGS="-fPIC -O3"; export CFLAGS="-fPIC -O3"; ${CMAKE_CURRENT_SOURCE_DIR}/libs/gmp-5.0.5/configure --prefix=${CMAKE_CURRENT_SOURCE_DIR}/libs/installed --disable-shared --with-pic
+    BUILD_COMMAND ${MAKE})
+
+
+=========================================
+Building GMP 5.0.5
+http://gmplib.org
+
+wget ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.5.tar.bz2
+bunzip2 gmp-5.0.5.tar.bz2
+tar -xvf gmp-5.0.5.tar
+cd gmp-5.0.5
+# not sure where you want to put this.  For now putting it in installed/
+# subdirectory.
+mkdir installed
+setenv CXXFLAGS '-fPIC -O3'
+setenv CFLAGS '-fPIC -O3'
+./configure --prefix=$PWD/installed --with-pic --disable-shared
+make
+make check
+make install
+
+    // IEGenProject/trunk/IEGen/src/libs/gmp-5.0.5/installed
+
+
+=========================================
+Building the Cloog development version
+0.14.0-245-gd8c1718
+http://www.cloog.org
+
+git clone git://repo.or.cz/cloog.git
+cd cloog
+./get_submodules.sh
+# Used Macports to get autoconf tools that were needed
+#    sudo port install automake autoconf libtool
+./autogen.sh
+mkdir installed
+setenv CXXFLAGS '-fPIC -O3'
+setenv CFLAGS '-fPIC -O3'
+./configure --prefix=$PWD/installed --with-gmp-prefix=$PWD/../gmp-5.0.5/installed --disable-shared --with-pic
+make
+make install
+

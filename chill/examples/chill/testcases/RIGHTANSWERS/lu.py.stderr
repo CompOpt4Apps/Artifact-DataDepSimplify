@@ -1,0 +1,3 @@
+terminate called after throwing an instance of 'loop_error'
+  what():  Graph input for fusion has cycles not a DAG!!
+Aborted (core dumped)

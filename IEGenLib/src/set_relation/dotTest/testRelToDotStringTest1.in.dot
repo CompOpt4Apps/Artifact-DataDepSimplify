@@ -1,0 +1,17 @@
+digraph SparseConstraints {
+0 [label = "Relation\nmInArity=3\nmOutArity=1"];
+0 -> 1;
+1 [label = "Conjunction\n[x, 3, 1] -> [y]"];
+1->2;
+2 [label = "Equalities\n... = 0"];
+2 -> 3;
+3 [label = "Exp\n"];
+3 -> 4;
+4 [label = "TupleVarTerm\n __tv0"];
+2 -> 5;
+5 [label = "Exp\n... + ..."];
+5 -> 6;
+6 [label = "TupleVarTerm\n __tv0"];
+5 -> 7;
+7 [label = "TupleVarTerm\n -__tv3"];
+}

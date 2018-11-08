@@ -1,0 +1,535 @@
+[
+  [
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "1",
+      "Relation" : "{ [i] -> [ip] : colPtr(i) = colPtr(ip) && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "rowIdx",
+           "Domain" : "{[i]:0<=i && i<nnz}",
+           "Range" : "{[j]: 0<=j && j<m}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "colPtr",
+           "Domain" : "{[j]:0<=j &&j<m}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+        {
+          "Type" : "Triangularity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 < colPtr(e2) => rowIdx(e1) < e2",
+          "p" : "colPtr(e1) < e2",
+          "q" : "e1 < rowIdx(e2)"
+        }
+      ],
+      "Do Not Project Out" :
+      [
+        "i", "ip"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is the CSR Incoplete Cholesky 0 code.", 
+                  "Dependence analysis of this code would identify",
+                  "21 pairs of read/write or write/write data accesses",
+                  "in or between S1, S2, and S3 that may produce dependences.",
+                  "Each of these pairs produces two conjunctions considering",
+                  "the ordering of accesses (Flow and Anti dependence).",
+                  "Overall, there are 30 distinct conjunctions for",
+                  "the complete dependence relation.",
+                  " ",
+                  "for (i = 0; i < n - 1; i++){",
+                  "  val[colPtr[i]] = sqrt(val[colPtr[i]]);      //S1",
+                  "  for (m = colPtr[i] + 1; m < colPtr[i+1]; m++){",
+                  "    val[m] = val[m] / val[colPtr[i]];      //S2",
+                  "  }",
+                  "  for (m = colPtr[i] + 1; m < colPtr[i+1]; m++) {",
+                  "    for (k = colPtr[rowIdx[m]] ; k < colPtr[rowIdx[m]+1]; k++){",
+                  "      for ( l = m; l && l < colPtr[i+1] ; l++){",
+                  "        if (rowIdx[l] == rowIdx[k] && rowIdx[l+1] <= rowIdx[k]){",
+                  "          val[k] -= val[m]* val[l];      //S3",
+                  "        }", 
+                  "      }",
+                  "    }",
+                  "  }",
+                  "}"
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S1 (val[colPtr[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Index" : "2",
+      "Input Type" : "IEgenLIB Relation",
+      "Relation" : "{ [i] -> [ip] : colPtr(i) = colPtr(ip) && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S1 (val[colPtr[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "3",
+      "Relation" : "{ [i] -> [ip,mp] : colPtr(i) = colPtr(ip) && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Expected" : "Not Satisfiable",
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S2 (val[colPtr[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "4",
+      "Relation" : "{ [i] -> [ip,mp] : colPtr(i) = colPtr(ip) && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S2 (val[colPtr[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "5",
+      "Relation" : "{ [i] -> [ip,mp] : colPtr(i) = mp && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S2 (val[m]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "6",
+      "Relation" : "{ [i] -> [ip,mp] : colPtr(i) = mp && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S2 (val[m]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "7",
+      "Relation" : "{ [i] -> [ip,mp,kp,lp] : colPtr(i) = mp && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : " n*n*(nnz/n)*(nnz/n) = O( nnz^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S3 (val[m]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "8",
+      "Relation" : "{ [i] -> [ip,mp,kp,lp] : colPtr(i) = mp && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : " n*n*(nnz/n)*(nnz/n) = O( nnz^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S3 (val[m]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "9",
+      "Relation" : "{ [i] -> [ip,mp,kp,lp] : colPtr(i) = lp && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : " n*n*(nnz/n)*(nnz/n) = O( nnz^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S3 (val[l]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "10",
+      "Relation" : "{ [i] -> [ip,mp,kp,lp] : colPtr(i) = lp && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : " n*n*(nnz/n)*(nnz/n) = O( nnz^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (val[colPtr[i]]);  a read in S3 (val[l]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "11",
+      "Relation" : "{ [i,m,k,l] -> [ip] : k = colPtr(ip) && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+
+      "Efficient Inspector complexity:" : " n*n*(nnz/n)*(nnz/n) = O( nnz^2 )",
+      "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : " (nnz^2)*(1/n) = O( (nnz^2)/n )",
+      "Expected" : "{ [i,m,k,l] -> [ip] : ip = rowIdx(m) && colPtr(ip) = colPtr(rowIdx(m)) && k = colPtr(ip) && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (val[colPtr[i]]);  a write in S3 (val[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "12",
+      "Relation" : "{ [i,m,k,l] -> [ip] : k = colPtr(ip) && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1 && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+
+      "Efficient Inspector complexity:" : "O( n*n*(nnz/n)*(nnz/n) = O( nnz^2 ))",
+      "Efficient Inspector complexity after adding domain info" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (val[colPtr[i]]);  a write in S3 (val[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "13",
+      "Relation" : "{ [i,m] -> [ip,mp] : m = mp && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (val[m]);  a read in S2 (val[m]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "14",
+      "Relation" : "{ [i,m] -> [ip,mp] : m = mp && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (val[m]);  a read in S2 (val[m]);"
+                  ]
+    },
+
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "15",
+      "Relation" : "{ [i,m] -> [ip,mp] : m = colPtr(ip) && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (val[m]);  a read in S2 (val[colPtr[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "16",
+      "Relation" : "{ [i,m] -> [ip,mp] : m = colPtr(ip) && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (val[m]);  a read in S2 (val[colPtr[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "17",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp] : k = colPtr(ip) && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+
+      "Efficient Inspector complexity:" : " n*n*(nnz/n)*(nnz/n) = O( nnz^2 )",
+      "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : " (nnz^2)*(1/n) = O( (nnz^2)/n )",
+      "Expected" : "{ [i,m,k,l] -> [ip,mp] : ip = rowIdx(m) && colPtr(ip) = colPtr(rowIdx(m)) && colPtr(ip + 1) = colPtr(rowIdx(m) + 1) && k = colPtr(ip) && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (val[colPtr[i]]);  a write in S3 (val[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "18",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp] : k = colPtr(ip) && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+
+      "Efficient Inspector complexity:" : " n*n*(nnz/n)*(nnz/n) = O( nnz^2 )",
+      "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : " (nnz^2)*(1/n) = O( (nnz^2)/n )",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (val[colPtr[i]]);  a write in S3 (val[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "19",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp] : k = mp && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n )",
+      "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : " (nnz^3)*(1/n) = O( (nnz^3)/n^2 )",
+      "Expected" : "{ [i,m,k,l] -> [ip,mp] : ip = rowIdx(m) && colPtr(ip) = colPtr(rowIdx(m)) && colPtr(ip + 1) = colPtr(rowIdx(m) + 1) && k = mp && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (val[m]);  a write in S3 (val[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "20",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp] : k = mp && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && m <= l && l < colPtr(i+1) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k)}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n )",
+      "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : " (nnz^3)*(1/n) = O( (nnz^3)/n^2 )",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (val[m]);  a write in S3 (val[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "21",
+      "Relation" : "{ [i,m] -> [ip,mp,kp,lp] : m = mp && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (val[m]);  a read in S3 (val[m]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "22",
+      "Relation" : "{ [i,m] -> [ip,mp,kp,lp] : m = mp && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : " n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n ) )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (val[m]);  a read in S3 (val[m]);"
+                  ]
+    }, 
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "23",
+      "Relation" : "{ [i,m] -> [ip,mp,kp,lp] : m = lp && i < ip && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n ) )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (val[m]);  a read in S3 (val[l]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "24",
+      "Relation" : "{ [i,m] -> [ip,mp,kp,lp] : m = lp && ip < i && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n ) )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (val[m]);  a read in S3 (val[l]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "25",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : k = kp && i < ip  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5/n^3 )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz^5/n^3 )",
+      "Expected" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : rowIdx(m) = rowIdx(mp) && colPtr(k) = colPtr(kp) && colPtr(rowIdx(m)) = colPtr(rowIdx(mp)) && colPtr(rowIdx(m) + 1) = colPtr(rowIdx(mp) + 1) && k = kp && i < ip  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (val[k]);  a write in S3 (val[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "26",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : k = kp && ip < i  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5/n^3 )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz^5/n^3 )",
+      "Expected" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : rowIdx(m) = rowIdx(mp) && colPtr(k) = colPtr(kp) && colPtr(rowIdx(m)) = colPtr(rowIdx(mp)) && colPtr(rowIdx(m) + 1) = colPtr(rowIdx(mp) + 1) && k = kp && ip < i  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (val[k]);  a write in S3 (val[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "27",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : k = lp && i < ip  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+     "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5/n^3 )",
+     "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : "     n*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^5/n^4 )",
+      "Expected" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : ip = rowIdx(m) && colPtr(k) = colPtr(lp) && colPtr(ip) = colPtr(rowIdx(m)) && colPtr(ip + 1) = colPtr(rowIdx(m) + 1) && k = lp && i < ip  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (val[k]);  a read in S3 (val[l]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "28",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : k = lp && ip < i  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+     "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5/n^3 )",
+     "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : "     n*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^5/n^4 )",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (k]);  a read in S3 (val[l]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "29",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : k = mp && i < ip  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+     "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5/n^3 )",
+     "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : "     n*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^5/n^4 )",
+      "Expected" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : ip = rowIdx(m) && colPtr(k) = colPtr(mp) && colPtr(ip) = colPtr(rowIdx(m)) && colPtr(ip + 1) = colPtr(rowIdx(m) + 1) && k = mp && i < ip  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (val[k]);  a write in S3 (val[m]);"
+                  ]
+    },
+    {
+      "Name" : "CSR Incoplete Cholesky 0",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "30",
+      "Relation" : "{ [i,m,k,l] -> [ip,mp,kp,lp] : k = mp && ip < i  && 0 <= i && i < n-1 && 0 <= ip && ip < n-1  && colPtr(i)+1 <= m && m < colPtr(i+1) && colPtr(ip)+1 <= mp && mp < colPtr(ip+1) && colPtr(rowIdx(m)) <= k && k < colPtr(rowIdx(m)+1) && colPtr(rowIdx(mp)) <= kp && kp < colPtr(rowIdx(mp)+1) && m <= l && l < colPtr(i+1) && mp <= lp && lp < colPtr(ip+1) && rowIdx(lp+1) <= rowIdx(kp) && rowIdx(l+1) <= rowIdx(k) && rowIdx(l) = rowIdx(k) && rowIdx(lp) = rowIdx(kp)}",
+
+     "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5/n^3 )",
+     "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: ip = rowIdx(m) ):" : "     n*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^5/n^4 )",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (val[k]);  a read in S3 (val[m]);"
+                  ]
+    }
+  ]
+]

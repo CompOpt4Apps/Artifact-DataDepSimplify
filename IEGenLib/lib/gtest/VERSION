@@ -1,0 +1,47 @@
+--------------------------------------------------
+Current version:
+Path: .
+URL: http://googletest.googlecode.com/svn/trunk
+Repository Root: http://googletest.googlecode.com/svn
+Repository UUID: 861a406c-534a-0410-8894-cb66d6ee9925
+Revision: 527
+Node Kind: directory
+Schedule: normal
+Last Changed Author: zhanyong.wan
+Last Changed Rev: 526
+Last Changed Date: 2010-12-06 15:18:59 -0700 (Mon, 06 Dec 2010)
+--------------------------------------------------
+
+--------------------------------------------------
+Previous version:
+This version of gtest is: 1.5.0
+--------------------------------------------------
+
+--------------------------------------------------
+To update to a newer version of gtest, the following commands can be used:
+<cd to root of gtest sources>
+cp src/* $IEGEN_ROOT/src/libs/gtest/
+cp -R include $IEGEN_ROOT/src/libs/gtest/
+(You may need to add any new files to the iegen repository once this is done)
+
+A few files require editing of include paths to make the build work properly:
+You can find the files that need to be edited by running the commands:
+cd $IEGEN_ROOT/src/libs/gtest
+grep -R "src/" *
+
+This grep should yield the following files:
+gtest-all.cc:#include "src/gtest.cc"
+gtest-all.cc:#include "src/gtest-death-test.cc"
+gtest-all.cc:#include "src/gtest-filepath.cc"
+gtest-all.cc:#include "src/gtest-port.cc"
+gtest-all.cc:#include "src/gtest-printers.cc"
+gtest-all.cc:#include "src/gtest-test-part.cc"
+gtest-all.cc:#include "src/gtest-typed-test.cc"
+gtest-death-test.cc:#include "src/gtest-internal-inl.h"
+gtest-port.cc:#include "src/gtest-internal-inl.h"
+gtest-test-part.cc:#include "src/gtest-internal-inl.h"
+gtest.cc:#include "src/gtest-internal-inl.h"
+
+The goal is to remove the "src/" from these relative path include lines.
+Make these change to these files to enable building of gtest within iegen.
+--------------------------------------------------

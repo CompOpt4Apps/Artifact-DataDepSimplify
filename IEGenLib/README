@@ -1,0 +1,160 @@
+=================================
+README for IEGenLib
+=================================
+IEGenLib is a library that represents and manipulates integer sets and
+relations that have affine and uninterpreted function constraints.
+
+Contents of this README:
+
+I.   Getting The Source Code
+II.  Quick Start
+        A. Building IEGenLib
+        B. Replicating relation simplification result from the SC 2016 paper
+III. Distribution Organization
+IV.  Building IEGenLib from Source
+V.   Running Tests
+VI.  Documentation
+VII. Contact
+
+
+====  I. Getting The Source Code ===================
+
+The IEGenLib library is being actively developed, and new functionalities
+are being added. You can get the latest source code from this git repository:
+
+    git clone https://github.com/CompOpt4Apps/IEGenLib
+
+
+==== II. Quick Start ===============
+
+  A. Building IEGenLib
+  B. Simplifying constraints set containing Uninterpreted Function Calls
+
+---- A. Building IEGenLib ----------
+
+If you want to do a quick build, just run:
+    ./configure
+    make
+    make test
+ 
+This will install into a directory IEGenLib/iegenlib
+Set IEGEN_HOME to /full/path/to/IEGenLib/iegen
+
+
+---- B. Replicating relation simplification result from the SC 2016 paper ---
+
+Please look at SC_IEGenLib branch for this.
+
+
+
+==== III. Distribution Organization ===============
+
+The distribution is shipped as a tar file. When you unpack the tar
+file it creates a directory that is the root of the distribution.
+
+    tar xzvf iegenlib-#.#.#.tgz
+
+Sources for the project are found in the distribution root src/
+sub-directory.
+
+The library and demonstration driver create both string and dot
+output; graphviz is needed to visualize the dot output.
+      
+
+==== IV. Building IEGenLib from Source =======================
+
+    Build Command Sequence
+        ./configure
+        make
+        make install
+
+    Build and Test without creating an install directory
+        ./configure
+        make
+        make test
+       
+
+    Requirements
+        * cmake 2.6 or newer
+        
+        * C++ compiler, the below versions are known to work
+            Mac i686-apple-darwin10-g++-4.2.1, 
+            GCC 4.6.3 20120306 (Red Hat 4.6.3-2)
+            
+        * If re-generating parser files BISON 2.4 and FLEX 2.5 or newer
+        
+        * If re-generating docs
+            * doxygen (http://www.stack.nl/~dimitri/doxygen/index.html,
+                       known to work with 1.5.6 and 1.7.5)
+            * dot (http://www.graphviz.org)
+ 
+        * If you plan to change the grammar for the sets or relations:
+            * Flex: version 2.5.35 known to work
+            * Bison: version 2.4.1 known to work
+
+Please notify us if you find that other versions of these tools that
+work or do not work for you.
+
+Build files for the project are generated using cmake (except for the
+distribution root-level Makefile that is included in the tar file).
+Cmake version 2.6 or newer is required. Make files can be generated to
+only build the binaries, to additionally generate the parser files.
+These options are enabled through a configure script in the root of the
+project. If the parser option is included, then additionally FLEX
+version 2.5 or newer and BISON version 2.4 or newer are required. If
+documentation is to be re-generated, then doxygen and dot are also
+required to create it.
+
+Run ./configure --help for more build configuration options.
+
+The default install directory is ${IEGEN_DIR}/iegen/. This directory
+may be changed using options to the configure script.  Note that the
+cmake system places binaries in an iegen/ directory, rather than an
+iegen-LINUX64/ or iegen-MacOSX/ directory as are shipped in the
+distribution.
+
+
+==== V. Running Tests =====
+
+The iegen/bin/run_iegenlib_tests binary can be executed to run the tests of 
+the various components of IEGenLib. Additionally, from the root of the 
+distribution you can run 'make test' to run these same tests.
+
+The gtest framework is used for writing and running unit tests.  Information 
+on gtest can be found at:
+
+    http://code.google.com/p/googletest/
+
+and introductory documentation is at:
+
+    http://code.google.com/p/googletest/wiki/V1_6_Primer
+
+==== VI. Documentation =====
+
+To create the doxygen documentation, run the following command:
+
+    make docs
+
+An index.html file will be created in the distribution root directory, in 
+doc/html/. A latex pdf file, called refman.pdf will also be created, in the 
+doc/latex/ directory. 
+
+==== VII. Debug and Release Builds =====
+
+The default build is the debug build.  It is set by cmake in the configure 
+script with -DCMAKE_BUILD_TYPE:STRING=Debug.  The compiler options for the 
+debug build are '-O0 -g'.  
+
+To create a release version, use in the -build--release option to the 
+configure script. The compiler options for the release are '-O3 -DNDEBUG'.
+
+To show actual build commands, you can run the verbose version of the build:
+  
+  make install VERBOSE=1
+
+==== VII. Contact =====
+
+For more information please contact:
+
+Dr. Michelle Strout, mstrout@cs.arizona.edu
+

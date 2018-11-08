@@ -1,0 +1,10 @@
+#/bin/sh
+# This script is for an Eclipse builder, so that both the configure script
+# and make can be run in a single command. It now takes arguments so the
+# Eclipse builder can have an argument, e.g. --build-python to also add
+# the python bindings.
+
+./configure $@
+make install
+
+

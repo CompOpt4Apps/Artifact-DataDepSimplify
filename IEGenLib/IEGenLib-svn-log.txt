@@ -1,0 +1,2783 @@
+------------------------------------------------------------------------
+r819 | mstrout | 2014-01-07 16:27:03 -0800 (Tue, 07 Jan 2014) | 10 lines
+
+Based on email Mahesh sent, I checked the Python bindings in the nightly build. The issue was bigger than just a fix to the README to indicate usage 
+of ./configure --build-python. The Python bindings were broken because 
+we had started using isl with sets and relations for normalization.
+Had to put some of the new header files and remove old header file 
+from iegenlib.i.
+Had to change build of shared library so that was being linked with 
+isl and other libraries. See CMakeLists.txt in src/bindings/.
+Had to update example in README to use appendCurrEnv correctly. i
+It gave me a segmentation fault. Had to break parameters down. Fix is in README.
+
+------------------------------------------------------------------------
+r818 | mstrout | 2014-01-07 01:49:08 -0800 (Tue, 07 Jan 2014) | 2 lines
+
+Working on IEGRTWO-101.  Just some minor cleanup.
+
+------------------------------------------------------------------------
+r817 | mstrout | 2014-01-07 00:22:51 -0800 (Tue, 07 Jan 2014) | 2 lines
+
+Missed an instance of substituteTupleDecl() that was needed.
+
+------------------------------------------------------------------------
+r816 | mstrout | 2014-01-07 00:18:45 -0800 (Tue, 07 Jan 2014) | 2 lines
+
+Fixed IEGRTWO-73 in normalization_test.cc.  Just missing substituteTupleDecl().
+
+------------------------------------------------------------------------
+r805 | mstrout | 2013-09-09 03:27:10 -0700 (Mon, 09 Sep 2013) | 3 lines
+
+IEGRTWO-103 is done.  Removed the old Exp::substitute that just substituted
+one term with one expression at a time.  Everything now uses those SubMaps.
+
+------------------------------------------------------------------------
+r804 | mstrout | 2013-09-08 22:54:48 -0700 (Sun, 08 Sep 2013) | 2 lines
+
+Fixed some compiler warnings.
+
+------------------------------------------------------------------------
+r803 | kreaseck | 2013-09-03 00:14:29 -0700 (Tue, 03 Sep 2013) | 1 line
+
+Fixed arity mismatch problem when nested function calls obscure range->domain arity matches. All but one NormalizationTest is working with normalize().  Cleaned up normalization_test.cc 
+------------------------------------------------------------------------
+r800 | mstrout | 2013-08-29 18:03:54 -0700 (Thu, 29 Aug 2013) | 3 lines
+
+IEGRTWO-101.  Fixed issue where a UF call might return a TupleExpTerm when we are replacing uf calls with
+temporary variables.
+
+------------------------------------------------------------------------
+r799 | kreaseck | 2013-08-26 20:54:36 -0700 (Mon, 26 Aug 2013) | 1 line
+
+commented out debugging prints
+------------------------------------------------------------------------
+r798 | kreaseck | 2013-08-26 20:52:13 -0700 (Mon, 26 Aug 2013) | 1 line
+
+normalize() is working through the first few tests, ... through  NormalizationTest.NestedUFCalls1D1D1D.  Creating the affineSubstMap from the ISL result, and using that to build the nonAffineSubstMap which includes the UFCalls, appears to be working so far.
+------------------------------------------------------------------------
+r794 | mstrout | 2013-08-22 20:58:00 -0700 (Thu, 22 Aug 2013) | 5 lines
+
+Fixed IEGRTWO-101 problem that Barbara was having that temporary vars were not getting
+the correct coefficients when they were replacing UF calls.
+The ISL issue temporarily went away, but we will have to deal with it in the future.
+Need to modify the normalize algorithm somewhat to handle what we are currently getting.
+
+------------------------------------------------------------------------
+r793 | kreaseck | 2013-08-22 04:30:19 -0700 (Thu, 22 Aug 2013) | 1 line
+
+Started converting normalization_test.cc tsts to use normalize() ... up to EqUFParamRelation, which is having problems as documented with issue IEGGRONE-101
+------------------------------------------------------------------------
+r789 | kreaseck | 2013-08-20 12:01:52 -0700 (Tue, 20 Aug 2013) | 1 line
+
+through (step 3) in the normalize algorithm
+------------------------------------------------------------------------
+r787 | mstrout | 2013-08-20 03:55:39 -0700 (Tue, 20 Aug 2013) | 2 lines
+
+Did cleanup of UFCallMapAndBounds code.  Comments fixed as well.
+
+------------------------------------------------------------------------
+r786 | mstrout | 2013-08-20 03:36:23 -0700 (Tue, 20 Aug 2013) | 3 lines
+
+Fixed all memory leaks except one involving SparseConstraints::normalize() code.
+Don't think I can assign the result set to self.  Hmmm.
+
+------------------------------------------------------------------------
+r785 | mstrout | 2013-08-20 03:02:55 -0700 (Tue, 20 Aug 2013) | 4 lines
+
+Created SubMap to hide the std::map I was using for substitution maps.
+Hopefully this will remove a lot of memory leaks as well.
+All tests run correctly on the mac.  Going to linux to look at leaks.
+
+------------------------------------------------------------------------
+r784 | mstrout | 2013-08-20 01:49:10 -0700 (Tue, 20 Aug 2013) | 2 lines
+
+Fixed segfault that was caused by me cleaning up some memory leaks.
+
+------------------------------------------------------------------------
+r783 | mstrout | 2013-08-19 23:03:18 -0700 (Mon, 19 Aug 2013) | 3 lines
+
+Did some memory leak and compiler warning cleanup on linux, but will be easier to
+create the SubstitutionMap abstraction on the mac.
+
+------------------------------------------------------------------------
+r782 | mstrout | 2013-08-19 18:30:40 -0700 (Mon, 19 Aug 2013) | 3 lines
+
+IEGRTWO-102, working on ChillUsage tests.
+Added the test where we declare k=j.
+
+------------------------------------------------------------------------
+r781 | mstrout | 2013-08-19 18:06:29 -0700 (Mon, 19 Aug 2013) | 3 lines
+
+Fixed ChillUsage tests so they are passing now.  Just had to put in 
+correct strings.
+
+------------------------------------------------------------------------
+r780 | kreaseck | 2013-08-19 12:24:08 -0700 (Mon, 19 Aug 2013) | 1 line
+
+NormalizationTest.buildingNormalize appears to be working through Step 2
+------------------------------------------------------------------------
+r779 | cathie | 2013-08-19 10:51:21 -0700 (Mon, 19 Aug 2013) | 3 lines
+
+
+Trying to fix a linking error for barbara
+
+------------------------------------------------------------------------
+r778 | mstrout | 2013-08-19 00:03:59 -0700 (Mon, 19 Aug 2013) | 4 lines
+
+Did a lot of comment and std::cout cleanup.  Leaving in commented out
+std::cout's for stuff related to normalize because that is work still
+in progress.
+
+------------------------------------------------------------------------
+r777 | mstrout | 2013-08-18 23:36:46 -0700 (Sun, 18 Aug 2013) | 6 lines
+
+Refactored Compose from 300+ line routine to less than 200 lines.
+Now Compose and Apply will find constants in constraints and
+put them back into the tuple declaration.
+Still need to look at Chill tests, still need to cleanup a lot of
+comments, and still need to check the memory leak issue.
+
+------------------------------------------------------------------------
+r776 | mstrout | 2013-08-18 17:46:34 -0700 (Sun, 18 Aug 2013) | 2 lines
+
+Fixed Barbara's linking problem with ISL and iegenlib_calc.
+
+------------------------------------------------------------------------
+r775 | mstrout | 2013-08-18 17:36:38 -0700 (Sun, 18 Aug 2013) | 5 lines
+
+Refactored Apply so it uses en masse substitution.
+Compose has been broken temporarily to make CHILL usage tests work.
+Can fix it by refactoring it much like Apply.
+Merged with Barbara's changes to normalize.
+
+------------------------------------------------------------------------
+r774 | kreaseck | 2013-08-18 11:27:16 -0700 (Sun, 18 Aug 2013) | 1 line
+
+Added step 2 stmts to Normalization:buildingNormalize, Added ISL-helper routines to set_relation.h and set_relation.cc (and commented them out due to ld errors)
+------------------------------------------------------------------------
+r773 | mstrout | 2013-08-18 03:07:53 -0700 (Sun, 18 Aug 2013) | 8 lines
+
+IEGRTWO-87, this is an in between commit.  I fixed the segfaults
+with normalize based on Barbara's email.  Lots of debug output is still in
+there.  Fixing the issues caused a problem in compose in that some substitution
+that should be happening isn't, so I need to fix that.  Compose is a
+bit fragile because it does substitution in order.  Should refactor that.
+normalize is still in progress, but now Barbara could incorporate
+ISL part.
+
+------------------------------------------------------------------------
+r772 | mstrout | 2013-08-15 21:17:44 -0700 (Thu, 15 Aug 2013) | 3 lines
+
+Working on chillusage_test.cc.  Want to check if we can
+manipulate access relations like Anand wants.
+
+------------------------------------------------------------------------
+r771 | mstrout | 2013-08-15 17:05:28 -0700 (Thu, 15 Aug 2013) | 2 lines
+
+IEGRTWO-87, still working on step 1.  Handing off to Barbara for debugging.
+
+------------------------------------------------------------------------
+r760 | mstrout | 2013-08-15 04:08:06 -0700 (Thu, 15 Aug 2013) | 9 lines
+
+IEGRTWO-87, starting rework of UFCallMapAndBounds::boundByRange based on
+implementation plan for step 1 in normalize algorithm.
+I had boundByRange doing too much.  It doesn't
+need to set the temporaries equal to the return expressions
+because the temporaries will be replacing the uf calls in the
+other constraints.
+Test cases all work now but still need to get step 1
+test code fixed and then implement step 1.
+
+------------------------------------------------------------------------
+r759 | mstrout | 2013-08-13 16:43:42 -0700 (Tue, 13 Aug 2013) | 2 lines
+
+IEGRTWO-87, phase 0 of normalization now appears to be working.
+
+------------------------------------------------------------------------
+r758 | mstrout | 2013-08-13 03:10:44 -0700 (Tue, 13 Aug 2013) | 3 lines
+
+IEGRTWO-87. Stuck probably because been working for almost 15 hours straight.
+Maybe Barbara can help.
+
+------------------------------------------------------------------------
+r757 | mstrout | 2013-08-13 02:15:47 -0700 (Tue, 13 Aug 2013) | 2 lines
+
+Debugging in linux is too slow.  Switching to mac.
+
+------------------------------------------------------------------------
+r756 | mstrout | 2013-08-12 23:04:33 -0700 (Mon, 12 Aug 2013) | 2 lines
+
+Made progress on step 0 of IEGRTWO-87.  Just need to debug Conjunction::groupIndexedUFCalls.
+
+------------------------------------------------------------------------
+r755 | mstrout | 2013-08-12 00:29:45 -0700 (Mon, 12 Aug 2013) | 5 lines
+
+IEGRTWO-94 is finished.  Can now parse tuple expressions.
+Also had to add a lot of copied traversal code in recursive Exp routines
+like Exp::substitute.  Made a new issue IEGRTWO-100 to deal with that 
+yuckiness.
+
+------------------------------------------------------------------------
+r754 | mstrout | 2013-08-11 22:38:02 -0700 (Sun, 11 Aug 2013) | 4 lines
+
+Put in some comments about UFCallTerm being a tuple type.
+IEGRTWO-93
+
+
+------------------------------------------------------------------------
+r753 | mstrout | 2013-08-11 22:30:45 -0700 (Sun, 11 Aug 2013) | 2 lines
+
+IEGRTWO-89 is all done and memory leak free!
+
+------------------------------------------------------------------------
+r752 | mstrout | 2013-08-09 00:25:38 -0700 (Fri, 09 Aug 2013) | 2 lines
+
+IEGRTWO-89 works.  Now just need to do memory leak cleanup for it.
+
+------------------------------------------------------------------------
+r751 | mstrout | 2013-08-09 00:07:40 -0700 (Fri, 09 Aug 2013) | 2 lines
+
+IEGRTWO-89, so close.  Just need to get some of these test cases working.
+
+------------------------------------------------------------------------
+r750 | mstrout | 2013-08-08 21:29:35 -0700 (Thu, 08 Aug 2013) | 2 lines
+
+IEGRTWO-89, more test cases for boundByDomain.
+
+------------------------------------------------------------------------
+r748 | mstrout | 2013-08-08 18:48:43 -0700 (Thu, 08 Aug 2013) | 2 lines
+
+Got all but 48 bytes of leakage dealt with.
+
+------------------------------------------------------------------------
+r747 | mstrout | 2013-08-08 18:30:34 -0700 (Thu, 08 Aug 2013) | 2 lines
+
+Using clear() instead of pop_front() in set_relation.cc
+
+------------------------------------------------------------------------
+r746 | mstrout | 2013-08-08 18:27:31 -0700 (Thu, 08 Aug 2013) | 2 lines
+
+Still on IEGRTWO-89.  Ensuring that make mtest passes.  Need to check in linux.
+
+------------------------------------------------------------------------
+r745 | mstrout | 2013-08-08 18:01:32 -0700 (Thu, 08 Aug 2013) | 2 lines
+
+IEGRTWO-89, got UFCallMapAndBounds.boundByDomain to work.
+
+------------------------------------------------------------------------
+r744 | mstrout | 2013-08-07 19:49:24 -0700 (Wed, 07 Aug 2013) | 3 lines
+
+Done with IEGRTWO-98.  Able to reset the TupleDecl for a whole Set or Relation,
+but can't override constants.
+
+------------------------------------------------------------------------
+r743 | mstrout | 2013-08-07 17:37:15 -0700 (Wed, 07 Aug 2013) | 2 lines
+
+IEGRTWO-97 is done.  Now have methods for doing en masse substitution.
+
+------------------------------------------------------------------------
+r742 | mstrout | 2013-08-07 04:03:48 -0700 (Wed, 07 Aug 2013) | 3 lines
+
+Working on IEGRTWO-97.  Have en masse substitution for Exp working.
+Still need to get Conjunction and SparseConstraints one working.
+
+------------------------------------------------------------------------
+r741 | mstrout | 2013-08-06 04:06:12 -0700 (Tue, 06 Aug 2013) | 2 lines
+
+YEAH!!  No memory leaks.  OCD wins in the end.
+
+------------------------------------------------------------------------
+r740 | mstrout | 2013-08-06 03:16:02 -0700 (Tue, 06 Aug 2013) | 4 lines
+
+Made some progress on memory leak issues.  Introducing reset()
+to be called in assignment operators as well as destructors helped.
+Still have some more to go though in IEGenLib.
+
+------------------------------------------------------------------------
+r739 | mstrout | 2013-08-06 02:21:28 -0700 (Tue, 06 Aug 2013) | 3 lines
+
+Working on IEGRTWO-89.  HAve Exp::remapTupleVars and 
+SparseConstraints::remapTupleVars, which can be used in a Set, working.
+
+------------------------------------------------------------------------
+r738 | mstrout | 2013-08-04 23:04:41 -0700 (Sun, 04 Aug 2013) | 5 lines
+
+IEGRTWO-96 is done.  Did a refactor of the UFCallTerm interface for
+parameter expressions and it sucked the whole day.
+Also did some cleanup using mtest, but the remaining leaks I cannot
+figure out.
+
+------------------------------------------------------------------------
+r737 | mstrout | 2013-08-04 19:56:27 -0700 (Sun, 04 Aug 2013) | 3 lines
+
+Things are broken while working on IEGRTWO-96, but need valgrind on linux
+box to fix it.
+
+------------------------------------------------------------------------
+r736 | mstrout | 2013-08-04 17:06:49 -0700 (Sun, 04 Aug 2013) | 3 lines
+
+Working on IEGRTWO-89.  Got refactor of Set::boundTupleExp() working
+in normalization_test.cc.
+
+------------------------------------------------------------------------
+r735 | mstrout | 2013-08-02 00:31:14 -0700 (Fri, 02 Aug 2013) | 4 lines
+
+Wow it took forever but now we have a TupleExpTerm class, IEGRTWO-92.
+Some of the test cases are broken but they will get fixed as part of
+IEGRTWO-87, which IEGRTWO-92 is a subtask for.
+
+------------------------------------------------------------------------
+r734 | mstrout | 2013-08-01 18:48:14 -0700 (Thu, 01 Aug 2013) | 5 lines
+
+Working on IEGRTWO-89, UFCallMapAndBounds.  In wiki 8/2/13 took a step back
+and figured out how to handle functions that return tuples.  This all compiles
+and runs but most of it is commented out.  Want to save some of the changes
+I had made before go through revamp for functions that return tuples.
+
+------------------------------------------------------------------------
+r733 | mstrout | 2013-07-30 22:37:03 -0700 (Tue, 30 Jul 2013) | 2 lines
+
+Initial implementation of UFCallMapAndBounds.
+
+------------------------------------------------------------------------
+r732 | mstrout | 2013-07-29 22:40:34 -0700 (Mon, 29 Jul 2013) | 3 lines
+
+Have test cases working for IEGRTWO-85.  Still need to figure out some memory
+leaks errors.  See IEGRTWO-85 for more details.
+
+------------------------------------------------------------------------
+r731 | mstrout | 2013-07-29 21:15:05 -0700 (Mon, 29 Jul 2013) | 2 lines
+
+Finished creating MultiDimExp class, IEGRTWO-85.
+
+------------------------------------------------------------------------
+r729 | mstrout | 2013-07-28 16:52:54 -0700 (Sun, 28 Jul 2013) | 2 lines
+
+Completed IEGRTWO-84 and IEGenLib make test still works.
+
+------------------------------------------------------------------------
+r728 | mstrout | 2013-07-28 16:22:09 -0700 (Sun, 28 Jul 2013) | 2 lines
+
+Forgot to delete SymbolicFunc_test.cc.
+
+------------------------------------------------------------------------
+r727 | mstrout | 2013-07-25 22:45:15 -0700 (Thu, 25 Jul 2013) | 3 lines
+
+IEGRTWO-83: rename SymbolicFunc to UninterpFunc in IEGenLib
+make test in IEGenLib still works
+
+------------------------------------------------------------------------
+r720 | cathie | 2013-07-12 11:44:43 -0700 (Fri, 12 Jul 2013) | 3 lines
+
+IEGRTWO-58
+Added two test to try and make the constraints conjuction go wrong, but could not
+
+------------------------------------------------------------------------
+r709 | kreaseck | 2013-06-28 17:08:51 -0700 (Fri, 28 Jun 2013) | 1 line
+
+a couple more test cases and the last is using a simplified algorithm for normalization
+------------------------------------------------------------------------
+r708 | cathie | 2013-06-28 12:22:39 -0700 (Fri, 28 Jun 2013) | 2 lines
+
+The python bindings now work for both mac and linux
+
+------------------------------------------------------------------------
+r707 | cathie | 2013-06-28 08:21:23 -0700 (Fri, 28 Jun 2013) | 2 lines
+
+The python bindings are working on mac, but not on linux
+
+------------------------------------------------------------------------
+r706 | kreaseck | 2013-06-27 19:17:10 -0700 (Thu, 27 Jun 2013) | 1 line
+
+seven of nine Michelle-normalizations tests done
+------------------------------------------------------------------------
+r705 | cathie | 2013-06-27 12:43:22 -0700 (Thu, 27 Jun 2013) | 2 lines
+
+fixing include problem
+
+------------------------------------------------------------------------
+r704 | cathie | 2013-06-27 12:34:51 -0700 (Thu, 27 Jun 2013) | 2 lines
+
+corrected the include file
+
+------------------------------------------------------------------------
+r703 | cathie | 2013-06-27 12:06:15 -0700 (Thu, 27 Jun 2013) | 3 lines
+
+IEGRTWO-77
+commented out the --build-release option
+
+------------------------------------------------------------------------
+r702 | mstrout | 2013-06-27 11:43:44 -0700 (Thu, 27 Jun 2013) | 3 lines
+
+IEGRTWO-69 works.  Able to do loop flattening transformations.
+Have tested with Apply.  Should probably test with compose as well.
+
+------------------------------------------------------------------------
+r701 | mstrout | 2013-06-27 09:12:09 -0700 (Thu, 27 Jun 2013) | 2 lines
+
+Some debugging printf's for loop flattening.
+
+------------------------------------------------------------------------
+r700 | kreaseck | 2013-06-27 09:09:17 -0700 (Thu, 27 Jun 2013) | 1 line
+
+Added set_relation/normalization_test.cc ...
+------------------------------------------------------------------------
+r699 | cathie | 2013-06-27 08:38:26 -0700 (Thu, 27 Jun 2013) | 4 lines
+
+EGRTWO-75
+
+fixed make docs
+
+------------------------------------------------------------------------
+r698 | mstrout | 2013-06-26 20:30:06 -0700 (Wed, 26 Jun 2013) | 3 lines
+
+Loop flattening is still not working but commented out line 3090 in
+set_relation_test.cc so that everything compiles in IEGenLib.
+
+------------------------------------------------------------------------
+r697 | mstrout | 2013-06-26 20:06:49 -0700 (Wed, 26 Jun 2013) | 3 lines
+
+InvertFuncToExposeFactorFuncInverse works enough to do loop flattening.
+Calling IEGRTWO-70 finished.
+
+------------------------------------------------------------------------
+r696 | mstrout | 2013-06-26 16:37:03 -0700 (Wed, 26 Jun 2013) | 3 lines
+
+Got Exp::invertFuncToExposeFactor working more generally when the UFCallTerm starts
+out with a coefficient other than -1.  Still working on IEGRTWO-70.
+
+------------------------------------------------------------------------
+r695 | mstrout | 2013-06-26 16:03:35 -0700 (Wed, 26 Jun 2013) | 3 lines
+
+Did some memory leak cleanup, but there are still some leaks.  Going to switch to getting
+loop flattening to work at this point.
+
+------------------------------------------------------------------------
+r694 | cathie | 2013-06-26 14:31:25 -0700 (Wed, 26 Jun 2013) | 4 lines
+
+IEGRTWO-6
+
+OK this is the right draft this time
+
+------------------------------------------------------------------------
+r693 | mstrout | 2013-06-26 09:01:14 -0700 (Wed, 26 Jun 2013) | 3 lines
+
+Fixed memory error in Environment::append.  Now just have memory leaks
+and Exp::invertFuncToExposeFactor (IEGRTWO-70) test case is not working.
+
+------------------------------------------------------------------------
+r692 | mstrout | 2013-06-25 21:11:12 -0700 (Tue, 25 Jun 2013) | 2 lines
+
+Fixed some incorrect delete's in SetRelationTest.ComposeForIterationReorderingMoldyn.
+
+------------------------------------------------------------------------
+r691 | mstrout | 2013-06-25 21:08:44 -0700 (Tue, 25 Jun 2013) | 3 lines
+
+Fixed delete of factor in loop in invertFunctionToExposeFactor in IEGenLib.
+IEGRTWO-70
+
+------------------------------------------------------------------------
+r690 | mstrout | 2013-06-25 20:54:06 -0700 (Tue, 25 Jun 2013) | 3 lines
+
+Fixed memory error in Relation::addConjunction.  Also put the addConjunction
+methods in the .cc file where they belong.  Still working on memory errors.
+
+------------------------------------------------------------------------
+r689 | mstrout | 2013-06-25 16:11:53 -0700 (Tue, 25 Jun 2013) | 3 lines
+
+Working on IEGRTWO-70 but have a memory bug and need to use valgrind on linux.
+
+
+------------------------------------------------------------------------
+r686 | mstrout | 2013-06-20 15:35:03 -0700 (Thu, 20 Jun 2013) | 3 lines
+
+Put a lot of printfs in Exp::solveForFactor.  Will remove those next commit.
+Working on IEGRTWO-69.
+
+------------------------------------------------------------------------
+r685 | mstrout | 2013-06-20 14:42:27 -0700 (Thu, 20 Jun 2013) | 2 lines
+
+Working on IEGRTWO-69.  Now am able to do 1D-to-1D function inverses.
+
+------------------------------------------------------------------------
+r684 | mstrout | 2013-06-20 12:54:39 -0700 (Thu, 20 Jun 2013) | 4 lines
+
+Created SymbolicFunc class for keeping track of domain, range, and whether
+an uninterpreted function is bijective in IEGenLib.
+Did some minor comment cleanup in TupleDecl.
+
+------------------------------------------------------------------------
+r683 | mstrout | 2013-06-20 12:04:43 -0700 (Thu, 20 Jun 2013) | 3 lines
+
+Parser in IEGenLib can parse tuple element references off uninterpreted
+function calls, e.g. tau_inv(k)[1].
+
+------------------------------------------------------------------------
+r679 | cathie | 2013-06-17 13:59:51 -0700 (Mon, 17 Jun 2013) | 3 lines
+
+IEGRTWO-68
+I have added the test that demonstrates the problem with Apply
+
+------------------------------------------------------------------------
+r678 | cathie | 2013-06-12 10:35:35 -0700 (Wed, 12 Jun 2013) | 5 lines
+
+IEGRTWO-61:IEGRTWO-64
+After reviewing the wiki entry I realized that I had to name the iteration reordering function different from the data reordering function.
+That is now fixed.
+However, pointer update is still not part of this.
+
+------------------------------------------------------------------------
+r676 | cathie | 2013-06-11 12:03:29 -0700 (Tue, 11 Jun 2013) | 6 lines
+
+IEGRTWO-61
+IEGRTWO-62
+IEGRTWO-63
+IEGRTWO-64
+My first attempt at writing the test cases that correspond to the examples in the journal paper
+
+------------------------------------------------------------------------
+r675 | lewallen | 2013-05-18 16:48:52 -0700 (Sat, 18 May 2013) | 5 lines
+
+IEGRTWO-31:
+* Modified Conjunction::addEquality and Conjunction::addInequality to use Exp::operator< instead of string comparison.
+* 4 Test cases in set_relation_test.cc updated for this change (listed on IEGRTWO-31).
+* 6 Test cases in parser_test.cc updated for this change (listed on IEGRTWO-31).
+
+------------------------------------------------------------------------
+r673 | mstrout | 2013-05-16 09:53:34 -0700 (Thu, 16 May 2013) | 2 lines
+
+Did another test on Set comparison and that is working well.
+
+------------------------------------------------------------------------
+r672 | mstrout | 2013-05-16 09:47:47 -0700 (Thu, 16 May 2013) | 2 lines
+
+Added another test case for Relation::operator<.  Looking good!
+
+------------------------------------------------------------------------
+r671 | lewallen | 2013-05-12 17:31:45 -0700 (Sun, 12 May 2013) | 5 lines
+
+IEGRONE-93:
+* Modified default TupleDecl to be all tuple variables "__tv#"'s instead of 0 constants.
+* Modified SetRelationTest.ConjuctionToDot which was the only test broken by the change.
+* Modified the comments on the SetRelationTest.ConjunctionLessThan... test cases to have the new default TupleDecl.
+
+------------------------------------------------------------------------
+r670 | lewallen | 2013-05-12 16:37:25 -0700 (Sun, 12 May 2013) | 9 lines
+
+IEGRONE-93:
+* Modified Conjunction::operator<(Conjunction) to first compare TupleDecl's and
+  then equalities/inequalities.
+* Modified SetRelationTest.ConjunctionLessThanValues in set_relation_test.cc for
+  the modified operator<().
+* Found and fixed a bug in TupleDecl::operator<(TupleDecl), Added
+  TupleDeclTest.TupleDeclLessThanBugFixing to TupleDecl_test.cc with the test
+  case that found the bug.
+
+------------------------------------------------------------------------
+r669 | lewallen | 2013-05-12 13:37:49 -0700 (Sun, 12 May 2013) | 6 lines
+
+EGRONE-96:
+* Added SetRelationTest.RelationLessThan to set_relation_test.cc for TTD on
+Relation::operator<(Relation)
+* Implemented Relation::operator<(Relation), SetRelationTest.RelationLessThan
+passes 100%
+
+------------------------------------------------------------------------
+r668 | lewallen | 2013-05-02 12:20:36 -0700 (Thu, 02 May 2013) | 3 lines
+
+IEGRONE-95: Added better description to the Set::operator<(Set) definition in
+set_relation.cc.
+
+------------------------------------------------------------------------
+r667 | lewallen | 2013-05-02 11:45:15 -0700 (Thu, 02 May 2013) | 5 lines
+
+IEGRONE-95:
+* Added SetRelationTest.SetLessThan to set_relation_test.cc for TTD on
+Set::operator<(Set)
+* Implemented Set::operator<(Set), SetRelationTest.SetLessThan passes.
+
+------------------------------------------------------------------------
+r666 | lewallen | 2013-04-18 10:21:40 -0700 (Thu, 18 Apr 2013) | 11 lines
+
+IEGRONE-97:
+* Changed SparseConstraints::addConjunction(SparseConstraints) to
+insert in sorted order (based on operator<). Many test cases updated with this
+change (see JIRA issue for which ones).
+* Updated SparseConstraints::operator=(SparseConstraints) to use addConjunction
+because the operator previously did not maintain conjunction list order.
+IEGRONE-94:
+* Added 2 test cases SparseConstraintsLessThan... for TDD on
+SparseConstraints::operator<(SparseConstraints).
+* Implemented SparseConstraints::operator<(SparseConstraints)
+
+------------------------------------------------------------------------
+r665 | lewallen | 2013-04-10 19:22:19 -0700 (Wed, 10 Apr 2013) | 7 lines
+
+IEGRONE-93:
+* Made changes to set_relation.cc and set_relation_test.cc to
+meet formatting rules for line length.
+* Modified comments in ConjunctionLessThan... test cases which
+falsely suggested the Conjunctions had a tuple declaration
+associated with them.
+
+------------------------------------------------------------------------
+r657 | lewallen | 2013-04-03 13:17:51 -0700 (Wed, 03 Apr 2013) | 4 lines
+
+IEGRTWO-29: Added comments to TupleDeclEquals... and TupleDeclLessThan...
+tests in TupleDecl_test.cc about which tuple declarations are being created
+and what is being compared.
+
+------------------------------------------------------------------------
+r656 | lewallen | 2013-04-03 12:24:41 -0700 (Wed, 03 Apr 2013) | 2 lines
+
+Updated ConjunctionLessThan... tests with JIRA card number.
+
+------------------------------------------------------------------------
+r655 | lewallen | 2013-04-03 12:01:16 -0700 (Wed, 03 Apr 2013) | 5 lines
+
+IEGRONE-93:
+* Fixed broken test case ConjunctionLessThanValues.
+* Implemented Conjunction::operator<(Conjunction) in set_relation.cc.
+All ConjunctionLessThan... test cases pass.
+
+------------------------------------------------------------------------
+r654 | lewallen | 2013-04-02 18:26:30 -0700 (Tue, 02 Apr 2013) | 4 lines
+
+IEGRONE-88: Adding 2 test cases ConjunctionLessThan... to
+set_relation_test.cc. These test cases FAIL and will be used for TDD of
+Conjunction::operator<(Conjunction) in set_relation.cc.
+
+------------------------------------------------------------------------
+r653 | mstrout | 2013-04-02 15:44:28 -0700 (Tue, 02 Apr 2013) | 2 lines
+
+Modified some comments to say __tv4 instead of TupleTermE.
+
+------------------------------------------------------------------------
+r652 | mstrout | 2013-03-27 13:52:00 -0700 (Wed, 27 Mar 2013) | 2 lines
+
+Minor changes to comments Jason made in expression_test.cc.  IEGRTWO-30
+
+------------------------------------------------------------------------
+r651 | lewallen | 2013-03-27 13:50:39 -0700 (Wed, 27 Mar 2013) | 4 lines
+
+IEGRTWO-32: Modified the ambiguous comment from the
+TupleDecl:operator<(TupleDecl) about variables having a value
+of -inf when being compared to constants.
+
+------------------------------------------------------------------------
+r650 | lewallen | 2013-03-26 11:22:57 -0700 (Tue, 26 Mar 2013) | 4 lines
+
+IEGRTWO-30: Added comments to expression_test.cc:OperatorLessThan
+and expression_test.cc:OperatorEqualsExp about what each expression
+being compared is.
+
+------------------------------------------------------------------------
+r648 | mstrout | 2013-03-05 15:02:19 -0800 (Tue, 05 Mar 2013) | 6 lines
+
+make mtest doesn't work.
+
+make test works.
+
+Minor edits to Mark's UnionFind comments and Jason's TupleDecl work.
+
+------------------------------------------------------------------------
+r647 | lewallen | 2013-03-04 12:51:42 -0800 (Mon, 04 Mar 2013) | 6 lines
+
+* Added regression test "ExpTest.OperatorEqualsExp" for TDD.
+* Implemented Exp::operator==(Exp) using Exp::operator<(Exp).
+Note: We could be more efficient with the implementation of ==
+if we didn't use operator<.
+Regression test "ExpTest.OperatorEqualsExp" does pass.
+
+------------------------------------------------------------------------
+r646 | lewallen | 2013-03-04 12:03:22 -0800 (Mon, 04 Mar 2013) | 6 lines
+
+* Fixed bug in regression test "ExpTest.OperatorLessThan".
+* Moved the position of Exp::operator<(Exp) in expression.cc/.h
+next to an exisiting Exp::operator==(Term).
+* Implemented Exp::operator<(Exp).
+The test case "ExpTest.OperatorLessThan" is no longer failing.
+
+------------------------------------------------------------------------
+r645 | lewallen | 2013-03-04 11:10:26 -0800 (Mon, 04 Mar 2013) | 4 lines
+
+Added a broken Exp::operator<(Exp) (always returns true) and
+one large regression test for TDD. This commit adds 1 failing
+test case "ExpTest.OperatorLessThan".
+
+------------------------------------------------------------------------
+r644 | lewallen | 2013-03-01 21:43:04 -0800 (Fri, 01 Mar 2013) | 4 lines
+
+Created 2 regression tests "TupleDeclTest.TupleDeclEquals..." and then
+implemented TupleDecl::operator==(TupleDecl) using operator<.
+Both regression tests pass. IEGRTWO-33
+
+------------------------------------------------------------------------
+r643 | lewallen | 2013-03-01 12:13:32 -0800 (Fri, 01 Mar 2013) | 4 lines
+
+Implemented TupleDecl::operator<(TupleDecl). The test cases
+"TupleDeclTest.TupleDeclLessThan..." are no longer failing.
+IEGRTWO-29
+
+------------------------------------------------------------------------
+r642 | lewallen | 2013-03-01 11:25:02 -0800 (Fri, 01 Mar 2013) | 4 lines
+
+Added a broken TupleDecl::operator<(TupleDecl) (always returns true) and some
+regression tests to TupleDecl_test.cc for TDD. This commit adds 5 FAILING test
+cases "TupleDeclTest.TupleDeclLessThan...". IEGRTWO-29
+
+------------------------------------------------------------------------
+r641 | mstrout | 2013-02-28 09:55:43 -0800 (Thu, 28 Feb 2013) | 2 lines
+
+Created some JIRA tasks for Jason and put some of them in FIXME comments.
+
+------------------------------------------------------------------------
+r639 | mstrout | 2013-02-25 15:24:05 -0800 (Mon, 25 Feb 2013) | 2 lines
+
+IEGenLib is now passing regression testing after the TupleDecl changes.
+
+------------------------------------------------------------------------
+r638 | mstrout | 2013-02-25 14:47:23 -0800 (Mon, 25 Feb 2013) | 3 lines
+
+Committing changes to TupleDecl where toString takes a boolean
+to indicate whether or not brackets should be used.
+
+------------------------------------------------------------------------
+r636 | heim | 2013-02-07 21:09:43 -0800 (Thu, 07 Feb 2013) | 1 line
+
+IEGRTWO-27 Revised comments a second time in union_find_test.cc.
+------------------------------------------------------------------------
+r635 | heim | 2013-02-04 16:14:18 -0800 (Mon, 04 Feb 2013) | 1 line
+
+IEGRTWO-27 fixed memory leaks and added comments to UnionFind_test.
+------------------------------------------------------------------------
+r634 | heim | 2013-01-31 23:11:34 -0800 (Thu, 31 Jan 2013) | 1 line
+
+Renamed tuple_decl* in src/set_relation/ to TupleDecl* and updated references.
+------------------------------------------------------------------------
+r633 | mstrout | 2013-01-31 13:21:44 -0800 (Thu, 31 Jan 2013) | 2 lines
+
+Fixed some of the set_relation_test.cc in IEGenCC by mistake.
+
+------------------------------------------------------------------------
+r632 | mstrout | 2013-01-31 13:16:54 -0800 (Thu, 31 Jan 2013) | 2 lines
+
+Cleaning up after change to TupleDecl interface, IEGRTWO-14.
+
+------------------------------------------------------------------------
+r631 | heim | 2013-01-28 17:30:15 -0800 (Mon, 28 Jan 2013) | 1 line
+
+Fixed copyright notices in tuple decl code.
+------------------------------------------------------------------------
+r630 | heim | 2013-01-28 17:20:06 -0800 (Mon, 28 Jan 2013) | 1 line
+
+Fixed copyright notices in union find code.
+------------------------------------------------------------------------
+r628 | heim | 2013-01-25 03:03:07 -0800 (Fri, 25 Jan 2013) | 1 line
+
+Added file tuple_decl_test.cc to test TupleDecl in set_relation of IEGenLib.
+------------------------------------------------------------------------
+r627 | heim | 2013-01-25 00:17:03 -0800 (Fri, 25 Jan 2013) | 1 line
+
+Split off TupleDecl class definition/interface in expression.cc/.h and placed into tuple_decl.cc/h inside trunk/IEGenLib/src/set_relation
+------------------------------------------------------------------------
+r626 | heim | 2013-01-24 23:46:09 -0800 (Thu, 24 Jan 2013) | 1 line
+
+Removed extra files from Union Find code.
+------------------------------------------------------------------------
+r625 | heim | 2013-01-24 23:10:30 -0800 (Thu, 24 Jan 2013) | 1 line
+
+Fixed issue with duplicate main method in union_find_test.cc
+------------------------------------------------------------------------
+r624 | heim | 2013-01-20 14:47:23 -0800 (Sun, 20 Jan 2013) | 1 line
+
+Included UnionFind implementation from external project with some unit tests. There is a short script that runs gtest on one file in IEGenLib/src/util/ that could be integrated into the Cmake build.
+------------------------------------------------------------------------
+r623 | cathie | 2013-01-18 13:12:02 -0800 (Fri, 18 Jan 2013) | 2 lines
+
+IEGRTWO-11
+
+------------------------------------------------------------------------
+r622 | cathie | 2013-01-18 13:11:32 -0800 (Fri, 18 Jan 2013) | 2 lines
+
+IEGRTWO-11
+
+------------------------------------------------------------------------
+r616 | cathie | 2013-01-18 12:46:33 -0800 (Fri, 18 Jan 2013) | 2 lines
+
+adding in the externals in a file so they can be fixed if need be
+
+------------------------------------------------------------------------
+r615 | cathie | 2013-01-18 12:36:45 -0800 (Fri, 18 Jan 2013) | 2 lines
+
+moving the dependencies
+
+------------------------------------------------------------------------
+r614 | cathie | 2013-01-18 12:15:22 -0800 (Fri, 18 Jan 2013) | 2 lines
+
+cleaning out cloog before adding to its own spot in svn
+
+------------------------------------------------------------------------
+r611 | cathie | 2013-01-18 12:01:14 -0800 (Fri, 18 Jan 2013) | 2 lines
+
+added in make gdbtest target
+
+------------------------------------------------------------------------
+r608 | cathie | 2013-01-17 19:35:44 -0800 (Thu, 17 Jan 2013) | 2 lines
+
+Michelle's merge
+
+------------------------------------------------------------------------
+r606 | cathie | 2013-01-17 13:17:44 -0800 (Thu, 17 Jan 2013) | 3 lines
+
+fixing make install
+IEGRTWO-20
+
+------------------------------------------------------------------------
+r605 | cathie | 2013-01-17 12:58:40 -0800 (Thu, 17 Jan 2013) | 2 lines
+
+within iegenlib we can't depend on the include directory having iegenlib in it
+
+------------------------------------------------------------------------
+r604 | cathie | 2013-01-17 12:54:28 -0800 (Thu, 17 Jan 2013) | 2 lines
+
+IEGRTWO-20 fixing to handle includes correctly
+
+------------------------------------------------------------------------
+r599 | cathie | 2013-01-17 09:41:07 -0800 (Thu, 17 Jan 2013) | 2 lines
+
+made sure that CMakeLists matches with IEGenCC
+
+------------------------------------------------------------------------
+r597 | cathie | 2013-01-15 14:07:19 -0800 (Tue, 15 Jan 2013) | 2 lines
+
+change the path for .h files
+
+------------------------------------------------------------------------
+r596 | cathie | 2013-01-15 14:02:16 -0800 (Tue, 15 Jan 2013) | 2 lines
+
+cleaning up a bit
+
+------------------------------------------------------------------------
+r595 | cathie | 2013-01-15 13:58:42 -0800 (Tue, 15 Jan 2013) | 2 lines
+
+forcing removal
+
+------------------------------------------------------------------------
+r594 | cathie | 2013-01-15 13:47:37 -0800 (Tue, 15 Jan 2013) | 2 lines
+
+At this point gen-parser works
+
+------------------------------------------------------------------------
+r593 | heim | 2013-01-15 11:10:03 -0800 (Tue, 15 Jan 2013) | 1 line
+
+Added commented-out test cases to parser_test.cc and set_relation_test.cc in IEGenLib. These test (1) error conditions in the parser and (2) normal form considerations in the set_relation code.
+------------------------------------------------------------------------
+r592 | cathie | 2013-01-15 11:06:19 -0800 (Tue, 15 Jan 2013) | 2 lines
+
+removing extra files
+
+------------------------------------------------------------------------
+r591 | cathie | 2013-01-14 12:29:42 -0800 (Mon, 14 Jan 2013) | 2 lines
+
+IEGENRTWO-7
+
+------------------------------------------------------------------------
+r590 | cathie | 2013-01-11 13:21:22 -0800 (Fri, 11 Jan 2013) | 2 lines
+
+had to change the bang line -- thats odd
+
+------------------------------------------------------------------------
+r589 | cathie | 2013-01-11 13:16:54 -0800 (Fri, 11 Jan 2013) | 2 lines
+
+ok so now make rtest works
+
+------------------------------------------------------------------------
+r588 | cathie | 2013-01-11 13:12:53 -0800 (Fri, 11 Jan 2013) | 2 lines
+
+its almost working
+
+------------------------------------------------------------------------
+r587 | cathie | 2013-01-11 12:31:50 -0800 (Fri, 11 Jan 2013) | 2 lines
+
+removing extra dir
+
+------------------------------------------------------------------------
+r586 | cathie | 2013-01-11 12:23:26 -0800 (Fri, 11 Jan 2013) | 2 lines
+
+I have moved all of iegenlib up one level
+
+------------------------------------------------------------------------
+r585 | cathie | 2013-01-11 12:22:53 -0800 (Fri, 11 Jan 2013) | 2 lines
+
+trying to prevent tree conflicts
+
+------------------------------------------------------------------------
+r584 | cathie | 2013-01-11 12:21:41 -0800 (Fri, 11 Jan 2013) | 2 lines
+
+starting to reorganize iegenlib -- its going to be messy for a while
+
+------------------------------------------------------------------------
+r583 | cathie | 2013-01-11 12:19:40 -0800 (Fri, 11 Jan 2013) | 2 lines
+
+moving dependencies
+
+------------------------------------------------------------------------
+r581 | mstrout | 2013-01-10 15:30:37 -0800 (Thu, 10 Jan 2013) | 2 lines
+
+Now have a getTupleIterator and changed SymbolIterator object to StringIterator.
+
+------------------------------------------------------------------------
+r578 | mstrout | 2013-01-09 14:54:51 -0800 (Wed, 09 Jan 2013) | 4 lines
+
+Fixed the broken expresion_test.c SymbolIterator test.  Just needed to clear
+out some of those sets before using them in later tests and use the right
+expressions in later tests.
+
+------------------------------------------------------------------------
+r576 | cathie | 2013-01-03 09:26:10 -0800 (Thu, 03 Jan 2013) | 2 lines
+
+Rename of IEGen to IEGenLib
+
+------------------------------------------------------------------------
+r574 | cathie | 2013-01-02 13:44:16 -0800 (Wed, 02 Jan 2013) | 2 lines
+
+I have removed a delete in order to avoid a seg fault, but the test still does not pass
+
+------------------------------------------------------------------------
+r571 | mstrout | 2013-01-01 11:58:36 -0800 (Tue, 01 Jan 2013) | 2 lines
+
+IEGRONE-89.  Have a rudimentary intersection operator for Set and Relation.
+
+------------------------------------------------------------------------
+r570 | mstrout | 2013-01-01 09:52:01 -0800 (Tue, 01 Jan 2013) | 2 lines
+
+Now can parse a set with arity non-zero.
+
+------------------------------------------------------------------------
+r569 | mstrout | 2013-01-01 09:39:51 -0800 (Tue, 01 Jan 2013) | 2 lines
+
+Generated parser.
+
+------------------------------------------------------------------------
+r568 | mstrout | 2013-01-01 09:38:26 -0800 (Tue, 01 Jan 2013) | 2 lines
+
+Working on parser.y.  To recompile parser, need to go to previous build setup.
+
+------------------------------------------------------------------------
+r567 | mstrout | 2013-01-01 08:37:01 -0800 (Tue, 01 Jan 2013) | 3 lines
+
+Now testing toISLString() on a Relation as well.
+Found issue IEGRTWO-18.
+
+------------------------------------------------------------------------
+r566 | mstrout | 2013-01-01 08:25:34 -0800 (Tue, 01 Jan 2013) | 2 lines
+
+Closing JIRA IEGRTWO-16.  Now have a toISLString() for sets and relations.
+
+------------------------------------------------------------------------
+r563 | mstrout | 2012-12-11 09:40:14 -0800 (Tue, 11 Dec 2012) | 2 lines
+
+Added a findFunction to the Relation class.
+
+------------------------------------------------------------------------
+r551 | mstrout | 2012-11-27 19:56:41 -0800 (Tue, 27 Nov 2012) | 4 lines
+
+Fleshed out more of the irwrapperstring classes.
+Next big piece is to get the MapIR actually storing statements
+and generating code.
+
+------------------------------------------------------------------------
+r550 | mstrout | 2012-11-27 19:03:35 -0800 (Tue, 27 Nov 2012) | 2 lines
+
+Implemented and tested the AccessIterator class.
+
+------------------------------------------------------------------------
+r549 | mstrout | 2012-11-26 22:11:21 -0800 (Mon, 26 Nov 2012) | 4 lines
+
+Roughed out iegencc.cc outline a bit more.  Now we have the
+IRWrapperString and StmtRepString examples.  Their interaction
+with the Access class needs to be fleshed out more.
+
+------------------------------------------------------------------------
+r548 | mstrout | 2012-11-26 21:28:07 -0800 (Mon, 26 Nov 2012) | 2 lines
+
+Have MapIR outline building and running.
+
+------------------------------------------------------------------------
+r547 | mstrout | 2012-11-26 20:06:00 -0800 (Mon, 26 Nov 2012) | 2 lines
+
+Removing old mapir.cc and mapir.h code.
+
+------------------------------------------------------------------------
+r546 | mstrout | 2012-11-26 19:23:15 -0800 (Mon, 26 Nov 2012) | 2 lines
+
+LoopNest.cc.  Statements with different input domains are fine.
+
+------------------------------------------------------------------------
+r545 | mstrout | 2012-11-26 18:30:08 -0800 (Mon, 26 Nov 2012) | 3 lines
+
+Setting file variable names in cloog based on domain size and full
+iteration space size instead of hard-coding.
+
+------------------------------------------------------------------------
+r533 | mstrout | 2012-11-25 21:39:38 -0800 (Sun, 25 Nov 2012) | 4 lines
+
+Making more progress with LoopNest.cc code generation with Cloog
+but need to look up how parameter variables are handled.
+How can we pass in an empty context.
+
+------------------------------------------------------------------------
+r532 | mstrout | 2012-11-25 20:19:34 -0800 (Sun, 25 Nov 2012) | 2 lines
+
+LoopNest.cc skeleton compiles.
+
+------------------------------------------------------------------------
+r531 | mstrout | 2012-11-25 19:55:11 -0800 (Sun, 25 Nov 2012) | 2 lines
+
+Refactored the ickiness of changing the temp file contents into a string.
+
+------------------------------------------------------------------------
+r530 | mstrout | 2012-11-25 19:47:59 -0800 (Sun, 25 Nov 2012) | 3 lines
+
+CloogExampleISL works, but needs some refactoring because of icky writing
+to string issue.
+
+------------------------------------------------------------------------
+r529 | mstrout | 2012-11-24 21:37:55 -0800 (Sat, 24 Nov 2012) | 3 lines
+
+Got rid of compiler warnings in loop_nest_test.cc and
+now have run_iegen_test running with "make test".
+
+------------------------------------------------------------------------
+r528 | mstrout | 2012-11-24 21:29:14 -0800 (Sat, 24 Nov 2012) | 5 lines
+
+Got the loop_nest_test.cc to compile and run.
+Main issue was the need for the link_directories command in src/CMakelists.txt.
+Also needed to list the appropriate libraries for the run_iegen_tests
+executable.  Still need to fix compiler warnings for example.
+
+------------------------------------------------------------------------
+r527 | mstrout | 2012-11-24 20:49:09 -0800 (Sat, 24 Nov 2012) | 3 lines
+
+Fixes I had to make to the cloog/examples/example/Makefile
+to get the example to compile on my Mac.
+
+------------------------------------------------------------------------
+r526 | mstrout | 2012-11-24 20:20:32 -0800 (Sat, 24 Nov 2012) | 2 lines
+
+Got gmp and cloog to compile with -fpic command line option.
+
+------------------------------------------------------------------------
+r525 | mstrout | 2012-11-24 20:07:01 -0800 (Sat, 24 Nov 2012) | 4 lines
+
+All the source code for gmp and cloog is in src/libs/.
+The src/CMakelists.txt builds those libraries but not with the 
+correct CXXFLAGS and CFLAGS yet.
+
+------------------------------------------------------------------------
+r524 | mstrout | 2012-11-19 15:13:29 -0800 (Mon, 19 Nov 2012) | 3 lines
+
+Compiled and built gmp and cloog.  README-for-Cathie has instructions
+on how that worked.
+
+------------------------------------------------------------------------
+r521 | mstrout | 2012-11-08 20:23:21 -0800 (Thu, 08 Nov 2012) | 2 lines
+
+Have mapir_test.cc compiling, but have most of the code commented out.
+
+------------------------------------------------------------------------
+r520 | mstrout | 2012-11-08 15:22:12 -0800 (Thu, 08 Nov 2012) | 4 lines
+
+Set up the CMakeLists.txt files so that a run_iegen_tests executable
+is made but it isn't running any tests yet.  Deleted some old
+lines in iegenlib/CMakeLists.txt that were commented out.
+
+------------------------------------------------------------------------
+r519 | mstrout | 2012-11-08 15:21:02 -0800 (Thu, 08 Nov 2012) | 3 lines
+
+Another test case in set_relation_test.cc that actually ends up not
+being an issue.
+
+------------------------------------------------------------------------
+r518 | mstrout | 2012-11-08 15:20:03 -0800 (Thu, 08 Nov 2012) | 3 lines
+
+Edits to the moldyn-FST-M2-example_sparse.py python script that I 
+previously had not committed.
+
+------------------------------------------------------------------------
+r512 | mstrout | 2012-09-19 13:48:35 -0700 (Wed, 19 Sep 2012) | 2 lines
+
+Missed a delete.
+
+------------------------------------------------------------------------
+r511 | mstrout | 2012-09-19 13:47:41 -0700 (Wed, 19 Sep 2012) | 2 lines
+
+Oops, had not declared vars right.
+
+------------------------------------------------------------------------
+r510 | mstrout | 2012-09-19 13:46:29 -0700 (Wed, 19 Sep 2012) | 2 lines
+
+Did some memory leak cleanup in set_relation_test.cc.
+
+------------------------------------------------------------------------
+r509 | mstrout | 2012-09-19 13:41:42 -0700 (Wed, 19 Sep 2012) | 3 lines
+
+Uncommented a number of tests in set_relation_test.cc that are now 
+working since the ordering of constraints has been normalized.
+
+------------------------------------------------------------------------
+r496 | mstrout | 2012-08-22 21:30:57 -0700 (Wed, 22 Aug 2012) | 12 lines
+
+Finishing IEGRONE-86.  Constraints are now ordered in alphabetic order
+by their toString.
+Ran into some other bugs along the way:
+    - The problem with the operator== is that the Set copy constructor 
+    was also calling the copy constructor for the super class, so it 
+    was being called twice.
+    - Set::Set(std::string str) does not need to call cleanUp because 
+    the assignment operator does.
+    - string compare does not necessarily return a 1 or a -1. Just 
+    a positive or negative value if the strings aren't equal.  Was affecting
+    sort of constraints.
+
+------------------------------------------------------------------------
+r493 | mstrout | 2012-08-09 20:16:33 -0700 (Thu, 09 Aug 2012) | 2 lines
+
+Used proper gtest calls when testing boolean functions.
+
+------------------------------------------------------------------------
+r492 | mstrout | 2012-08-09 20:14:05 -0700 (Thu, 09 Aug 2012) | 2 lines
+
+Fixed a small memory leak that was introduced in 490.
+
+------------------------------------------------------------------------
+r491 | mstrout | 2012-08-09 20:11:15 -0700 (Thu, 09 Aug 2012) | 2 lines
+
+Removed all those commented out output statements that helped debug in 490.
+
+------------------------------------------------------------------------
+r490 | mstrout | 2012-08-09 20:08:51 -0700 (Thu, 09 Aug 2012) | 6 lines
+
+IEGRONE-85: there was a segfault on some compose examples
+    + fixed Exp::operator== to recognize no term as zero
+    + fixed Exp::isConst() although did not directly impact this bug
+    + fixed small bug in Compose where setting up tuple variable declarations
+
+
+------------------------------------------------------------------------
+r489 | mstrout | 2012-08-09 13:00:09 -0700 (Thu, 09 Aug 2012) | 2 lines
+
+Hopefully last two memory leaks fixed on Mac.
+
+------------------------------------------------------------------------
+r488 | mstrout | 2012-08-09 12:58:25 -0700 (Thu, 09 Aug 2012) | 2 lines
+
+Attempting to fix memory errors on Mac while running valgrind on linux.
+
+------------------------------------------------------------------------
+r487 | mstrout | 2012-08-09 12:50:27 -0700 (Thu, 09 Aug 2012) | 8 lines
+
+Fixed IEGRONE-83 by making all Conjunctions have an in arity.
+Updated all of the output routines so that the in arity does not
+have to be passed in.
+Found a bunch of other bugs that for now have commented out tests in
+set_relation_test.cc.
+Anand's example works on this version, but the output
+is a bit funky.
+
+------------------------------------------------------------------------
+r486 | mstrout | 2012-08-01 13:44:11 -0700 (Wed, 01 Aug 2012) | 3 lines
+
+Trying to figure out why I am getting an error when doing an Inverse in python
+bindings, but I am not getting that error when do C++ testing.
+
+------------------------------------------------------------------------
+r485 | mstrout | 2012-08-01 13:13:54 -0700 (Wed, 01 Aug 2012) | 2 lines
+
+Don't need two of these around.  It just confuses things.
+
+------------------------------------------------------------------------
+r483 | kreaseck | 2012-07-24 14:11:39 -0700 (Tue, 24 Jul 2012) | 1 line
+
+In the bldScr script, commented out the search for suppressed memory errors and linked the memErrors to the numErr variable so that the summary e-mail subject line would agree with the summary e-mail contents.
+------------------------------------------------------------------------
+r482 | mstrout | 2012-07-24 11:11:24 -0700 (Tue, 24 Jul 2012) | 3 lines
+
+Changed the order of the authors to be more accurate in terms of how much code was contributed
+per person in the major rewrite.
+
+------------------------------------------------------------------------
+r481 | heim | 2012-07-23 19:27:24 -0700 (Mon, 23 Jul 2012) | 1 line
+
+Fixed explanation of how to declare IEGEN_HOME in README. IEGRONE-77
+------------------------------------------------------------------------
+r480 | heim | 2012-07-23 19:24:00 -0700 (Mon, 23 Jul 2012) | 1 line
+
+Fix to README: added Michelle's e-mail. IEGRONE-77
+------------------------------------------------------------------------
+r479 | heim | 2012-07-23 19:21:17 -0700 (Mon, 23 Jul 2012) | 1 line
+
+Fix to README: added current PIES URL. IEGRONE-77
+------------------------------------------------------------------------
+r478 | kreaseck | 2012-07-23 17:12:05 -0700 (Mon, 23 Jul 2012) | 1 line
+
+removed 'prettyPrintString()' usage from DoNotDistribute/ subdirectory
+------------------------------------------------------------------------
+r476 | kreaseck | 2012-07-23 08:49:31 -0700 (Mon, 23 Jul 2012) | 1 line
+
+updated scripts/bldScr to store nightly builds into correctly-named file: 'iegenlib-NB.tgz' rather than 'iegenlib_NB.tgz'
+------------------------------------------------------------------------
+r475 | kreaseck | 2012-07-20 15:44:01 -0700 (Fri, 20 Jul 2012) | 1 line
+
+Edited README-example.py to remove '.prettyPrintString()' from the instructions for printing Sets and Relations using the Python bindings.
+------------------------------------------------------------------------
+r474 | kreaseck | 2012-07-20 15:34:17 -0700 (Fri, 20 Jul 2012) | 1 line
+
+Edited README to remove '.prettyPrintString()' from the instructions for printing Sets and Relations using the Python bindings.
+------------------------------------------------------------------------
+r473 | mstrout | 2012-07-02 19:53:13 -0700 (Mon, 02 Jul 2012) | 2 lines
+
+Moving scripts that aren't ready to DoNot Distribute.
+
+------------------------------------------------------------------------
+r472 | mstrout | 2012-07-02 19:51:00 -0700 (Mon, 02 Jul 2012) | 2 lines
+
+Excluding DoNotDistribute/ subdir when making tar ball.
+
+------------------------------------------------------------------------
+r471 | mstrout | 2012-07-02 19:33:40 -0700 (Mon, 02 Jul 2012) | 2 lines
+
+Making sure the python scripts are as up to date as possible.
+
+------------------------------------------------------------------------
+r470 | cathie | 2012-06-29 19:47:46 -0700 (Fri, 29 Jun 2012) | 4 lines
+
+IEGRONE-75
+
+I added a replace line to the .i file
+
+------------------------------------------------------------------------
+r469 | mstrout | 2012-06-29 14:50:24 -0700 (Fri, 29 Jun 2012) | 2 lines
+
+Added those inverse function examples to the README.
+
+------------------------------------------------------------------------
+r468 | mstrout | 2012-06-29 14:46:09 -0700 (Fri, 29 Jun 2012) | 2 lines
+
+README-example.py is ready to go.
+
+------------------------------------------------------------------------
+r467 | mstrout | 2012-06-29 14:20:34 -0700 (Fri, 29 Jun 2012) | 2 lines
+
+Changing where the nightly build is put.  Putting it in the live website.
+
+------------------------------------------------------------------------
+r466 | heim | 2012-06-29 14:05:00 -0700 (Fri, 29 Jun 2012) | 1 line
+
+Fixed SetRelationTest.Union testcases regarding empty sets from IEGRONE-73
+------------------------------------------------------------------------
+r465 | mstrout | 2012-06-29 13:51:07 -0700 (Fri, 29 Jun 2012) | 2 lines
+
+Commented Mark's FIXME with IEGRTWO-3.
+
+------------------------------------------------------------------------
+r464 | cathie | 2012-06-29 13:47:52 -0700 (Fri, 29 Jun 2012) | 9 lines
+
+IEGRONE-68
+
+shortenened names to access current environment
+removed getCurrentEnvironment
+added wrapper
+queryInverseCurrEnv
+and
+appenCurrEnv
+
+------------------------------------------------------------------------
+r463 | heim | 2012-06-29 12:41:19 -0700 (Fri, 29 Jun 2012) | 1 line
+
+Added test cases and fixed a test case for IEGRONE72CollapsingInverseFuncs. Fixed easy memory leak in MoldynFSTExample. IEGRONE-72
+------------------------------------------------------------------------
+r462 | mstrout | 2012-06-28 16:09:05 -0700 (Thu, 28 Jun 2012) | 4 lines
+
+Working on some PythonScriptExamples for the RTRTJournal paper, specifically MoldynFSTExample.
+prettyPrintString() is working in C++ but somehow failing to UFCallTerm arguments when called from
+Python.  Created  IEGRONE-74.
+
+------------------------------------------------------------------------
+r461 | mstrout | 2012-06-28 15:33:21 -0700 (Thu, 28 Jun 2012) | 3 lines
+
+Minor edits to lcpc12-iegenlib-paper.py.  Just took out FIXME comments
+because they have been fixed.
+
+------------------------------------------------------------------------
+r460 | mstrout | 2012-06-28 15:16:45 -0700 (Thu, 28 Jun 2012) | 2 lines
+
+Still testing IEGRONE-72.  Mark is going to help figure out how to get his tricky test case to work.
+
+------------------------------------------------------------------------
+r459 | mstrout | 2012-06-28 15:02:31 -0700 (Thu, 28 Jun 2012) | 2 lines
+
+Starting to test IEGRONE-72 and created IEGRONE-73.
+
+------------------------------------------------------------------------
+r458 | mstrout | 2012-06-28 12:44:40 -0700 (Thu, 28 Jun 2012) | 3 lines
+
+For some reason things didn't quite compile on Linux even though they did on Mac.
+Had missed an include fix in util_test.cc.
+
+------------------------------------------------------------------------
+r457 | mstrout | 2012-06-28 12:41:00 -0700 (Thu, 28 Jun 2012) | 5 lines
+
+Did some FIXME cleanup.
+Also, checked copyrights and doxygen in most of the files.
+Additionally fixed IEGRONE-66, which involved how header files were included.
+Now the cpp_api_example.cc file compiles as expected.
+
+------------------------------------------------------------------------
+r456 | mstrout | 2012-06-28 10:51:03 -0700 (Thu, 28 Jun 2012) | 2 lines
+
+We don't need the memory_tests.cc file anymore because we have the "make mtest".
+
+------------------------------------------------------------------------
+r455 | mstrout | 2012-06-28 10:30:02 -0700 (Thu, 28 Jun 2012) | 2 lines
+
+Did some more cleanup in the iegenlib_calc examples and output.
+
+------------------------------------------------------------------------
+r454 | mstrout | 2012-06-28 10:15:36 -0700 (Thu, 28 Jun 2012) | 7 lines
+
+For IEGRONE-57 was fixing an assertion being thrown by the iegenlib_calc.  The
+initial assertion was because the Apply had been commented out in the
+calculator.  The next issue is that we need to be able to invert f to do this
+application.  To do this had to add the parsing of function inverse
+declarations to iegenlib_calc.
+
+
+------------------------------------------------------------------------
+r453 | mstrout | 2012-06-22 15:30:34 -0700 (Fri, 22 Jun 2012) | 2 lines
+
+Fixed the memory leak and now closing IEGRONE-71.
+
+------------------------------------------------------------------------
+r452 | mstrout | 2012-06-22 15:23:31 -0700 (Fri, 22 Jun 2012) | 3 lines
+
+Fixed issue IEGRONE-71, but there are some memory leaks.
+Committing to fix on linux.
+
+------------------------------------------------------------------------
+r451 | mstrout | 2012-06-22 09:45:29 -0700 (Fri, 22 Jun 2012) | 3 lines
+
+Closed IEGRONE-41.  Removed cleanUpConstraints, since we already have cleanUp method.
+Removed some other FIXME's about merging Environments, since they are no longer relevant.
+
+------------------------------------------------------------------------
+r450 | mstrout | 2012-06-20 16:55:55 -0700 (Wed, 20 Jun 2012) | 6 lines
+
+Did Mark's suggested fix for bullet 3 in June 19, 2012 in IEGRONE-41.
+This fixed the test case IEGRONE41Zeros.  It broke a parser test case that just needed
+a zero removed from the expected output.
+It also appears to have broken SetRelationTest.ComposeWithUnions, however this appears
+to be a bigger issue that needs fixed anyway.
+
+------------------------------------------------------------------------
+r449 | heim | 2012-06-19 15:59:11 -0700 (Tue, 19 Jun 2012) | 1 line
+
+Moved functionality out of Conjunction::substituteInConstraints(...) into a new method Conjunction::cleanUpConstraints().
+------------------------------------------------------------------------
+r448 | mstrout | 2012-06-19 15:28:24 -0700 (Tue, 19 Jun 2012) | 2 lines
+
+Some broken test cases for IEGRONE-41.
+
+------------------------------------------------------------------------
+r447 | mstrout | 2012-06-18 15:58:41 -0700 (Mon, 18 Jun 2012) | 2 lines
+
+Had not done a final save to the README.
+
+------------------------------------------------------------------------
+r446 | mstrout | 2012-06-18 15:58:17 -0700 (Mon, 18 Jun 2012) | 5 lines
+
+Did a big edit of the README and tested it.  Found some issues, but
+they are internal to the tool.  Put the issues on the wiki "Michelle's
+research" since JIRA is currently down.  Ready for Cathie to work through
+the README once I put the most recent distribution up.
+
+------------------------------------------------------------------------
+r445 | heim | 2012-06-15 01:24:58 -0700 (Fri, 15 Jun 2012) | 1 line
+
+Added clone method to Conjunction. Added cleanUp() methods to Conjunction and SparseConstraints. Added new tests and updated old tests. Added cleanUp() calls to SparseConstraints operations.
+------------------------------------------------------------------------
+r444 | cathie | 2012-06-14 11:44:50 -0700 (Thu, 14 Jun 2012) | 4 lines
+
+IEGRONE-28 IEGRONE-69
+This fix demonstrates the error that made me create issue 69.
+This fix involves finding a rule upstream to catch the error and free the memory.
+
+------------------------------------------------------------------------
+r443 | heim | 2012-06-13 16:29:16 -0700 (Wed, 13 Jun 2012) | 1 line
+
+Removed two FIXMEs regarding the addition of duplicate equalities and inequalities in Conjunction::addInequality and Conjunction::addEquality methods by checking for these situations. Along with existing features to remove zero terms in Exp::addTerm, this should fix errors of = 0 being displayed. IEGRONE-41
+------------------------------------------------------------------------
+r442 | mstrout | 2012-06-13 09:12:17 -0700 (Wed, 13 Jun 2012) | 2 lines
+
+Minor commenting and uncommenting.
+
+------------------------------------------------------------------------
+r441 | mstrout | 2012-06-13 09:01:37 -0700 (Wed, 13 Jun 2012) | 2 lines
+
+Closing IEGRONE-61.  Put remaining memory leak issue in parser in IEGRONE-28.
+
+------------------------------------------------------------------------
+r440 | cathie | 2012-06-12 14:27:12 -0700 (Tue, 12 Jun 2012) | 3 lines
+
+EGRONE-28
+Fixed the last memory issue (for now).
+
+------------------------------------------------------------------------
+r439 | cathie | 2012-06-12 13:23:10 -0700 (Tue, 12 Jun 2012) | 12 lines
+
+IEGRONE-68 
+
+I have changed the Environment to be called currentEnvironment.
+I also added functions
+setCurrentEnvironment()
+setCurrentEnvironment(std:string)
+ and
+getCurrentEnvironment()
+
+I still need to add appendCurrentEnvironment(std::string)
+
+
+------------------------------------------------------------------------
+r438 | mstrout | 2012-06-12 09:21:14 -0700 (Tue, 12 Jun 2012) | 2 lines
+
+Took Geri off of the build script.
+
+------------------------------------------------------------------------
+r437 | mstrout | 2012-06-11 12:53:40 -0700 (Mon, 11 Jun 2012) | 2 lines
+
+Minor 80 column cleanup in util.cc
+
+------------------------------------------------------------------------
+r436 | heim | 2012-06-06 13:51:17 -0700 (Wed, 06 Jun 2012) | 1 line
+
+Added test case (SetRelationTest.CompositionWithNestedFunctions) to validate code that removes some redundant constraints. IEGRONE-41
+------------------------------------------------------------------------
+r428 | heim | 2012-06-05 14:40:24 -0700 (Tue, 05 Jun 2012) | 1 line
+
+Partial fix of bug mentioned on JIRA issue regarding redundant constraints. IEGRONE-41
+------------------------------------------------------------------------
+r416 | mstrout | 2012-06-04 16:41:49 -0700 (Mon, 04 Jun 2012) | 2 lines
+
+Have the python version of the example in IEGen/doc/PythonScriptExamples/lcpc12-iegenlib-paper.py.
+
+------------------------------------------------------------------------
+r415 | mstrout | 2012-06-04 16:19:27 -0700 (Mon, 04 Jun 2012) | 6 lines
+
+Tested whether Apply needs fresh variable names as per IEGRONE-64, but it does
+not.
+Actually, the Apply method does not have the fresh variable problem because the
+result variable names only come from the output tuple variables of the
+relation.
+
+------------------------------------------------------------------------
+r414 | mstrout | 2012-06-04 15:58:16 -0700 (Mon, 04 Jun 2012) | 5 lines
+
+Partially fixed the build problem discussed in  IEGRONE-66
+by including util.o in iegenlib.a.  Not sure why make test was
+still working and make install was not, therefore I think this might
+have been a hack.  Need to talk to Cathie about it.
+
+------------------------------------------------------------------------
+r413 | mstrout | 2012-06-04 15:25:06 -0700 (Mon, 04 Jun 2012) | 4 lines
+
+Fixed IEGRONE-64 where Compose was not creating fresh variables when 
+there were variable conflicts in the two relations.
+Need to also do this for Apply.
+
+------------------------------------------------------------------------
+r412 | mstrout | 2012-06-04 14:26:44 -0700 (Mon, 04 Jun 2012) | 2 lines
+
+Oops, indicated one test was for Mark and it was not.
+
+------------------------------------------------------------------------
+r411 | mstrout | 2012-06-04 14:18:30 -0700 (Mon, 04 Jun 2012) | 3 lines
+
+Commiting some comments in set_relation_test.cc for Mark Heim
+related to IEGRONE-41.
+
+------------------------------------------------------------------------
+r410 | mstrout | 2012-06-04 12:57:05 -0700 (Mon, 04 Jun 2012) | 3 lines
+
+Created PythonScriptExamples/lcpc12-iegenlib-paper.py to work through the example
+for the LCPC12 submission.
+
+------------------------------------------------------------------------
+r405 | cathie | 2012-06-04 09:27:37 -0700 (Mon, 04 Jun 2012) | 5 lines
+
+IEGRONE-35
+
+I added in the tests that I missed and I moved the comparison to a subroutine
+I also added some comments to explain what the comparison funciton is doing.
+
+------------------------------------------------------------------------
+r404 | heim | 2012-06-03 20:05:49 -0700 (Sun, 03 Jun 2012) | 1 line
+
+Now iegenlib_calc will use prettyPrintString() methods instead of toString() methods. IEGRONE-41
+------------------------------------------------------------------------
+r403 | heim | 2012-06-03 18:33:02 -0700 (Sun, 03 Jun 2012) | 1 line
+
+Added more test cases that check exceptions to the IEGenLib test suite. IEGRONE-61
+------------------------------------------------------------------------
+r402 | heim | 2012-06-01 17:53:40 -0700 (Fri, 01 Jun 2012) | 1 line
+
+Fixed some of the comments in exceptions_test.cc. Added and debugged tests for exception handling with SetTupleElem and Compose methods. Removed memory leaks in Compose. Added exceptions_test.cc to the build. IEGRONE-61
+------------------------------------------------------------------------
+r399 | heim | 2012-05-31 12:46:07 -0700 (Thu, 31 May 2012) | 1 line
+
+Added exceptions_test.cc to the build. IEGRONE-61
+------------------------------------------------------------------------
+r395 | mstrout | 2012-05-31 09:34:20 -0700 (Thu, 31 May 2012) | 1 line
+
+Put in some more test cases related to IEGRONE-41
+------------------------------------------------------------------------
+r394 | mstrout | 2012-05-31 08:29:02 -0700 (Thu, 31 May 2012) | 3 lines
+
+Put in some comments for string diffs.
+
+
+------------------------------------------------------------------------
+r393 | cathie | 2012-05-30 21:01:03 -0700 (Wed, 30 May 2012) | 3 lines
+
+IEGRONE-62
+I have changed the code to read the file in as a string and compare using str.compare rather than writing to the file and using diff.
+
+------------------------------------------------------------------------
+r392 | cathie | 2012-05-30 20:02:49 -0700 (Wed, 30 May 2012) | 3 lines
+
+I have fixed the IEGEN_HOME problem with respect to the test files
+We may run into further problems as we use is more extensively
+
+------------------------------------------------------------------------
+r391 | heim | 2012-05-30 16:30:56 -0700 (Wed, 30 May 2012) | 1 line
+
+Added test stubs for exception handling. IEGRONE-61
+------------------------------------------------------------------------
+r390 | mstrout | 2012-05-30 14:13:54 -0700 (Wed, 30 May 2012) | 2 lines
+
+Still fixing setting permissions from mac and for linux web files in bldScr.
+
+------------------------------------------------------------------------
+r389 | mstrout | 2012-05-30 13:59:43 -0700 (Wed, 30 May 2012) | 2 lines
+
+Mac makes linux dir writeable by group
+
+------------------------------------------------------------------------
+r388 | mstrout | 2012-05-30 13:54:09 -0700 (Wed, 30 May 2012) | 2 lines
+
+Put in chmod for build directory as ssh from mac in bldScr
+
+------------------------------------------------------------------------
+r387 | mstrout | 2012-05-30 13:36:00 -0700 (Wed, 30 May 2012) | 2 lines
+
+Setting up bldScr to work with a cron job from MMS accounts.
+
+------------------------------------------------------------------------
+r386 | mstrout | 2012-05-30 10:36:18 -0700 (Wed, 30 May 2012) | 2 lines
+
+Closing out IEGRONE-50 with some cleanup.
+
+------------------------------------------------------------------------
+r384 | mstrout | 2012-05-29 14:27:07 -0700 (Tue, 29 May 2012) | 3 lines
+
+The environment functionality is now working!!  Yeah!
+We can now parse environment specifications in an Environment constructor.
+
+------------------------------------------------------------------------
+r383 | georg | 2012-05-29 09:29:19 -0700 (Tue, 29 May 2012) | 1 line
+
+changed web directory name from PIESwebTest to the correct one of PIESwebTEST
+------------------------------------------------------------------------
+r382 | georg | 2012-05-24 15:40:31 -0700 (Thu, 24 May 2012) | 1 line
+
+changing get_isl to prettyPrintString, and adding iegenli. to Set, etc - working to about line 160 where there is a sigma_context = IEGenLibContext() and then it has errors
+------------------------------------------------------------------------
+r381 | georg | 2012-05-24 14:54:27 -0700 (Thu, 24 May 2012) | 1 line
+
+examples from the web page with changes for prettyPrintString and actual output from the python scripts
+------------------------------------------------------------------------
+r380 | georg | 2012-05-24 14:42:10 -0700 (Thu, 24 May 2012) | 1 line
+
+changed the python output to match what really happens, took out FIXME part since I did this already, found another get_dot in the comments that I changed to toDotString
+------------------------------------------------------------------------
+r379 | georg | 2012-05-24 14:31:05 -0700 (Thu, 24 May 2012) | 1 line
+
+changed get_dot to toDotString
+------------------------------------------------------------------------
+r378 | georg | 2012-05-24 13:59:33 -0700 (Thu, 24 May 2012) | 1 line
+
+changed get_isl to prettyPrintString
+------------------------------------------------------------------------
+r377 | georg | 2012-05-24 11:50:21 -0700 (Thu, 24 May 2012) | 1 line
+
+fixed additional doc testing so that it only runs on Linux
+------------------------------------------------------------------------
+r376 | georg | 2012-05-23 15:04:51 -0700 (Wed, 23 May 2012) | 1 line
+
+added messages on how to set IEGEN_HOME
+------------------------------------------------------------------------
+r375 | georg | 2012-05-23 14:13:32 -0700 (Wed, 23 May 2012) | 1 line
+
+1: made documentation only build on Linux since there are so many latex errors on the Mac, 2: cleaned up commented-out lines that we don't need based on Cathie adding better directory variables, 3: changed email line about no errors in make test output to one that makes it explicit that this means no TEST errors - there may be memory errors, 4: added 2 more greps in the memory test output that look for ERROR SUMMARY: x errors from n contexts (suppressed: y from m) - needed one grep/sed to find x and another to find y, 5: only added checking for failures and warnings in make docs output file if we are on a Linux machine
+------------------------------------------------------------------------
+r374 | georg | 2012-05-23 14:04:16 -0700 (Wed, 23 May 2012) | 1 line
+
+updated to include new directions to set IEGEN_HOME, then substituted this variable for path names; added reference to web site documentation
+------------------------------------------------------------------------
+r373 | georg | 2012-05-21 12:12:50 -0700 (Mon, 21 May 2012) | 1 line
+
+fixed rsync from Mac
+------------------------------------------------------------------------
+r372 | heim | 2012-05-21 12:08:48 -0700 (Mon, 21 May 2012) | 1 line
+
+Minor revisions to prettyPrint() method (renaming it to prettyPrintString, moving of an assert, deletion of TupleElemDecl::prettyPrint().) IEGRONE-50
+------------------------------------------------------------------------
+r371 | mstrout | 2012-05-18 15:20:50 -0700 (Fri, 18 May 2012) | 4 lines
+
+There is now a gCurrentEnv pointer in the iegenlib namespace.
+All functions that could use an environment look there.
+Have to initialize that global variable in set_relation_test.cc SetUp().
+
+------------------------------------------------------------------------
+r370 | cathie | 2012-05-18 12:14:34 -0700 (Fri, 18 May 2012) | 4 lines
+
+I put back Geri's configuration for the build script.
+I think it should be working now with the current definition of IEGEN_HOME
+However, I plan to change the definition of IEGEN_HOME to match prefix soon
+
+------------------------------------------------------------------------
+r369 | cathie | 2012-05-18 11:09:13 -0700 (Fri, 18 May 2012) | 2 lines
+
+I am working on figuring out where to set IEGEN_HOME and what to set it to, transferring from linux to mac
+
+------------------------------------------------------------------------
+r368 | cathie | 2012-05-18 10:51:07 -0700 (Fri, 18 May 2012) | 2 lines
+
+I have updated the build script to put all of the configurable items at the top so that I can test it to add in the IEGEN_HOME variable. This version has my configuration for testing... I will put Geri's back as soon as I have run on linux.
+
+------------------------------------------------------------------------
+r367 | cathie | 2012-05-18 10:43:17 -0700 (Fri, 18 May 2012) | 3 lines
+
+I fixed configure so that --prefix option now works with both absolute and relative paths.
+Also, the directory is put with respect to current, rather than wrt build
+
+------------------------------------------------------------------------
+r366 | heim | 2012-05-17 15:30:06 -0700 (Thu, 17 May 2012) | 1 line
+
+Fixed Exp::toString bug for objects with zero terms. IEGRONE-59
+------------------------------------------------------------------------
+r365 | heim | 2012-05-17 15:09:39 -0700 (Thu, 17 May 2012) | 1 line
+
+Added in test cases with constant Tuple Decls IEGRONE-38
+------------------------------------------------------------------------
+r364 | heim | 2012-05-17 14:34:54 -0700 (Thu, 17 May 2012) | 1 line
+
+Added test case that illustrates empty expression bug (in set_relation_test.cc as test case SetRelationTest.EmptyExpressionBug). The current behavior of the code is displayed in this test case.
+------------------------------------------------------------------------
+r363 | heim | 2012-05-17 14:09:59 -0700 (Thu, 17 May 2012) | 1 line
+
+Added comments to Inverse method for Conjunction and a few new test cases for Inverse that have constant tuple declarations. IEGRONE-41
+------------------------------------------------------------------------
+r362 | heim | 2012-05-17 13:54:56 -0700 (Thu, 17 May 2012) | 1 line
+
+Added comments to Union method for Set. IEGRONE-38
+------------------------------------------------------------------------
+r361 | mstrout | 2012-05-17 11:07:21 -0700 (Thu, 17 May 2012) | 2 lines
+
+Apply has now been implemented like Compose.
+
+------------------------------------------------------------------------
+r360 | mstrout | 2012-05-17 10:12:09 -0700 (Thu, 17 May 2012) | 2 lines
+
+Removed all of the memory errors on linux.
+
+------------------------------------------------------------------------
+r359 | mstrout | 2012-05-16 20:50:32 -0700 (Wed, 16 May 2012) | 5 lines
+
+Fixed Compose when both functions are inverses.
+All tests are still passing.
+Still need to fix memory leaks on a linux box,
+rewrite apply using this approach, and do more testing.
+
+------------------------------------------------------------------------
+r358 | mstrout | 2012-05-16 20:25:24 -0700 (Wed, 16 May 2012) | 8 lines
+
+Changed part of Compose where both relations are functions so
+that all the functions are found and removed from the result
+before substitutions begin.  Needed to deal with the fact
+that some functions are found by inverting uninterpreted functions.
+All test cases pass for Compose now after finding yet another
+issue.  Memory tests are not passing.  Need to do more
+code cleanup and then will fix memory errors on linux box.
+
+------------------------------------------------------------------------
+r357 | mstrout | 2012-05-16 13:01:13 -0700 (Wed, 16 May 2012) | 3 lines
+
+Did some cleanup after the last refactor on Apply and Compose.
+Also fixed all the memory errors on linux.
+
+------------------------------------------------------------------------
+r356 | mstrout | 2012-05-16 12:51:02 -0700 (Wed, 16 May 2012) | 6 lines
+
+Compose and Apply are passing all tests now.  Need to do cleanup
+and getting some memory errors on mac.  Plan to run on linux
+to get line numbers.
+Also took the exists construct out of the grammar.
+
+
+------------------------------------------------------------------------
+r355 | mstrout | 2012-05-16 07:52:35 -0700 (Wed, 16 May 2012) | 2 lines
+
+Minor formatting edits to prettyPrint and Inverse.
+
+------------------------------------------------------------------------
+r354 | mstrout | 2012-05-15 15:43:01 -0700 (Tue, 15 May 2012) | 6 lines
+
+Handling of constants works as well as generating empty sets with FALSE.
+IEGRONE-58
+The problem is that the code is messy.  I need to figure out how to have
+substituteInConstraints deal with constants.  I also need to write some Apply
+tests with constants in the tuple declarations.
+
+------------------------------------------------------------------------
+r353 | mstrout | 2012-05-15 09:36:48 -0700 (Tue, 15 May 2012) | 3 lines
+
+IEGRONE-54
+ComposeWithOtherConstraints now works.
+
+------------------------------------------------------------------------
+r352 | mstrout | 2012-05-15 09:10:18 -0700 (Tue, 15 May 2012) | 2 lines
+
+Fixed SetRelationTest::FindConstantFunctions.
+
+------------------------------------------------------------------------
+r351 | mstrout | 2012-05-15 08:58:33 -0700 (Tue, 15 May 2012) | 4 lines
+
+Commented out the toDot tests because they are broken right now and causing testing
+to fail.  From this point on, we should only commit code that is passing all the
+tests.
+
+------------------------------------------------------------------------
+r350 | cathie | 2012-05-14 14:07:10 -0700 (Mon, 14 May 2012) | 6 lines
+
+IEGRONE-52
+I have added an exception handler that essentially prints a message to stderr.
+I do not know if this is the appropriate solution, but from the limited testing I did seems to get the job done.
+
+I would love feedback.
+
+------------------------------------------------------------------------
+r349 | cathie | 2012-05-14 12:41:25 -0700 (Mon, 14 May 2012) | 5 lines
+
+IEGRONE-51
+I just removed the last compile warning on linux.
+The warning was because some of the code that threw an exception was commented out.
+By updating the exception policy I was able to add the code back in.
+
+------------------------------------------------------------------------
+r348 | cathie | 2012-05-14 12:33:14 -0700 (Mon, 14 May 2012) | 4 lines
+
+IEGRONE-30
+
+Fixed what appears to be our last memory problem.
+
+------------------------------------------------------------------------
+r347 | cathie | 2012-05-14 12:20:51 -0700 (Mon, 14 May 2012) | 3 lines
+
+IEGRONE-30
+delete retval missing
+
+------------------------------------------------------------------------
+r346 | cathie | 2012-05-14 12:15:51 -0700 (Mon, 14 May 2012) | 6 lines
+
+IEGRONE-56
+I changed one of the areas I had thrown an exception back to returning NULL;
+Exp::solveForFactor
+
+this changed the behavior of the calling code, and it didn't seem like it followed the established pattern
+
+------------------------------------------------------------------------
+r345 | cathie | 2012-05-14 11:59:54 -0700 (Mon, 14 May 2012) | 4 lines
+
+IEGRONE-56
+
+I had to change a few exceptions that were not throwing one of our types, but justa  string.
+
+------------------------------------------------------------------------
+r344 | cathie | 2012-05-14 11:03:15 -0700 (Mon, 14 May 2012) | 5 lines
+
+IEGRONE-56
+
+I have removed all of the asserts and replaced them with throw assert_exception
+I have also updated the parser to throw parse_exception
+
+------------------------------------------------------------------------
+r343 | georg | 2012-05-12 11:57:51 -0700 (Sat, 12 May 2012) | 1 line
+
+cleaned up the comments a bit
+------------------------------------------------------------------------
+r342 | sheridan | 2012-05-12 04:43:37 -0700 (Sat, 12 May 2012) | 1 line
+
+dotTests should be working now
+------------------------------------------------------------------------
+r341 | sheridan | 2012-05-12 00:26:12 -0700 (Sat, 12 May 2012) | 1 line
+
+Added rules for 'exists' to grammar and added a bunch of test cases for isl syntax and InSymbolics
+------------------------------------------------------------------------
+r340 | sheridan | 2012-05-11 12:51:49 -0700 (Fri, 11 May 2012) | 1 line
+
+InSymbolics implemented, will adds tests shortly
+------------------------------------------------------------------------
+r339 | heim | 2012-05-11 11:37:11 -0700 (Fri, 11 May 2012) | 1 line
+
+Fixed prettyPrint() ambiguity (this method now throws an exception whenever prettyPrint is applied to a constant value.
+------------------------------------------------------------------------
+r338 | mstrout | 2012-05-10 20:46:23 -0700 (Thu, 10 May 2012) | 3 lines
+
+Made Compose more like Apply.  Most Compose test cases work, but not all.  Need to
+fix them and fix memory leaks I introduced.
+
+------------------------------------------------------------------------
+r337 | sheridan | 2012-05-10 16:34:56 -0700 (Thu, 10 May 2012) | 1 line
+
+Added missing destructor commands for memory management from old parser to new (seems to resolve memory issues for parser errors)
+------------------------------------------------------------------------
+r336 | georg | 2012-05-10 09:07:19 -0700 (Thu, 10 May 2012) | 1 line
+
+changed email recipients
+------------------------------------------------------------------------
+r335 | heim | 2012-05-09 21:36:12 -0700 (Wed, 09 May 2012) | 1 line
+
+Added first implementation of prettyPrint() to these classes: Set, Relation, Conjunction, Exp, and Term (and its subclasses). IEGRONE-50
+------------------------------------------------------------------------
+r334 | jstrout | 2012-05-09 21:08:48 -0700 (Wed, 09 May 2012) | 6 lines
+
+Changed Compose and Apply to keep the intermediate result
+in a valid state; updated findFunction to work with constant
+tuple elements (which now works with Compose and Apply).
+The tuple declarations are now always consistent with the
+remapped tuple variables (which remapTupleVars will do).
+
+------------------------------------------------------------------------
+r333 | mstrout | 2012-05-09 19:33:22 -0700 (Wed, 09 May 2012) | 3 lines
+
+Created and them commented out some compose tests that are failing.
+Now we need to go fix them.
+
+------------------------------------------------------------------------
+r332 | georg | 2012-05-09 09:39:51 -0700 (Wed, 09 May 2012) | 1 line
+
+Python examples from Mohammed's initial IEGenLib web page
+------------------------------------------------------------------------
+r331 | cathie | 2012-05-09 09:02:10 -0700 (Wed, 09 May 2012) | 3 lines
+
+IEGRONE-53
+updated README to reflect the 2 packages needed on mac when using macports
+
+------------------------------------------------------------------------
+r330 | cathie | 2012-05-09 09:00:34 -0700 (Wed, 09 May 2012) | 4 lines
+
+IEGRONE-53
+On the mac I have verified that we now fail if 
+./configure is run with the --build-python option and the swig package is not installed, or it is installed, but does not support python
+
+------------------------------------------------------------------------
+r329 | cathie | 2012-05-09 08:16:20 -0700 (Wed, 09 May 2012) | 7 lines
+
+IEGENRONE-51
+On the Mac (Lion) there are no longer compiler errors for
+./configure
+make
+
+I am still working on ./configure with options
+
+------------------------------------------------------------------------
+r328 | jstrout | 2012-05-08 20:43:02 -0700 (Tue, 08 May 2012) | 2 lines
+
+Finished implementation of Apply.
+
+------------------------------------------------------------------------
+r327 | mstrout | 2012-05-08 18:54:29 -0700 (Tue, 08 May 2012) | 5 lines
+
+Working on Conjunction::Apply, but it is a true mess right now.
+Figured out that Compose will not handle extra constraints other than those
+involved in the functions.  Need to write test cases that catch that and
+fix the problem.
+
+------------------------------------------------------------------------
+r326 | heim | 2012-05-08 12:50:36 -0700 (Tue, 08 May 2012) | 1 line
+
+Fixed memory leaks in Conjunction::Inverse method.
+------------------------------------------------------------------------
+r325 | sheridan | 2012-05-08 10:42:16 -0700 (Tue, 08 May 2012) | 1 line
+
+fixed memory issue with INVALID_IDENT(really this time), but having trouble with leak from new parser test
+------------------------------------------------------------------------
+r324 | cathie | 2012-05-08 09:40:05 -0700 (Tue, 08 May 2012) | 6 lines
+
+IEGRONE-28
+I updated the build to have
+make test and make mtest
+
+Developers should always use make mtest
+
+------------------------------------------------------------------------
+r323 | sheridan | 2012-05-08 08:34:27 -0700 (Tue, 08 May 2012) | 1 line
+
+Added rules for INVALID_ID so that they can be properly deleted
+------------------------------------------------------------------------
+r322 | sheridan | 2012-05-08 06:32:01 -0700 (Tue, 08 May 2012) | 1 line
+
+Updated the isl parsing rules; need new test-cases
+------------------------------------------------------------------------
+r321 | sheridan | 2012-05-08 06:04:56 -0700 (Tue, 08 May 2012) | 1 line
+
+Fixed some segfaulting in the error handling code of parser grammar
+------------------------------------------------------------------------
+r320 | mstrout | 2012-05-07 20:56:53 -0700 (Mon, 07 May 2012) | 2 lines
+
+Started work on Relation::Apply.
+
+------------------------------------------------------------------------
+r318 | cathie | 2012-05-07 14:11:12 -0700 (Mon, 07 May 2012) | 3 lines
+
+IEGRONE-51
+I have removed the #pragma warnings on ubuntu
+
+------------------------------------------------------------------------
+r317 | cathie | 2012-05-07 14:00:00 -0700 (Mon, 07 May 2012) | 2 lines
+
+Removed lexer and parser warnings on Mac(Lion)
+
+------------------------------------------------------------------------
+r316 | heim | 2012-05-07 12:19:32 -0700 (Mon, 07 May 2012) | 1 line
+
+Finished implementation of Inverse for Conjunction and Relation classes.
+------------------------------------------------------------------------
+r315 | mstrout | 2012-05-07 12:16:00 -0700 (Mon, 07 May 2012) | 2 lines
+
+Deleting where test_data used to be.  dotTest got put back in set_relation/.
+
+------------------------------------------------------------------------
+r314 | mstrout | 2012-05-07 11:57:33 -0700 (Mon, 07 May 2012) | 3 lines
+
+Fixed the bug that Mark found.  We weren't copying the inArity field for Conjunctions in
+the assignment operator.
+
+------------------------------------------------------------------------
+r311 | mstrout | 2012-05-07 10:35:35 -0700 (Mon, 07 May 2012) | 8 lines
+
+Commented out a variable declaration in one test file to get rid of a warning.
+Tests work on 10.6.8 Mac (MMS chatter mac).
+
+Still have the following warning:
+[ 28%] Building CXX object src/iegenlib/CMakeFiles/iegenlib.dir/parser/gen_scanner.cc.o
+/Users/cathie/Documents/hpcrg/IEGenProject/trunk/IEGen/build/src/iegenlib/parser/gen_scanner.cc:1309: warning: ‘void yyunput(int, char*)’ defined but not used
+
+
+------------------------------------------------------------------------
+r310 | cathie | 2012-05-07 10:28:52 -0700 (Mon, 07 May 2012) | 7 lines
+
+IEGRONE-30
+
+I found that when I moved over to Lion on the Mac I got some new errors. 
+I have those fixed, but I need to start testing on Ubuntu to make sure that I haven't caused more errors.
+
+
+
+------------------------------------------------------------------------
+r309 | georg | 2012-05-07 10:28:36 -0700 (Mon, 07 May 2012) | 1 line
+
+added excluding source copy of *.out.dot files if they exist
+------------------------------------------------------------------------
+r307 | georg | 2012-05-07 08:36:12 -0700 (Mon, 07 May 2012) | 1 line
+
+moved dotTest back to set_relation directory
+------------------------------------------------------------------------
+r306 | georg | 2012-05-07 08:31:16 -0700 (Mon, 07 May 2012) | 1 line
+
+moved dotTest back under IEGen/src/iegenlib/set_relation directory since that is where the sources and test file exist.
+------------------------------------------------------------------------
+r305 | georg | 2012-05-07 08:02:20 -0700 (Mon, 07 May 2012) | 1 line
+
+Moved SVN keywords and copyright lines AFTER the doxygen comments because 1) $ is a special character for doxygen too and this file is the one that is used to generate the IEGen/doc/html/index.html page, and 2) the copyright lines are already included in the COPYING file that gets copied verbatim on the doxygen index page.
+------------------------------------------------------------------------
+r304 | georg | 2012-05-07 07:52:54 -0700 (Mon, 07 May 2012) | 1 line
+
+added a copy of the refman.pdf file, and putting a date in the subject line
+------------------------------------------------------------------------
+r303 | georg | 2012-05-06 09:09:10 -0700 (Sun, 06 May 2012) | 1 line
+
+OK, with the escaped $, SVN didn't update the file, nor with the second one escaped
+------------------------------------------------------------------------
+r302 | georg | 2012-05-06 09:08:28 -0700 (Sun, 06 May 2012) | 1 line
+
+OK, with the escaped $, SVN didn't update the file
+------------------------------------------------------------------------
+r301 | georg | 2012-05-06 09:06:58 -0700 (Sun, 06 May 2012) | 1 line
+
+had to escape SVN keywords so doxygen would work, also added newline at end of lines, and put them in a section (subsection didn't seem to work either)
+------------------------------------------------------------------------
+r300 | heim | 2012-05-05 21:39:54 -0700 (Sat, 05 May 2012) | 1 line
+
+Completed implementation of Union for Set and Relation classes. Progress made on Inverse method for Relation, but a bug prevented further progress. IEGRONE-38 IEGRONE-41
+------------------------------------------------------------------------
+r299 | georg | 2012-05-04 16:33:50 -0700 (Fri, 04 May 2012) | 1 line
+
+added Mac build - think it works
+------------------------------------------------------------------------
+r298 | mstrout | 2012-05-04 12:25:31 -0700 (Fri, 04 May 2012) | 2 lines
+
+Made interface to toDotString more consistent between classes.
+
+------------------------------------------------------------------------
+r297 | mstrout | 2012-05-04 11:09:29 -0700 (Fri, 04 May 2012) | 4 lines
+
+Python bindings now compile.
+Had to comment out Conjunction::clone declaration because it no longer exists.
+Working on Python example in the README.
+
+------------------------------------------------------------------------
+r296 | mstrout | 2012-05-04 10:18:44 -0700 (Fri, 04 May 2012) | 3 lines
+
+Minor edits to README.
+Also looks like generated parser and scanner are a little different.
+
+------------------------------------------------------------------------
+r295 | cathie | 2012-05-04 09:43:30 -0700 (Fri, 04 May 2012) | 9 lines
+
+IEGRONE-28
+IEGRONE-30
+I have marked most of the function with a param tag that states if it adopts the object being passed in or not.
+
+I have fixed all but one of the memory errors from valgrind.
+The last error should be fixed by Brenden.
+
+
+
+------------------------------------------------------------------------
+r294 | georg | 2012-05-03 15:26:35 -0700 (Thu, 03 May 2012) | 1 line
+
+took out part about generated documentation in html and latex subdirectories since we're just shipping the pdf file
+------------------------------------------------------------------------
+r293 | cathie | 2012-05-03 12:08:57 -0700 (Thu, 03 May 2012) | 6 lines
+
+IEGRONE-30
+IEGRONE-28
+
+I have been working on clearing up a lot of the memory errors.
+this includes changing the policies for some of the add* type functions.
+
+------------------------------------------------------------------------
+r292 | georg | 2012-05-03 10:33:46 -0700 (Thu, 03 May 2012) | 1 line
+
+updated beginning of files to include SVN keywords and copyright dates
+------------------------------------------------------------------------
+r291 | georg | 2012-05-03 10:29:02 -0700 (Thu, 03 May 2012) | 1 line
+
+reworked introduction section a bit to reflect new structure using sparse constraints
+------------------------------------------------------------------------
+r290 | georg | 2012-05-03 10:24:41 -0700 (Thu, 03 May 2012) | 1 line
+
+updated beginning of files where necessary to add SVN keywords and copyright dates or information
+------------------------------------------------------------------------
+r289 | georg | 2012-05-03 10:12:39 -0700 (Thu, 03 May 2012) | 1 line
+
+updated beginning of files to include SVN keywords and copyright dates and copyright information in the files that didn't have the latter
+------------------------------------------------------------------------
+r288 | georg | 2012-05-03 10:01:39 -0700 (Thu, 03 May 2012) | 1 line
+
+updated beginning of file to include SVN keywords and copyright dates
+------------------------------------------------------------------------
+r287 | georg | 2012-05-03 09:49:17 -0700 (Thu, 03 May 2012) | 1 line
+
+updated beginning of files to include SVN keywords and copyright years
+------------------------------------------------------------------------
+r286 | georg | 2012-05-03 09:43:04 -0700 (Thu, 03 May 2012) | 1 line
+
+updated beginning of file with SVN keywords, copyright dates
+------------------------------------------------------------------------
+r282 | jstrout | 2012-05-02 19:54:46 -0700 (Wed, 02 May 2012) | 3 lines
+
+Added some test cases (compose with constants).
+Note: parser appears to choke on "union".
+
+------------------------------------------------------------------------
+r281 | georg | 2012-05-02 15:54:32 -0700 (Wed, 02 May 2012) | 1 line
+
+changed src/CML to change name of demo_driver to iegenlib_calc, also had to change doxyconfig for this, and basically deleted demo_driver.cc and added iegenlib_calc.cc
+------------------------------------------------------------------------
+r280 | georg | 2012-05-02 15:53:39 -0700 (Wed, 02 May 2012) | 1 line
+
+renamed demo_driver
+------------------------------------------------------------------------
+r279 | georg | 2012-05-02 15:52:49 -0700 (Wed, 02 May 2012) | 1 line
+
+changed comment from demo_driver to iegenlib_calc and also changed beginning prompt to say this is a calculator rather than this is a demo driver
+------------------------------------------------------------------------
+r278 | georg | 2012-05-02 15:34:56 -0700 (Wed, 02 May 2012) | 1 line
+
+deleting IEGen/libs since we don't use cloog, isl, or gmp in the first release
+------------------------------------------------------------------------
+r277 | georg | 2012-05-02 15:27:04 -0700 (Wed, 02 May 2012) | 1 line
+
+took out GLOG from run_tests.cc, src/CML, src/libs/CML; everything builds and tests run OK
+------------------------------------------------------------------------
+r276 | georg | 2012-05-02 14:40:26 -0700 (Wed, 02 May 2012) | 1 line
+
+changed demo_driver to iegenlib_calc, and added requirement to set IEGEN_HOME environment variable
+------------------------------------------------------------------------
+r275 | georg | 2012-05-02 14:18:24 -0700 (Wed, 02 May 2012) | 1 line
+
+changed the distribution file to not have a .tar in it, added excludes for .DS_Store and *~ since people may run this from a working dir and not just the build dir which was obtained via svn export
+------------------------------------------------------------------------
+r274 | georg | 2012-05-02 14:14:14 -0700 (Wed, 02 May 2012) | 1 line
+
+changed svn checkout to svn export, added uname to figure out which OS, after running tests then the IEGen/iegen directory gets renamed to (usually) IEGen/iegen-LINUX64, added call to the make_dist_tarball.sh script, so a tgz file will get created in the nightly build directory
+------------------------------------------------------------------------
+r273 | mstrout | 2012-05-02 12:59:25 -0700 (Wed, 02 May 2012) | 6 lines
+
+Fixed a bug with how the initial Environment pointer for Conjunctions
+was not being set to NULL.
+We now have Compose working for uninterpreted function inversion! =)
+We need to do a lot more testing of this and probably have intelligent
+handling of constants in the tuple declarations when doing compose.
+
+------------------------------------------------------------------------
+r272 | sheridan | 2012-05-02 07:10:09 -0700 (Wed, 02 May 2012) | 1 line
+
+Moved dotTest under test_data
+------------------------------------------------------------------------
+r271 | sheridan | 2012-05-02 07:07:16 -0700 (Wed, 02 May 2012) | 1 line
+
+Helps if I re-add the dotTest files after deleting them
+------------------------------------------------------------------------
+r270 | sheridan | 2012-05-02 07:05:48 -0700 (Wed, 02 May 2012) | 1 line
+
+Moved dotTest files out of src directory
+------------------------------------------------------------------------
+r269 | sheridan | 2012-05-02 04:03:22 -0700 (Wed, 02 May 2012) | 1 line
+
+Changed yypos to an unsigned int to get rid of compiler warning
+------------------------------------------------------------------------
+r268 | jstrout | 2012-05-01 20:43:04 -0700 (Tue, 01 May 2012) | 3 lines
+
+More work on composition involving invertible functions.
+Also introduced the Environment class.
+
+------------------------------------------------------------------------
+r267 | georg | 2012-05-01 13:28:41 -0700 (Tue, 01 May 2012) | 1 line
+
+added a comment that you have to rename the IEGen/iegen directory (binaries) to IEGen/iegen-<type_of_machine> (i.e. LINUX64 or MacOSX)
+------------------------------------------------------------------------
+r266 | georg | 2012-05-01 13:25:30 -0700 (Tue, 01 May 2012) | 1 line
+
+swapped the copyright and README in the initial comments because the copyright is much smaller and this is the exact order which will be used in the doxygen index.html page and refman.pdf file
+------------------------------------------------------------------------
+r265 | georg | 2012-05-01 13:22:34 -0700 (Tue, 01 May 2012) | 1 line
+
+updated the script to the 1st release - some old lines are still in it till we're sure they are not needed, they are commented out
+------------------------------------------------------------------------
+r264 | georg | 2012-05-01 11:29:57 -0700 (Tue, 01 May 2012) | 1 line
+
+folded DEV_README info into README
+------------------------------------------------------------------------
+r260 | georg | 2012-05-01 10:16:49 -0700 (Tue, 01 May 2012) | 1 line
+
+took util directory out of doxygen input
+------------------------------------------------------------------------
+r259 | georg | 2012-05-01 10:12:29 -0700 (Tue, 01 May 2012) | 1 line
+
+added option to build a release version; default is still to build a debug version
+------------------------------------------------------------------------
+r258 | georg | 2012-05-01 09:56:38 -0700 (Tue, 01 May 2012) | 1 line
+
+took out glog info
+------------------------------------------------------------------------
+r257 | georg | 2012-05-01 09:56:01 -0700 (Tue, 01 May 2012) | 1 line
+
+updated to iegenlib release 1-draft
+------------------------------------------------------------------------
+r255 | georg | 2012-04-27 13:24:26 -0700 (Fri, 27 Apr 2012) | 1 line
+
+added comments to documentation make commands
+------------------------------------------------------------------------
+r254 | georg | 2012-04-27 13:10:26 -0700 (Fri, 27 Apr 2012) | 1 line
+
+added make docs to build, changed subject line for emails
+------------------------------------------------------------------------
+r253 | georg | 2012-04-26 12:46:16 -0700 (Thu, 26 Apr 2012) | 1 line
+
+added line to docs target to actually make the latex refman.pdf file as part of the docs target - lots of warnings from it though
+------------------------------------------------------------------------
+r252 | georg | 2012-04-26 12:45:26 -0700 (Thu, 26 Apr 2012) | 1 line
+
+added another flag for doxyconfig to do regular sized paper instead of A4 default
+------------------------------------------------------------------------
+r251 | georg | 2012-04-26 11:59:18 -0700 (Thu, 26 Apr 2012) | 1 line
+
+added comment that cron job runs on vega - if you run it on pippin like I originally did you get clock skew warnings from make
+------------------------------------------------------------------------
+r250 | mstrout | 2012-04-26 09:18:11 -0700 (Thu, 26 Apr 2012) | 2 lines
+
+Took routines out of iegenlib/util that we don't need anymore.
+
+------------------------------------------------------------------------
+r249 | mstrout | 2012-04-26 09:16:09 -0700 (Thu, 26 Apr 2012) | 2 lines
+
+Removed iegenlib/visitors/ and iegenlib/ast/ subdirectories.
+
+------------------------------------------------------------------------
+r248 | cathie | 2012-04-26 08:34:49 -0700 (Thu, 26 Apr 2012) | 3 lines
+
+IEGRONE-28
+I have added a test target to the makefile along with some notes on how to add more tests
+
+------------------------------------------------------------------------
+r247 | jstrout | 2012-04-25 20:52:10 -0700 (Wed, 25 Apr 2012) | 3 lines
+
+Fixed broken cases of composing relations.
+We are now doing renaming of tuple vars in the first two cases.
+
+------------------------------------------------------------------------
+r246 | mstrout | 2012-04-25 19:26:18 -0700 (Wed, 25 Apr 2012) | 2 lines
+
+Starting to make remapTupleVars change to Relation::Compose.
+
+------------------------------------------------------------------------
+r245 | georg | 2012-04-25 12:45:41 -0700 (Wed, 25 Apr 2012) | 1 line
+
+added warning checks to nightly build script, sending email to all of us
+------------------------------------------------------------------------
+r244 | georg | 2012-04-25 11:52:21 -0700 (Wed, 25 Apr 2012) | 1 line
+
+added svn propset for author, revision, date keywords
+------------------------------------------------------------------------
+r243 | georg | 2012-04-25 11:46:20 -0700 (Wed, 25 Apr 2012) | 1 line
+
+added svn propset svn:keywords Author, Revision, Date on very file in src
+------------------------------------------------------------------------
+r242 | georg | 2012-04-25 11:19:24 -0700 (Wed, 25 Apr 2012) | 1 line
+
+changed IEGen/configure, AND src, iegenlib, parser, and set_relation CMakeLists.txt to take out references to ISL and GMP, and in the last two to take out extra cmake status messages that are not needed
+------------------------------------------------------------------------
+r241 | mstrout | 2012-04-25 11:00:54 -0700 (Wed, 25 Apr 2012) | 2 lines
+
+Took isl stuff out of the demo driver.
+
+------------------------------------------------------------------------
+r240 | georg | 2012-04-25 10:45:34 -0700 (Wed, 25 Apr 2012) | 1 line
+
+modified CMakeLists.txt in src and src/iegenlib so that proper files are installed, and all files in .svn are not
+------------------------------------------------------------------------
+r239 | mstrout | 2012-04-25 09:41:36 -0700 (Wed, 25 Apr 2012) | 2 lines
+
+Commenting out dotTests that are failing.  Now all test cases pass.
+
+------------------------------------------------------------------------
+r238 | sheridan | 2012-04-25 03:05:44 -0700 (Wed, 25 Apr 2012) | 1 line
+
+Added error handling to parser that seems to fix exceptions thrown in set_relation_test.cc, haven't explored side-effects not covered by testing suite
+------------------------------------------------------------------------
+r237 | sheridan | 2012-04-24 23:46:23 -0700 (Tue, 24 Apr 2012) | 1 line
+
+Cleaned up parser test formatting
+------------------------------------------------------------------------
+r236 | mstrout | 2012-04-24 20:26:19 -0700 (Tue, 24 Apr 2012) | 3 lines
+
+Took the Compose test out of parser_test.cc.
+Still have weird exception being thrown when constructing a Relation from a string in set_relation.cc.
+
+------------------------------------------------------------------------
+r235 | sheridan | 2012-04-24 19:58:47 -0700 (Tue, 24 Apr 2012) | 1 line
+
+Added tests for attempt to duplicate Dr. Strout's relation compose parse exception (failing test is commented out
+------------------------------------------------------------------------
+r234 | georg | 2012-04-24 15:00:48 -0700 (Tue, 24 Apr 2012) | 1 line
+
+script to do nightly build and send mail with results - GG, 4/24/2012.
+------------------------------------------------------------------------
+r233 | georg | 2012-04-24 14:58:54 -0700 (Tue, 24 Apr 2012) | 1 line
+
+figured out how to exclude the .svn directory on installation, so now the .svn directory files don't get installed for GMP, ISL, and iegenlib
+------------------------------------------------------------------------
+r232 | jstrout | 2012-04-23 20:38:40 -0700 (Mon, 23 Apr 2012) | 2 lines
+
+Working more on the Compose code.  Ran into a parser exception.
+
+------------------------------------------------------------------------
+r231 | cathie | 2012-04-23 14:09:39 -0700 (Mon, 23 Apr 2012) | 4 lines
+
+IEGRONE-37
+I changed the filenames to remove new_
+specifically new_set_relation* set_relation*
+
+------------------------------------------------------------------------
+r230 | cathie | 2012-04-23 14:05:24 -0700 (Mon, 23 Apr 2012) | 3 lines
+
+I changed all of the names that had been prepended with New to remove the New
+IEGRONE-37
+
+------------------------------------------------------------------------
+r229 | mstrout | 2012-04-23 10:19:47 -0700 (Mon, 23 Apr 2012) | 5 lines
+
+IEGRONE-36
+demo_driver is now being built and is working again.
+There are FIXMEs in it for functionality we don't have yet.
+Succesfully constructing Sets and Relations with strings.
+
+------------------------------------------------------------------------
+r228 | georg | 2012-04-23 09:46:49 -0700 (Mon, 23 Apr 2012) | 1 line
+
+changed message when copying generated parser files back to source tree
+------------------------------------------------------------------------
+r227 | cathie | 2012-04-23 09:13:44 -0700 (Mon, 23 Apr 2012) | 2 lines
+
+I fixed the cuore dump by commenting out the test case. The test case should be rewritten.
+
+------------------------------------------------------------------------
+r226 | georg | 2012-04-23 09:11:29 -0700 (Mon, 23 Apr 2012) | 1 line
+
+modified build output messages when parser copied
+------------------------------------------------------------------------
+r225 | georg | 2012-04-20 14:05:11 -0700 (Fri, 20 Apr 2012) | 1 line
+
+added install target for Mark's oracle files for the dot tests; the src/set_relation/dotTest directory gets copied into iegen/test_data now
+------------------------------------------------------------------------
+r223 | georg | 2012-04-20 13:18:38 -0700 (Fri, 20 Apr 2012) | 1 line
+
+fixed iegenlib/CMakeLists.txt to copy generated parser files to the source directory; these new versions of the generated files are being checked in too, also fixed parser/CMakeLists.txt to have lines that fit better onto a window, finally added several comments to both CML files to explain the copying around of the parser files
+------------------------------------------------------------------------
+r222 | georg | 2012-04-20 13:16:25 -0700 (Fri, 20 Apr 2012) | 1 line
+
+took out ast and visitor directories via EXCLUDE
+------------------------------------------------------------------------
+r220 | mstrout | 2012-04-20 10:21:27 -0700 (Fri, 20 Apr 2012) | 2 lines
+
+Reintegrated BS_12April2012_IEGen into the trunk.
+
+------------------------------------------------------------------------
+r212 | heim | 2012-04-19 21:01:29 -0700 (Thu, 19 Apr 2012) | 1 line
+
+Added semicolons to DOT output for Exp, Set, Relation, and Conjunction. Modified DOT output so Set and Relation have viewable dot output. Added a script in src/iegenlib/set_relation/dotTest/viewFracDot.sh to view partial DOT output in Exp and Conj test cases. Placed all dot files in subdirectory (src/iegenlib/set_relation/dotTest). IEGRONE-25
+------------------------------------------------------------------------
+r210 | georg | 2012-04-19 07:03:42 -0700 (Thu, 19 Apr 2012) | 1 line
+
+added more graphs for now
+------------------------------------------------------------------------
+r209 | georg | 2012-04-19 06:43:38 -0700 (Thu, 19 Apr 2012) | 1 line
+
+added IEGen/COPYING as a symlink in IEGen/src so that source files that say: See ../../COPYING for details. now work 
+------------------------------------------------------------------------
+r207 | georg | 2012-04-18 15:24:28 -0700 (Wed, 18 Apr 2012) | 1 line
+
+tried making the svn keywords fixed field length
+------------------------------------------------------------------------
+r206 | georg | 2012-04-18 15:20:51 -0700 (Wed, 18 Apr 2012) | 1 line
+
+added svn keywords for revision, date, author into the file
+------------------------------------------------------------------------
+r205 | georg | 2012-04-18 15:18:35 -0700 (Wed, 18 Apr 2012) | 1 line
+
+Added COPYING file in the IEGen directory, modified doc/doxyconfig file to use DOT and to extract a lot more graphs - call graphs in particular, modified it to just look in IEGen/src/iegenlib and in IEGen/src/demo_driver.cc, which is where the main index page is specified (\mainpage...)
+------------------------------------------------------------------------
+r204 | georg | 2012-04-18 12:29:03 -0700 (Wed, 18 Apr 2012) | 1 line
+
+took out line that added dependency on isl-proj because I couldn't find any kind of reference to this in any other location. The line was: #add_dependencies(iegenlib isl-proj)
+------------------------------------------------------------------------
+r203 | georg | 2012-04-18 11:58:47 -0700 (Wed, 18 Apr 2012) | 1 line
+
+took out commented lines that build IEGEN and referred to CLoog; first created a tagged version (202) called buildIEGENtoo that still has all these lines in it - affected files are IEGen/CMakeLists.txt, IEGen/configure, and IEGen/src/CMakeLists.txt
+------------------------------------------------------------------------
+r200 | jstrout | 2012-04-14 19:38:44 -0700 (Sat, 14 Apr 2012) | 2 lines
+
+Worked on some composition test cases.
+
+------------------------------------------------------------------------
+r193 | mstrout | 2012-04-12 08:43:05 -0700 (Thu, 12 Apr 2012) | 2 lines
+
+Merged CO_10April2012_IEGen branch into the trunk.
+
+------------------------------------------------------------------------
+r188 | jstrout | 2012-04-11 20:54:06 -0700 (Wed, 11 Apr 2012) | 2 lines
+
+Finished handling cases 1 and 2 of Compose.
+
+------------------------------------------------------------------------
+r187 | mstrout | 2012-04-11 14:47:43 -0700 (Wed, 11 Apr 2012) | 6 lines
+
+Committing when a couple of test cases on the trunk fail.
+Think there is a bug in Exp::addTerm() or toString() causing
+one of the issues.
+Also think I may have found how to break current compose?
+Will fix these tonight.
+
+------------------------------------------------------------------------
+r186 | mstrout | 2012-04-11 14:38:00 -0700 (Wed, 11 Apr 2012) | 2 lines
+
+Took out the aborted attempt at NewRelation::findFunction().
+
+------------------------------------------------------------------------
+r183 | jstrout | 2012-04-10 20:43:43 -0700 (Tue, 10 Apr 2012) | 4 lines
+
+Started on the Compose operation.  Currently working only for
+very restricted cases (identity functions), but we have a
+decent foundation to build upon.
+
+------------------------------------------------------------------------
+r182 | heim | 2012-04-10 20:16:06 -0700 (Tue, 10 Apr 2012) | 1 line
+
+Added implementation of DOT output for new Set and new Relation classes. IEGRONE-25
+------------------------------------------------------------------------
+r181 | mstrout | 2012-04-10 18:47:51 -0700 (Tue, 10 Apr 2012) | 2 lines
+
+Start of tests for compose.
+
+------------------------------------------------------------------------
+r178 | heim | 2012-04-10 00:14:06 -0700 (Tue, 10 Apr 2012) | 1 line
+
+Revised Exp::toDotString(...) and added implementation for NewConjunction::toDotString(...) with unit test. IEGRONE-25
+------------------------------------------------------------------------
+r177 | jstrout | 2012-04-09 20:39:51 -0700 (Mon, 09 Apr 2012) | 3 lines
+
+Started on the findFunction method, but realized that this needs to
+be done at the conjunction level.
+
+------------------------------------------------------------------------
+r176 | mstrout | 2012-04-09 20:07:08 -0700 (Mon, 09 Apr 2012) | 2 lines
+
+Starting test cases for Relation::discoverFunctions().
+
+------------------------------------------------------------------------
+r175 | mstrout | 2012-04-09 19:41:40 -0700 (Mon, 09 Apr 2012) | 2 lines
+
+Tests for Relation::findFunctions() in comments.
+
+------------------------------------------------------------------------
+r171 | mstrout | 2012-04-09 15:51:41 -0700 (Mon, 09 Apr 2012) | 3 lines
+
+Did some cleanup on how sparse constraints, sets, and relations are created in the new_set_relation_test.cc
+test cases.  Brendan will want to use these examples to construct things in the parser.
+
+------------------------------------------------------------------------
+r167 | georg | 2012-04-06 11:21:45 -0700 (Fri, 06 Apr 2012) | 1 line
+
+Added cmake commands to use -Wall for iegenlib files and for the executables such as demo_driver, memory_tests, run_tests; changed src/CMakeLists.txt and src/iegnlib/CMakeLists.txt
+------------------------------------------------------------------------
+r166 | mstrout | 2012-04-04 08:35:06 -0700 (Wed, 04 Apr 2012) | 3 lines
+
+Notes about function finding for relations and an initial set of test
+cases in the new_set_relation_test.cc file.
+
+------------------------------------------------------------------------
+r165 | heim | 2012-04-03 18:13:18 -0700 (Tue, 03 Apr 2012) | 1 line
+
+Fixed bullet 4 of JIRA issue: combined implementations of Exp::toDotString and Exp::toDotStringSubExp. Implementation no longer prints out 'digraph {' or '}'. Added default parameter for toDotString. IEGRONE-24
+------------------------------------------------------------------------
+r164 | heim | 2012-04-02 19:48:13 -0700 (Mon, 02 Apr 2012) | 1 line
+
+Finished minor refactor of Exp toDotString methods (bullets 1, 2, and 3). Bullet 5 was completed in my previous commit. IEGRONE-24
+------------------------------------------------------------------------
+r163 | jstrout | 2012-03-31 20:24:03 -0700 (Sat, 31 Mar 2012) | 4 lines
+
+Finished copy-ctor, etc. for NewSparseConstraints, NewSet, and NewRelation.
+Includes toString method that can split the arity of conjunctions used
+in a relation.
+
+------------------------------------------------------------------------
+r162 | jstrout | 2012-03-31 19:30:37 -0700 (Sat, 31 Mar 2012) | 2 lines
+
+Replaced sets with lists in NewConjunction to have predictable output order.
+
+------------------------------------------------------------------------
+r161 | mstrout | 2012-03-31 19:00:05 -0700 (Sat, 31 Mar 2012) | 3 lines
+
+Adding some constructors to SparseConstraints.  Also, the regression tests fail for me.
+Getting a different order of constraints on my machine.
+
+------------------------------------------------------------------------
+r160 | heim | 2012-03-31 18:17:12 -0700 (Sat, 31 Mar 2012) | 1 line
+
+Added unit tests for and implemented .dot output for Exp objects. IEGRONE-22
+------------------------------------------------------------------------
+r159 | jstrout | 2012-03-30 20:27:26 -0700 (Fri, 30 Mar 2012) | 3 lines
+
+Added substituteTupleDecl to NewConjunction, providing a way to substitute
+the tuple var terms in for name variables in the constraints.
+
+------------------------------------------------------------------------
+r158 | jstrout | 2012-03-30 19:49:00 -0700 (Fri, 30 Mar 2012) | 3 lines
+
+Renamed SymConstTerm to VarTerm, since it will also be used to represent
+variables that have not yet been identified as tuple variables.
+
+------------------------------------------------------------------------
+r157 | jstrout | 2012-03-28 21:03:53 -0700 (Wed, 28 Mar 2012) | 2 lines
+
+Created toString() for the NewConstraint class and all the other routines we need for construction.
+
+------------------------------------------------------------------------
+r156 | mstrout | 2012-03-28 19:33:34 -0700 (Wed, 28 Mar 2012) | 2 lines
+
+Starting to write test cases for the new set and relation data structures.
+
+------------------------------------------------------------------------
+r155 | mstrout | 2012-03-28 15:15:50 -0700 (Wed, 28 Mar 2012) | 4 lines
+
+Created almost empty new_set_relation files.  Everything builds and the regression
+tests run.  We do get a warning when building the iegenlib library that 
+new_set_relation doesn't have anything in it.
+
+------------------------------------------------------------------------
+r152 | georg | 2012-03-28 14:57:56 -0700 (Wed, 28 Mar 2012) | 2 lines
+
+Added this file so that cmake will create a target for doxygen to run.
+
+------------------------------------------------------------------------
+r151 | georg | 2012-03-28 14:57:09 -0700 (Wed, 28 Mar 2012) | 4 lines
+
+Modified CMakeLists to use doc as a subdirectory in order to create the 
+doxygen build target. Had to add this target to Makefile too; related is
+creating doc/CMakeLists.txt, which is also being checked in.
+
+------------------------------------------------------------------------
+r148 | georg | 2012-03-28 13:29:40 -0700 (Wed, 28 Mar 2012) | 5 lines
+
+Merging cmake changes to the trunk - took the building of iegenlib and
+the parser out of the src CMakeLists and put them into the src/iegenlib
+CMakeLists. Also added comments to top level CMakeLists regarding Makefile
+also at the top level that isn't a generated one, and to configure
+
+------------------------------------------------------------------------
+r142 | heim | 2012-03-27 21:33:09 -0700 (Tue, 27 Mar 2012) | 1 line
+
+Added implementation baseline for Exp .dot output. Currently, nested Exp doesn't work and causes segmentation faults, but expressions without UFCalls work. IEGRONE-22
+------------------------------------------------------------------------
+r140 | jstrout | 2012-03-24 20:03:59 -0700 (Sat, 24 Mar 2012) | 2 lines
+
+Added Exp::dependsOn and Exp::remapTupleVars.
+
+------------------------------------------------------------------------
+r139 | jstrout | 2012-03-22 20:24:04 -0700 (Thu, 22 Mar 2012) | 3 lines
+
+Added methods to check divisibility, divide an expression
+or term by a constant, and solve an equality expression.
+
+------------------------------------------------------------------------
+r138 | jstrout | 2012-03-22 19:48:55 -0700 (Thu, 22 Mar 2012) | 5 lines
+
+Removed IneqExp and EqExp because we're not going to use a Visitor
+design pattern on these things.  Also improved toString() output
+in cases where a term other than the first has a negative coefficient
+(now prints it as simple subtraction).
+
+------------------------------------------------------------------------
+r137 | jstrout | 2012-03-21 21:23:05 -0700 (Wed, 21 Mar 2012) | 2 lines
+
+Added Exp::substitute (and related support methods).
+
+------------------------------------------------------------------------
+r135 | georg | 2012-03-21 13:01:59 -0700 (Wed, 21 Mar 2012) | 1 line
+
+changed // to real comments - #
+------------------------------------------------------------------------
+r127 | georg | 2012-03-21 10:59:59 -0700 (Wed, 21 Mar 2012) | 1 line
+
+merged build-n-install back to trunk (new comments)
+------------------------------------------------------------------------
+r124 | georg | 2012-03-21 10:52:41 -0700 (Wed, 21 Mar 2012) | 1 line
+
+merged build-n-install back to trunk (takes args now)
+------------------------------------------------------------------------
+r117 | jstrout | 2012-03-20 21:07:41 -0700 (Tue, 20 Mar 2012) | 2 lines
+
+Implemented expression add and multiply.
+
+------------------------------------------------------------------------
+r116 | jstrout | 2012-03-20 20:00:17 -0700 (Tue, 20 Mar 2012) | 2 lines
+
+Finished basic functionality of Exp and UFCallTerm.
+
+------------------------------------------------------------------------
+r115 | mstrout | 2012-03-20 12:57:14 -0700 (Tue, 20 Mar 2012) | 2 lines
+
+Fixed typo in demo_driver.cc.  Needed to include algorithm.
+
+------------------------------------------------------------------------
+r110 | jstrout | 2012-03-18 21:09:01 -0700 (Sun, 18 Mar 2012) | 2 lines
+
+More work on the new expression and term class hierarchy.
+
+------------------------------------------------------------------------
+r109 | mstrout | 2012-03-18 18:40:37 -0700 (Sun, 18 Mar 2012) | 2 lines
+
+Added a toString method stub to expression.h.
+
+------------------------------------------------------------------------
+r108 | mstrout | 2012-03-18 18:32:46 -0700 (Sun, 18 Mar 2012) | 5 lines
+
+Starting the new expression data structure on the trunk.
+Have a test file that is run with the rest of run_iegenlib_tests.
+The stubbed out classes in expression.h do not use any other classes 
+in iegenlib yet.
+
+------------------------------------------------------------------------
+r107 | mstrout | 2012-03-18 10:31:43 -0700 (Sun, 18 Mar 2012) | 2 lines
+
+Turned all the tabs into spaces on the trunk.
+
+------------------------------------------------------------------------
+r106 | mstrout | 2012-03-18 08:17:48 -0700 (Sun, 18 Mar 2012) | 2 lines
+
+Removed a lot of commented out code from the build_sym_table_visitor.
+
+------------------------------------------------------------------------
+r105 | mstrout | 2012-03-18 07:51:49 -0700 (Sun, 18 Mar 2012) | 6 lines
+
+Reintegrated Mark's branch to the trunk.
+svn merge --reintegrate svn+ssh://vega.cs.colostate.edu/s/bach/e/proj/rtrt/SVNRepository/IEGenProject/branch/MH_27Feb2012_iegenlib
+memory_tests.cc compiles but throws an exception.
+run_iegenlib_tests all work.
+This branch is done and I plan to start Mark on another branch and task.
+
+------------------------------------------------------------------------
+r101 | jstrout | 2012-03-17 20:44:58 -0700 (Sat, 17 Mar 2012) | 4 lines
+
+Refactored demo_driver.cc for clarity, reordered where the "inverse" keyword
+goes (it now goes before the relation to invert), and made all keywords
+case-insensitive.
+
+------------------------------------------------------------------------
+r99 | mstrout | 2012-03-17 19:44:33 -0700 (Sat, 17 Mar 2012) | 2 lines
+
+Removing memory_tests.cc from the trunk build for now until after we have merged in ParamExpVec.
+
+------------------------------------------------------------------------
+r97 | mstrout | 2012-03-17 16:17:43 -0700 (Sat, 17 Mar 2012) | 1 line
+
+Moving the bindings subdir back under src
+------------------------------------------------------------------------
+r96 | mstrout | 2012-03-17 16:17:10 -0700 (Sat, 17 Mar 2012) | 1 line
+
+Oops, accidentally moved bindings in eclipse
+------------------------------------------------------------------------
+r94 | mstrout | 2012-03-16 08:35:59 -0700 (Fri, 16 Mar 2012) | 4 lines
+
+Printing the ast dot file before the sparse constraints for debugging in demo_driver.
+Should always do it this way so that if the set_relation_dot_visitor dies, then
+we still get the ast dot file.
+
+------------------------------------------------------------------------
+r88 | mstrout | 2012-03-15 19:21:43 -0700 (Thu, 15 Mar 2012) | 2 lines
+
+On Mark's branch, the use of ParamExpVec now all compiles.
+
+------------------------------------------------------------------------
+r81 | mstrout | 2012-03-14 08:34:13 -0700 (Wed, 14 Mar 2012) | 2 lines
+
+Fixed minor typo in README.
+
+------------------------------------------------------------------------
+r80 | mstrout | 2012-03-14 08:31:28 -0700 (Wed, 14 Mar 2012) | 2 lines
+
+Modified the top CMakeLists.txt file to make sure that all of the linker flags have -O0 -g as well.
+
+------------------------------------------------------------------------
+r79 | mstrout | 2012-03-13 20:43:46 -0700 (Tue, 13 Mar 2012) | 2 lines
+
+refactored each of the input handlers into its own smaller method
+
+------------------------------------------------------------------------
+r78 | mstrout | 2012-03-13 20:31:22 -0700 (Tue, 13 Mar 2012) | 4 lines
+
+Modified the configure script so that cmake creates the debug build.
+Then in the main CMakeLists.txt file I am setting the appropriate CXX and link flags
+for a debug build.
+
+------------------------------------------------------------------------
+r77 | mstrout | 2012-03-13 20:16:43 -0700 (Tue, 13 Mar 2012) | 2 lines
+
+fixed a segfault that would occur when input had spaces around '->' in a relation
+
+------------------------------------------------------------------------
+r75 | mstrout | 2012-03-13 14:20:27 -0700 (Tue, 13 Mar 2012) | 1 line
+
+Modified the dot output for the AST VarExp node so that the variable and its coefficient are on the next line.
+------------------------------------------------------------------------
+r69 | georg | 2012-03-06 11:07:10 -0800 (Tue, 06 Mar 2012) | 1 line
+
+merged branch changes back to trunk
+------------------------------------------------------------------------
+r65 | georg | 2012-03-05 11:56:02 -0800 (Mon, 05 Mar 2012) | 1 line
+
+merged in AST tests
+------------------------------------------------------------------------
+r61 | georg | 2012-03-05 10:54:26 -0800 (Mon, 05 Mar 2012) | 1 line
+
+merged configure
+------------------------------------------------------------------------
+r58 | georg | 2012-03-05 10:13:40 -0800 (Mon, 05 Mar 2012) | 1 line
+
+merging full GG branch to trunk
+------------------------------------------------------------------------
+r53 | georg | 2012-03-05 09:33:22 -0800 (Mon, 05 Mar 2012) | 1 line
+
+merged configure changes to take out building iegen
+------------------------------------------------------------------------
+r43 | heim | 2012-02-23 19:50:21 -0800 (Thu, 23 Feb 2012) | 1 line
+
+Rename of paramIDs in symbol_table.* to paramExps.
+------------------------------------------------------------------------
+r36 | heim | 2012-02-10 12:55:30 -0800 (Fri, 10 Feb 2012) | 1 line
+
+Repaired the makefile in trunk/ that was overwritten.
+------------------------------------------------------------------------
+r33 | mstrout | 2012-02-08 14:34:28 -0800 (Wed, 08 Feb 2012) | 2 lines
+
+Deleting eclipse project from subversion.
+
+------------------------------------------------------------------------
+r32 | heim | 2012-02-08 11:08:31 -0800 (Wed, 08 Feb 2012) | 1 line
+
+Modified README slightly to include instructions for compiling with optimization off.
+------------------------------------------------------------------------
+r31 | georg | 2012-02-06 13:13:34 -0800 (Mon, 06 Feb 2012) | 1 line
+
+IEGRONE-10 - took out build_isl and build_cloog variables along with the tests for them since they don't have any affect on the final cmake arguments and the user has no control over them. Rebuilt makefiles and did a make install as a test.
+------------------------------------------------------------------------
+r23 | georg | 2012-01-27 14:19:46 -0800 (Fri, 27 Jan 2012) | 1 line
+
+dummy change
+------------------------------------------------------------------------
+r21 | mstrout | 2012-01-09 14:18:04 -0800 (Mon, 09 Jan 2012) | 1 line
+
+
+------------------------------------------------------------------------
+r20 | mstrout | 2012-01-04 20:40:21 -0800 (Wed, 04 Jan 2012) | 3 lines
+
+Some minor comment edits in the code while doing code review.
+Took out Alan's text from developers guide.  Will rewrite from scratch.
+
+------------------------------------------------------------------------
+r19 | mstrout | 2012-01-02 16:23:55 -0800 (Mon, 02 Jan 2012) | 3 lines
+
+Fixed some minor spelling issues in the code comments.
+Worked some on the IEGenLibDev document.
+
+------------------------------------------------------------------------
+r16 | mstrout | 2011-12-28 13:32:09 -0800 (Wed, 28 Dec 2011) | 2 lines
+
+Adding Google Code head for IEGen (http://code.google.com/p/iegen).
+
+------------------------------------------------------------------------

@@ -1,0 +1,379 @@
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+MapIR Design
+\end_layout
+
+\begin_layout Author
+Alan LaMielle
+\end_layout
+
+\begin_layout Date
+August 4, 2010
+\end_layout
+
+\begin_layout Section
+Overview
+\end_layout
+
+\begin_layout Standard
+MapIR stands for Mapping Intermediate Representation.
+ This IR is used in the sparse polyhedral model to represent a computation.
+ The computation in question is first converted to the MapIR, various transforma
+tions are applied to the MapIR, and code is generated that implements the
+ transformed computation.
+\end_layout
+
+\begin_layout Section
+MapIR Specification
+\end_layout
+
+\begin_layout Standard
+The following information is maintained by the MapIR to represent a given
+ computation:
+\end_layout
+
+\begin_layout Itemize
+symbolic constants
+\end_layout
+
+\begin_layout Itemize
+data arrays
+\end_layout
+
+\begin_layout Itemize
+index arrays
+\end_layout
+
+\begin_layout Itemize
+statements
+\end_layout
+
+\begin_layout Itemize
+access relations for each statement
+\end_layout
+
+\begin_layout Itemize
+data dependences
+\end_layout
+
+\begin_layout Standard
+Each of these entities is associated with a name that is unique for the
+ whole MapIR data structure.
+ For example, if a statement has the name `S0', no other symbolic constant,
+ data array, etc.
+ can have that same name.
+\end_layout
+
+\begin_layout Standard
+The implementation of the MapIR is based on maps of entity name to the object
+ with that name.
+ The MapIR class itself is a very simple container class:
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+MapIR:
+\end_layout
+
+\begin_layout Itemize
+set<string> names; //Contains all used names in the MapIR instance
+\end_layout
+
+\begin_layout Itemize
+map<string,Symbolic> symbolics
+\end_layout
+
+\begin_layout Itemize
+map<string,DataArray> data_arrays
+\end_layout
+
+\begin_layout Itemize
+map<string,IndexArray> index_arrays
+\end_layout
+
+\begin_layout Itemize
+map<string,ERSpec> er_specs
+\end_layout
+
+\begin_layout Itemize
+map<string,Statement> statements
+\end_layout
+
+\begin_layout Itemize
+map<string,DataDependence> data_deps
+\end_layout
+
+\begin_layout Itemize
+add_{symbolic,data_array,index_array,er_spec,statement,data_dep}: Each of
+ these methods will accept the appropriate object type corresponding to
+ its name, check that that object's name isn't used in the MapIR already,
+ and add it to the appropriate map field.
+ For entities that refer to others (such as the data_array field of AccessRelati
+on), the MapIR should validate that the referenced entity already exists
+ in the MapIR.
+\end_layout
+
+\begin_layout Itemize
+get_{symbolics,data_arrays,index_arrays,er_specs,statements,data_deps}:
+ Each of these methods will return a collection of the appropriate object
+ type.
+\end_layout
+
+\begin_layout Itemize
+get_{symbolic,data_array,index_array,er_spec,statement,data_dep}(string
+ name): Each of these methods will return the appropriate object associated
+ with the given name.
+\end_layout
+
+\begin_layout Standard
+Each entity that the MapIR contains will have its own class that derives
+ from a base class:
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+MapIREntity (abstract class, cannot instantiate):
+\end_layout
+
+\begin_layout Itemize
+name
+\end_layout
+
+\begin_layout Itemize
+string get_name(): returns the name of this object
+\end_layout
+
+\begin_layout Standard
+The subclasses of MapIREntity all add a certain number of fields.
+ These fields should all be private and have only getter methods for the
+ fields.
+ Once the object is created there is rarely a reason to update the fields
+ (therefore no setters are necessary except in a few circumstances).
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Symbolic: MapIREntity:
+\end_layout
+
+\begin_layout Itemize
+lower_bound: an integer representing the lower bound of the symbolic
+\end_layout
+
+\begin_layout Itemize
+upper_bound: an integer representing the upper bound of the symbolic
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+DataArray: MapIREntity:
+\end_layout
+
+\begin_layout Itemize
+Set bounds: a Set representing the bounds of the data array.
+ This method should check that the bounds contain only a single conjunction
+ as data arrays must be a continuous sequence of elements.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+ERSpec: MapIREntity:
+\end_layout
+
+\begin_layout Itemize
+Set input_bounds: a Set representing the input bounds of the ER this ERSpec
+ represents
+\end_layout
+
+\begin_layout Itemize
+Set output_bounds: a Set representing the output bounds of the ER this ERSpec
+ represents
+\end_layout
+
+\begin_layout Itemize
+Relation relation: a Relation representing the relation for the ER this
+ ERSpec represents
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+IndexArray: ERSpec:
+\end_layout
+
+\begin_layout Itemize
+No fields in addition to an ERSpec, the relation is never used, so it can
+ be created and initialized as the empty relation {[]->[]}
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Statement: MapIREntity:
+\end_layout
+
+\begin_layout Itemize
+string text: the statement's text in the program.
+\end_layout
+
+\begin_layout Itemize
+Set iter_space: the iteration space of the statement
+\end_layout
+
+\begin_layout Itemize
+Relation scatter: the scattering function for the statement, input tuple
+ variables are just the iteration space iterators, output tuple variables
+ are the iterators interleaved with constant values.
+ For example: iter_space={[i,j]: 0<=i,j<=10} scatter={[i,j]->[0,i,1,j,0]}
+\end_layout
+
+\begin_layout Itemize
+map<string,AccessRelation> access_relations: mapping of access relation
+ name to AccessRelation object
+\end_layout
+
+\begin_layout Itemize
+get_access_relations(): returns a collection of access relations that the
+ statement instance contains
+\end_layout
+
+\begin_layout Itemize
+get_access_relation(string ar_name): returns the access relation of the
+ given name
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+AccessRelation: MapIREntity:
+\end_layout
+
+\begin_layout Itemize
+string data_array: name of the data array being accessed
+\end_layout
+
+\begin_layout Itemize
+Relation iter_to_data: Relation mapping iterators to positions in the data
+ array that are accessed
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+DataDepdence: MapIREntity:
+\end_layout
+
+\begin_layout Itemize
+Relation dep_rel: a Relation that represents the data dependence relation
+\end_layout
+
+\begin_layout Section
+Testing and Development
+\end_layout
+
+\begin_layout Standard
+To test the MapIR data structure, we'll develop tests for each component
+ class (DataArray, Statement, etc.) first.
+ Then test the MapIR data structure itself.
+ The development workflow should be:
+\end_layout
+
+\begin_layout Itemize
+Create stub classes and methods for the Symbolic, DataArray, ERSpec, IndexArray,
+ Statement, AccessRelation, DataDependence and MapIR classes.
+ Do not implement any actual logic for the methods or constructors.
+ This is so that we can write tests that compile but do not pass.
+\end_layout
+
+\begin_layout Itemize
+Write tests that test the Symbolic, DataArray, ERSpec, IndexArray, Statement,
+ AccessRelation, DataDependence, and MapIR classes.
+\end_layout
+
+\begin_layout Itemize
+Implement the methods that are being tested so that the tests now pass.
+\end_layout
+
+\begin_layout Standard
+As a more specific example, consider the AccessRelation class.
+ This class will have two public methods: get_data_array() and get_iter_to_data(
+).
+ Write a test that creates an AccessRelation with a test name, test data_array
+ name, and a test Relation for the iter_to_data field.
+ The test will then ask for the name, data array name, and iter_to_data
+ relation and ensure that they are equal to the given information.
+\end_layout
+
+\begin_layout Standard
+Error handling: The test cases should test situations such as adding an
+ access relation to a statement that doesn't exist.
+ For example, calling mapir.add_access_relation(
+\begin_inset Quotes eld
+\end_inset
+
+ar1
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+S3
+\begin_inset Quotes erd
+\end_inset
+
+) when statement S3 does not exist.
+ We will raise an exception (such as MapIRException?) in this situation.
+ The test should verify that an exception is actually raised and fail if
+ this is not the case.
+\end_layout
+
+\end_body
+\end_document

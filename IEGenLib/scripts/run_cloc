@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+./scripts/cloc --exclude-dir=glog,gtest,CMakeFiles --not-match-f=gen_pres_* --exclude-lang=make src

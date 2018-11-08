@@ -1,0 +1,115 @@
+Needed files:
+logging.cc
+raw_logging.cc
+vlog_is_on.cc
+utilities.cc
+demangle.cc
+symbolize.cc
+signalhandler.cc
+
+g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-logging.lo -MD -MP -MF .deps/libglog_la-logging.Tpo -c src/logging.cc -o libglog_la-logging.o >/dev/null 2>&1
+g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-raw_logging.lo -MD -MP -MF .deps/libglog_la-raw_logging.Tpo -c src/raw_logging.cc  -fPIC -DPIC -o .libs/libglog_la-raw_logging.o
+g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-vlog_is_on.lo -MD -MP -MF .deps/libglog_la-vlog_is_on.Tpo -c src/vlog_is_on.cc  -fPIC -DPIC -o .libs/libglog_la-vlog_is_on.o
+
+make: Warning: File `.deps/utilities_unittest-utilities_unittest.Po' has modification time 4.1e+02 s in the future
+/bin/bash ./libtool --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I./src  -I./src    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-logging.lo -MD -MP -MF .deps/libglog_la-logging.Tpo -c -o libglog_la-logging.lo `test -f 'src/logging.cc' || echo './'`src/logging.cc
+mkdir .libs
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-logging.lo -MD -MP -MF .deps/libglog_la-logging.Tpo -c src/logging.cc  -fPIC -DPIC -o .libs/libglog_la-logging.o
+src/logging.cc: In function ‘void google::WriteToStderr(const char*, size_t)’:
+src/logging.cc:506: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result
+src/logging.cc: In member function ‘bool google::<unnamed>::LogFileObject::CreateLogfile(const char*)’:
+src/logging.cc:722: warning: ignoring return value of ‘int symlink(const char*, const char*)’, declared with attribute warn_unused_result
+src/logging.cc:729: warning: ignoring return value of ‘int symlink(const char*, const char*)’, declared with attribute warn_unused_result
+src/logging.cc: In member function ‘void google::LogMessage::SendToLog()’:
+src/logging.cc:1215: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-logging.lo -MD -MP -MF .deps/libglog_la-logging.Tpo -c src/logging.cc -o libglog_la-logging.o >/dev/null 2>&1
+mv -f .deps/libglog_la-logging.Tpo .deps/libglog_la-logging.Plo
+/bin/bash ./libtool --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I./src  -I./src    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-raw_logging.lo -MD -MP -MF .deps/libglog_la-raw_logging.Tpo -c -o libglog_la-raw_logging.lo `test -f 'src/raw_logging.cc' || echo './'`src/raw_logging.cc
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-raw_logging.lo -MD -MP -MF .deps/libglog_la-raw_logging.Tpo -c src/raw_logging.cc  -fPIC -DPIC -o .libs/libglog_la-raw_logging.o
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-raw_logging.lo -MD -MP -MF .deps/libglog_la-raw_logging.Tpo -c src/raw_logging.cc -o libglog_la-raw_logging.o >/dev/null 2>&1
+mv -f .deps/libglog_la-raw_logging.Tpo .deps/libglog_la-raw_logging.Plo
+/bin/bash ./libtool --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I./src  -I./src    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-vlog_is_on.lo -MD -MP -MF .deps/libglog_la-vlog_is_on.Tpo -c -o libglog_la-vlog_is_on.lo `test -f 'src/vlog_is_on.cc' || echo './'`src/vlog_is_on.cc
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-vlog_is_on.lo -MD -MP -MF .deps/libglog_la-vlog_is_on.Tpo -c src/vlog_is_on.cc  -fPIC -DPIC -o .libs/libglog_la-vlog_is_on.o
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-vlog_is_on.lo -MD -MP -MF .deps/libglog_la-vlog_is_on.Tpo -c src/vlog_is_on.cc -o libglog_la-vlog_is_on.o >/dev/null 2>&1
+mv -f .deps/libglog_la-vlog_is_on.Tpo .deps/libglog_la-vlog_is_on.Plo
+/bin/bash ./libtool --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I./src  -I./src    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-utilities.lo -MD -MP -MF .deps/libglog_la-utilities.Tpo -c -o libglog_la-utilities.lo `test -f 'src/utilities.cc' || echo './'`src/utilities.cc
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-utilities.lo -MD -MP -MF .deps/libglog_la-utilities.Tpo -c src/utilities.cc  -fPIC -DPIC -o .libs/libglog_la-utilities.o
+src/utilities.cc: In function ‘void google::DebugWriteToStderr(const char*, void*)’:
+src/utilities.cc:82: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-utilities.lo -MD -MP -MF .deps/libglog_la-utilities.Tpo -c src/utilities.cc -o libglog_la-utilities.o >/dev/null 2>&1
+mv -f .deps/libglog_la-utilities.Tpo .deps/libglog_la-utilities.Plo
+/bin/bash ./libtool --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I./src  -I./src    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-demangle.lo -MD -MP -MF .deps/libglog_la-demangle.Tpo -c -o libglog_la-demangle.lo `test -f 'src/demangle.cc' || echo './'`src/demangle.cc
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-demangle.lo -MD -MP -MF .deps/libglog_la-demangle.Tpo -c src/demangle.cc  -fPIC -DPIC -o .libs/libglog_la-demangle.o
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-demangle.lo -MD -MP -MF .deps/libglog_la-demangle.Tpo -c src/demangle.cc -o libglog_la-demangle.o >/dev/null 2>&1
+mv -f .deps/libglog_la-demangle.Tpo .deps/libglog_la-demangle.Plo
+/bin/bash ./libtool --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I./src  -I./src    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-symbolize.lo -MD -MP -MF .deps/libglog_la-symbolize.Tpo -c -o libglog_la-symbolize.lo `test -f 'src/symbolize.cc' || echo './'`src/symbolize.cc
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-symbolize.lo -MD -MP -MF .deps/libglog_la-symbolize.Tpo -c src/symbolize.cc  -fPIC -DPIC -o .libs/libglog_la-symbolize.o
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-symbolize.lo -MD -MP -MF .deps/libglog_la-symbolize.Tpo -c src/symbolize.cc -o libglog_la-symbolize.o >/dev/null 2>&1
+mv -f .deps/libglog_la-symbolize.Tpo .deps/libglog_la-symbolize.Plo
+/bin/bash ./libtool --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I./src  -I./src    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-signalhandler.lo -MD -MP -MF .deps/libglog_la-signalhandler.Tpo -c -o libglog_la-signalhandler.lo `test -f 'src/signalhandler.cc' || echo './'`src/signalhandler.cc
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-signalhandler.lo -MD -MP -MF .deps/libglog_la-signalhandler.Tpo -c src/signalhandler.cc  -fPIC -DPIC -o .libs/libglog_la-signalhandler.o
+src/signalhandler.cc: In function ‘void google::<unnamed>::WriteToStderr(const char*, int)’:
+src/signalhandler.cc:145: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result
+ g++ -DHAVE_CONFIG_H -I. -I./src -I./src -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -DNDEBUG -g -O2 -MT libglog_la-signalhandler.lo -MD -MP -MF .deps/libglog_la-signalhandler.Tpo -c src/signalhandler.cc -o libglog_la-signalhandler.o >/dev/null 2>&1
+mv -f .deps/libglog_la-signalhandler.Tpo .deps/libglog_la-signalhandler.Plo
+/bin/bash ./libtool --tag=CXX   --mode=link g++   -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -DNDEBUG -g -O2    -o libglog.la -rpath /home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib  libglog_la-logging.lo libglog_la-raw_logging.lo libglog_la-vlog_is_on.lo libglog_la-utilities.lo libglog_la-demangle.lo libglog_la-symbolize.lo libglog_la-signalhandler.lo     -lpthread
+g++ -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.4.3/crtbeginS.o  .libs/libglog_la-logging.o .libs/libglog_la-raw_logging.o .libs/libglog_la-vlog_is_on.o .libs/libglog_la-utilities.o .libs/libglog_la-demangle.o .libs/libglog_la-symbolize.o .libs/libglog_la-signalhandler.o  -lpthread -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3 -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../.. -L/usr/lib/x86_64-linux-gnu -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/4.4.3/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib/crtn.o  -Wl,-soname -Wl,libglog.so.0 -o .libs/libglog.so.0.0.0
+(cd .libs && rm -f libglog.so.0 && cp -p libglog.so.0.0.0 libglog.so.0)
+(cd .libs && rm -f libglog.so && cp -p libglog.so.0.0.0 libglog.so)
+ar cru .libs/libglog.a  libglog_la-logging.o libglog_la-raw_logging.o libglog_la-vlog_is_on.o libglog_la-utilities.o libglog_la-demangle.o libglog_la-symbolize.o libglog_la-signalhandler.o
+ranlib .libs/libglog.a
+creating libglog.la
+(cd .libs && rm -f libglog.la && cp -p ../libglog.la libglog.la)
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT logging_unittest-logging_unittest.o -MD -MP -MF .deps/logging_unittest-logging_unittest.Tpo -c -o logging_unittest-logging_unittest.o `test -f 'src/logging_unittest.cc' || echo './'`src/logging_unittest.cc
+mv -f .deps/logging_unittest-logging_unittest.Tpo .deps/logging_unittest-logging_unittest.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o logging_unittest  logging_unittest-logging_unittest.o  libglog.la       -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/logging_unittest logging_unittest-logging_unittest.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating logging_unittest
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT demangle_unittest-demangle_unittest.o -MD -MP -MF .deps/demangle_unittest-demangle_unittest.Tpo -c -o demangle_unittest-demangle_unittest.o `test -f 'src/demangle_unittest.cc' || echo './'`src/demangle_unittest.cc
+mv -f .deps/demangle_unittest-demangle_unittest.Tpo .deps/demangle_unittest-demangle_unittest.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o demangle_unittest  demangle_unittest-demangle_unittest.o  libglog.la       -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/demangle_unittest demangle_unittest-demangle_unittest.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating demangle_unittest
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT stacktrace_unittest-stacktrace_unittest.o -MD -MP -MF .deps/stacktrace_unittest-stacktrace_unittest.Tpo -c -o stacktrace_unittest-stacktrace_unittest.o `test -f 'src/stacktrace_unittest.cc' || echo './'`src/stacktrace_unittest.cc
+mv -f .deps/stacktrace_unittest-stacktrace_unittest.Tpo .deps/stacktrace_unittest-stacktrace_unittest.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o stacktrace_unittest  stacktrace_unittest-stacktrace_unittest.o  libglog.la    -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/stacktrace_unittest stacktrace_unittest-stacktrace_unittest.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating stacktrace_unittest
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT symbolize_unittest-symbolize_unittest.o -MD -MP -MF .deps/symbolize_unittest-symbolize_unittest.Tpo -c -o symbolize_unittest-symbolize_unittest.o `test -f 'src/symbolize_unittest.cc' || echo './'`src/symbolize_unittest.cc
+mv -f .deps/symbolize_unittest-symbolize_unittest.Tpo .deps/symbolize_unittest-symbolize_unittest.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o symbolize_unittest  symbolize_unittest-symbolize_unittest.o  libglog.la       -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/symbolize_unittest symbolize_unittest-symbolize_unittest.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating symbolize_unittest
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT stl_logging_unittest-stl_logging_unittest.o -MD -MP -MF .deps/stl_logging_unittest-stl_logging_unittest.Tpo -c -o stl_logging_unittest-stl_logging_unittest.o `test -f 'src/stl_logging_unittest.cc' || echo './'`src/stl_logging_unittest.cc
+mv -f .deps/stl_logging_unittest-stl_logging_unittest.Tpo .deps/stl_logging_unittest-stl_logging_unittest.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o stl_logging_unittest  stl_logging_unittest-stl_logging_unittest.o  libglog.la       -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/stl_logging_unittest stl_logging_unittest-stl_logging_unittest.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating stl_logging_unittest
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT utilities_unittest-utilities_unittest.o -MD -MP -MF .deps/utilities_unittest-utilities_unittest.Tpo -c -o utilities_unittest-utilities_unittest.o `test -f 'src/utilities_unittest.cc' || echo './'`src/utilities_unittest.cc
+mv -f .deps/utilities_unittest-utilities_unittest.Tpo .deps/utilities_unittest-utilities_unittest.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o utilities_unittest  utilities_unittest-utilities_unittest.o  libglog.la       -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/utilities_unittest utilities_unittest-utilities_unittest.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating utilities_unittest
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT logging_striptest0-logging_striptest_main.o -MD -MP -MF .deps/logging_striptest0-logging_striptest_main.Tpo -c -o logging_striptest0-logging_striptest_main.o `test -f 'src/logging_striptest_main.cc' || echo './'`src/logging_striptest_main.cc
+mv -f .deps/logging_striptest0-logging_striptest_main.Tpo .deps/logging_striptest0-logging_striptest_main.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o logging_striptest0  logging_striptest0-logging_striptest_main.o  libglog.la    -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/logging_striptest0 logging_striptest0-logging_striptest_main.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating logging_striptest0
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT logging_striptest2-logging_striptest2.o -MD -MP -MF .deps/logging_striptest2-logging_striptest2.Tpo -c -o logging_striptest2-logging_striptest2.o `test -f 'src/logging_striptest2.cc' || echo './'`src/logging_striptest2.cc
+mv -f .deps/logging_striptest2-logging_striptest2.Tpo .deps/logging_striptest2-logging_striptest2.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o logging_striptest2  logging_striptest2-logging_striptest2.o  libglog.la    -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/logging_striptest2 logging_striptest2-logging_striptest2.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating logging_striptest2
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT logging_striptest10-logging_striptest10.o -MD -MP -MF .deps/logging_striptest10-logging_striptest10.Tpo -c -o logging_striptest10-logging_striptest10.o `test -f 'src/logging_striptest10.cc' || echo './'`src/logging_striptest10.cc
+mv -f .deps/logging_striptest10-logging_striptest10.Tpo .deps/logging_striptest10-logging_striptest10.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o logging_striptest10  logging_striptest10-logging_striptest10.o  libglog.la    -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/logging_striptest10 logging_striptest10-logging_striptest10.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating logging_striptest10
+g++ -DHAVE_CONFIG_H -I. -I./src  -I./src  -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -MT signalhandler_unittest-signalhandler_unittest.o -MD -MP -MF .deps/signalhandler_unittest-signalhandler_unittest.Tpo -c -o signalhandler_unittest-signalhandler_unittest.o `test -f 'src/signalhandler_unittest.cc' || echo './'`src/signalhandler_unittest.cc
+src/signalhandler_unittest.cc: In function ‘void WriteToStdout(const char*, int)’:
+src/signalhandler_unittest.cc:61: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result
+mv -f .deps/signalhandler_unittest-signalhandler_unittest.Tpo .deps/signalhandler_unittest-signalhandler_unittest.Po
+/bin/bash ./libtool --tag=CXX   --mode=link g++ -pthread    -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare  -DNO_FRAME_POINTER -g -O2 -pthread  -o signalhandler_unittest  signalhandler_unittest-signalhandler_unittest.o  libglog.la       -lpthread
+g++ -pthread -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare -DNO_FRAME_POINTER -g -O2 -pthread -o .libs/signalhandler_unittest signalhandler_unittest-signalhandler_unittest.o  ./.libs/libglog.so -lpthread  -Wl,--rpath -Wl,/home/lamielle/iegenc/untracked/glog-0.3.1/installed/lib
+creating signalhandler_unittest
+make: warning:  Clock skew detected.  Your build may be incomplete.

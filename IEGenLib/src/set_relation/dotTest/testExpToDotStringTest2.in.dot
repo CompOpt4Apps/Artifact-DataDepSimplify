@@ -1,0 +1,15 @@
+0 [label = "Exp\n"];
+0 -> 1;
+1 [label = "UFCallTerm\n 5 foo(...)"];
+1 -> 2;
+2 [label = "Exp\n... + ..."];
+2 -> 3;
+3 [label = "TupleVarTerm\n 42 __tv0"];
+2 -> 4;
+4 [label = "Term\n 7"];
+1 -> 5;
+5 [label = "Exp\n... + ..."];
+5 -> 6;
+6 [label = "TupleVarTerm\n 3 __tv3"];
+5 -> 7;
+7 [label = "VarTerm\n N"];

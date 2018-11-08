@@ -1,0 +1,73 @@
+#!/bin/bash
+#This file is modified to take out building iegen, use of isl and gmp
+
+usage() {
+  echo "Usage $0 [options]"
+  echo
+  echo "Supported options:"
+  echo "  --prefix DIR       : Installation prefix"
+  echo "  --gen-parser       : Generate the parser code using Flex/Bison"
+  echo "  --build-python     : Build the IEGen Python bindings"
+#  echo "  --build-release    : Build the Release version (Debug is default)"
+  echo "  -h | --help        : Print this help message"
+  echo
+  exit 1
+}
+
+check_bool_val() {
+  arg_name=$1
+  bool_val=$2
+  if [ "$bool_val" != "yes" ] && [ "$bool_val" != "no" ]; then
+    echo "Invalid value for boolean argument $arg_name: '$bool_val'"
+    echo
+    usage
+  fi
+}
+
+
+#By default, do not generate the parser
+gen_parser="no"
+
+#By default, do not build the Python bindings
+build_python="no"
+
+#By default, build a debug release
+release_str="Debug"
+
+#By default, install to $PWD/iegen
+install_prefix="$PWD/iegen"
+
+#Process the given command line arguments
+while [ $# -gt 0 ] ; do
+  case $1 in
+    -h) usage ;;
+    --help) usage ;;
+    --prefix) install_prefix=$2; shift 2 ;;
+    --gen-parser) gen_parser="yes"; shift 1 ;;
+    --build-python) build_python="yes"; shift 1 ;;
+    --build-release) release_str="Release"; shift 1 ;;
+    *) echo "Unknown command line argument '$1'"; echo; usage ;;
+  esac
+done
+
+## add ../ unless we are using an abs. path
+first_char=${install_prefix:0:1}
+if [ "$first_char" != "/" ]
+then
+  install_prefix="../$install_prefix"
+fi
+
+cd lib/isl 
+autoreconf -i
+cd ../..
+
+#Generate the build system using cmake and the specified configuration options
+mkdir -p build
+cd build
+
+#Creating bin directory
+mkdir -p bin
+
+echo "cmake .. -DCMAKE_BUILD_TYPE:STRING=$release_str -DGEN_PARSER=$gen_parser -DBUILD_PYTHON=$build_python -DCMAKE_INSTALL_PREFIX=$install_prefix"
+
+cmake .. -DCMAKE_BUILD_TYPE:STRING=$release_str -DGEN_PARSER=$gen_parser -DBUILD_PYTHON=$build_python -DCMAKE_INSTALL_PREFIX=$install_prefix

@@ -1,0 +1,5 @@
+"/home/derick/dev/chill/chill-src/examples/chill/testcases/bug1.c", line 6: warning: 
+          variable "wat" was set but never used
+     int wat;
+         ^
+

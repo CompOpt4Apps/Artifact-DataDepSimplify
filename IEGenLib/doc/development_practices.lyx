@@ -1,0 +1,906 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options false
+\language english
+\inputencoding latin9
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+IEGen Development Procedures
+\end_layout
+
+\begin_layout Author
+Alan LaMielle
+\end_layout
+
+\begin_layout Date
+May 17, 2010
+\end_layout
+
+\begin_layout Section
+IEGen Overview
+\end_layout
+
+\begin_layout Standard
+IEGen, the Inspector/Executor Generator, is a tool for generating inspector/exec
+utor functions that implement transformed irregular computations.
+ The input is a computation specification file (.spec) and a sequence of
+ transformations to apply to that computation.
+ The output is C code that implements the transformed computation.
+ Details of the techniques used to produce this output are described in
+ my thesis.
+\end_layout
+
+\begin_layout Section
+Development Practices
+\end_layout
+
+\begin_layout Standard
+IEGen is developed using a TDD (test-driven development) style and utilizing
+ a bug tracker (Redmine).
+ Consider the issues in Redmine to be the larger feature pieces and descriptions
+ of bugs to be fixed.
+ Consider tests as subcomponents of the issues.
+ When developing IEGen, in general the workflow should be: 
+\end_layout
+
+\begin_layout Enumerate
+Add or select an issue in Redmine (feature addition or bug fix) as your
+ current focus of work: 'implement set/relation parsing from a string',
+ 'add depth-first visiting for the AST'.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Write unit tests that utilize this feature or exhibit the bug being focused
+ on: 'parsing this string should produce this string as output', 'visiting
+ this AST instance should create this string'.
+ Write many tests for new features, write an appropriate number of tests
+ for a bug (this will depend on the particular bug).
+ The tests written in this step will all fail initially.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Implement the necessary code to make the tests written in step 2 pass.
+\end_layout
+
+\begin_layout Enumerate
+Have someone check your work and make a comment to that affect in the redmine
+ issue.
+\end_layout
+
+\begin_layout Enumerate
+Close the issue selected in step 1.
+ 
+\end_layout
+
+\begin_layout Standard
+This general workflow should be followed as closely as possible.
+ At times it may not make sense depending on the piece being worked on,
+ but for the most part this is appropriate.
+ Also, 'commit early, commit often'.
+ The smaller the changes you make the better.
+ Force yourself to break your development into extremely small chunks.
+ Unit tests and issue tracking help with this.
+ Do not commit code that doesn't build and/or passes all tests.
+ Clean up the output of Valgrind (checking for memory leaks) before committing
+ as well.
+\end_layout
+
+\begin_layout Section
+Code Style Guidelines
+\end_layout
+
+\begin_layout Standard
+The following guidelines should be adhered to when developing for this project:
+\end_layout
+
+\begin_layout Itemize
+New C++ files should have the extension .cc and headers should have the extension
+ .h.
+\end_layout
+
+\begin_layout Itemize
+Indent code with spaces, not tabs.
+ 3 spaces is preferred, but be consistent within a file (and preferrably
+ project wide).
+\end_layout
+
+\begin_layout Itemize
+Use 80 character width lines or less.
+\end_layout
+
+\begin_layout Itemize
+Document your code using doxygen comment strings (see existing code for
+ examples).
+\end_layout
+
+\begin_layout Itemize
+Commit logs should follow the standard git commit format: <=50 characters
+ on the first line, skip a line, and write a more detailed commit message
+ that wraps at 80 characters after the summary line.
+ Refer to redmine issues in the commit log (references #...
+ or closes issue #...
+ for example).
+\end_layout
+
+\begin_layout Section
+Git
+\end_layout
+
+\begin_layout Standard
+Git is a bit different from svn: svn is a centralized version control system.
+ This means that there is one repository that everyone commits to and updates
+ from.
+ This works well in some environments where you know that the server will
+ always be available and you want to control access to the code and where
+ it is stored.
+ However, there are drawbacks to such a system, such as having one central
+ point of failure.
+ Git, on the other hand, is a distributed version control system.
+ Every user of git 
+\emph on
+has their own independent repository
+\emph default
+.
+ What does this mean? When you want to start working on a project, you make
+ a copy (or clone in git speak)--this is equivalent to checking out from
+ an svn repo.
+ Cloning makes a complete copy of the whole repository, history and all.
+ You can now commit locally, examine history locally, and do everything
+ else one would like to so with a version control system.
+ Most of the operations (like looking at history/logs) in svn required network
+ access to talk to the server.
+ This is not the case with git as you have all of that information locally.
+ The benefits of a distributed VCS are quite numerous.
+\end_layout
+
+\begin_layout Standard
+Getting changes from/to another repository is called pushing and pulling
+ in git.
+ For convenience, my server will be hosting the 'main' repository: this
+ is the repo that we will use as an intermediate point for propagating changes
+ to/from one another.
+ This is similar to svn, but is not strictly necessary.
+ If we could easily reference our individual repositories, we could push/pull
+ from each other directly.
+\end_layout
+
+\begin_layout Standard
+What you need to do (a basic git tutorial): My server is using public/private
+ keys to authenticate users.
+ This means you will need to give me your public key so that you can be
+ authenticated.
+ If you aren't familiar with this, please read through this 3 part article:
+ http://www.ibm.com/developerworks/linux/library/l-keyc.html It is very important
+ that you keep your private key secure and use a strong passphrase so even
+ if someone obtains the private key, it will be useless to them.
+\end_layout
+
+\begin_layout Standard
+To generate a key pair: ssh-keygen -t dsa
+\end_layout
+
+\begin_layout Standard
+Before you can do anything, you have to send me your public key.
+\end_layout
+
+\begin_layout Standard
+Once this is done, you can clone the IEGen repo: git clone git@iegen.com:iegen
+ This will clone the repository (make a copy of the repo locally on your
+ machine).
+\end_layout
+
+\begin_layout Standard
+Basic workflow: 
+\end_layout
+
+\begin_layout Itemize
+git pull (grabs the latest changes from iegen.com) 
+\end_layout
+
+\begin_layout Itemize
+(make changes to files) 
+\end_layout
+
+\begin_layout Itemize
+git add [changed files] (adds the changed files to the 'staging area' to
+ make them ready to be committed) 
+\end_layout
+
+\begin_layout Itemize
+git commit (commits the changes locally) 
+\end_layout
+
+\begin_layout Itemize
+git pull --rebase (syncs with the repo at iegen.com and replays and local
+ commits after the remote commits)
+\end_layout
+
+\begin_layout Itemize
+git push (pushes any local changes to iegen.com) 
+\end_layout
+
+\begin_layout Standard
+Before doing your first 'git commit', you will need to tell git your name
+ and email so that it will be included in the commit info.
+ There are two ways to do this.
+ The first is to place the attached file in ~/.gitconfig (don't forget the
+ dot before gitconfig) and change the appropriate fields.
+ This way will work across all repos unless you specify different configurations
+ in a per repo basis.
+ The other way is to use two commands to set your name and email just for
+ the one repo:
+\end_layout
+
+\begin_layout Standard
+git config user.name Your Name
+\end_layout
+
+\begin_layout Standard
+git config user.email your@email.com
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+[user]
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+name = Your Name
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+email = your@email.com
+\end_layout
+
+\begin_layout Plain Layout
+[core]
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+pager=/usr/bin/less -R
+\end_layout
+
+\begin_layout Plain Layout
+[color]
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+branch = auto
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+diff = auto
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+status = auto
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+ui = true
+\end_layout
+
+\begin_layout Plain Layout
+[color 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textquotedbl
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+branch
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textquotedbl
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+current = yellow reverse
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+local = yellow
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+remote = green
+\end_layout
+
+\begin_layout Plain Layout
+[color 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textquotedbl
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+diff
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textquotedbl
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+meta = yellow bold
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+frag = magenta bold
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+old = red bold
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+new = green bold
+\end_layout
+
+\begin_layout Plain Layout
+[color 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textquotedbl
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+status
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textquotedbl
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+added = yellow
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+changed = green
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+untracked = cyan
+\end_layout
+
+\begin_layout Plain Layout
+[alias]
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+st = status
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+ci = commit
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+br = branch
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+co = checkout
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+di = diff
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+lg = log -p
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Example gitconfig
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Git log messages: Git log messages have a convention that some tools look
+ for and I'd like to stick to.
+ The first line is <=50 chars and should be a summary of the commit.
+ If more space is needed, skip one line and provide a more detailed description
+ of the commit.
+ When I commit, vim is brought up and it has syntax highlighting that reminds
+ me of this convention.
+ See some of my commit messages in the logs for examples.
+\end_layout
+
+\begin_layout Standard
+Binaries that are produced from other files in the repository do not belong
+ in the repo.
+ It is not such a big deal in our case (though it does add unnecessary size
+ to the repo which I'd like to avoid), but in larger projects (like enlightenmen
+t, xmms2, and other open source projects), people will flip out if you commit
+ binaries that don't belong.
+\end_layout
+
+\begin_layout Standard
+That's about it.
+ A good cheat sheet is here: http://zrusin.blogspot.com/2007/09/git-cheat-sheet.htm
+l
+\end_layout
+
+\begin_layout Standard
+Again, before any of this will work I need your public key.
+ Send it to me and you can clone the repo.
+\end_layout
+
+\begin_layout Section
+Misc
+\end_layout
+
+\begin_layout Standard
+Just as with IEGen, a huge piece of the tool is the backend, the representation
+ of sets and relations.
+ We're hoping ISL will be able to do what we want after adding support for
+ UFSs.
+ I don't know how much can actually be done on the rewrite until we have
+ something like ISL.
+ I propose that we assume we're going to use this library.
+ We may be able to write a wrapper layer around ISL so that we can swap
+ out backends if necessary.
+\end_layout
+
+\begin_layout Standard
+For IEGen itself, here are the main components: -Input: some representation
+ in the form of the MapIR that represents the computation to transform -Transfor
+mation application: apply transformations in sequence to the MapIR and build
+ the IDG -Inspector code generator: generate code for the inspector based
+ on the IDG -Executor code generator: generate executor code -Backend representa
+tion library: ISL currently is the choice
+\end_layout
+
+\begin_layout Standard
+I can break each of these components down into smaller blocks too.
+ The following data structures will be needed to support these components:
+ 
+\end_layout
+
+\begin_layout Itemize
+MapIR: Structure storing statements, etc.
+ 
+\end_layout
+
+\begin_layout Itemize
+Transformation hierarchy: structures for representing different transformation
+ types 
+\end_layout
+
+\begin_layout Itemize
+IDG: structure (nodes, graph) for representing the IDG 
+\end_layout
+
+\begin_layout Itemize
+Code IR: Maybe we can use the Rose AST for this, but in IEGen currently
+ I generate an IR rather than text for code generation.
+ I then traverse this IR to generate the code.
+ The idea is that it allows us to potentially generate code for different
+ languages.
+ 
+\end_layout
+
+\begin_layout Standard
+Implementation detail questions: 
+\end_layout
+
+\begin_layout Itemize
+How reliant should we be on using classes? 
+\end_layout
+
+\begin_layout Itemize
+Should we use structs rather than C++ classes? 
+\end_layout
+
+\begin_layout Itemize
+What will our memory management strategy be? When do we dynamically allocate
+ structures vs.
+ local (stack) variables.
+ 
+\end_layout
+
+\begin_layout Itemize
+Code format/style guidelines.
+ (Tabs vs.
+ spaces, where to braces go, etc.
+ This ties in with the tools below.) 
+\end_layout
+
+\begin_layout Itemize
+Commit log style guideline.
+ 
+\end_layout
+
+\begin_layout Standard
+Development tools and methodologies: 
+\end_layout
+
+\begin_layout Itemize
+Testing: we will practice test-driven development whenever possible.
+ We will setup a unit-testing system and a regression testing system.
+ Unit tests will be utilized to ensure smaller more fine-grained functionality
+ is working as it should.
+ Regressions tests will be used to ensure that larger components are working
+ properly.
+ 
+\end_layout
+
+\begin_layout Itemize
+IDE: We will attempt to utilize Eclipse and it's C/C++ development tools.
+ 
+\end_layout
+
+\begin_layout Itemize
+Version control: Git integrates with Eclipse, so we will utilize git to
+ do version control.
+ 
+\end_layout
+
+\begin_layout Itemize
+Documentation: We will focus on creating good documentation of all of the
+ sub-components we develop.
+ Currently it looks like you are already familiar with Doxygen, so we should
+ count this in as the default tool.
+ Maybe there are other tools that work well with Eclipse that we can look
+ at though.
+ 
+\end_layout
+
+\begin_layout Itemize
+Bug tracking: I think we've both been really happy with Redmine for this
+ task.
+ We'll continue using this unless we see a strong motivation to switch.
+ 
+\end_layout
+
+\begin_layout Itemize
+Google Wave: We've both seen that this can be a really powerful tool for
+ certain tasks.
+ (How)Should we integrate this into our development practices? 
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,3385 @@
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 6 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+
+
+curOrder: j,i
+idxNames: i,j
+['j', 'i']
+curOrder: j,i
+idxNames: j,i
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 6 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 8 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+
+
+curOrder: jj,j,i
+idxNames: jj,j,i
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 8 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 10 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+
+
+curOrder: jj,ii,j,i
+idxNames: jj,ii,j,i
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 10 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 10 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 13 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 13 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 13 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 13 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 17 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+
+
+
+parameter_symtab has 6 entries
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+body_symtab has 17 entries
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+
+
+jj
+thread= j
+
+jj,ii,j,,i,
+// ~cuda~ preferredIdx: jj
+for(t2 = 0; t2 <= 255; t2++) {
+  // ~cuda~ preferredIdx: ii
+  for(t4 = 0; t4 <= 23; t4++) {
+    // ~cuda~ preferredIdx: j
+    for(t6 = 0; t6 <= 127; t6++) {
+      // ~cuda~ preferredIdx: i
+      for(t10 = 0; t10 <= 127; t10++) {
+        s0(t2,t4,t6,128*t2+t6,128*t4+t10);
+      }
+    }
+  }
+}
+
+block idx jj level 1 lb: 0 ub 255
+bx,ii,j,,i,
+// ~cuda~ preferredIdx: bx
+for(t2 = 0; t2 <= 255; t2++) {
+  // ~cuda~ preferredIdx: ii
+  for(t4 = 0; t4 <= 23; t4++) {
+    // ~cuda~ preferredIdx: j
+    for(t6 = 0; t6 <= 127; t6++) {
+      // ~cuda~ preferredIdx: i
+      for(t10 = 0; t10 <= 127; t10++) {
+        s0(t2,t4,t6,128*t2+t6,128*t4+t10);
+      }
+    }
+  }
+}
+
+thread idx j level 3 lb: 0 ub 127
+Codegen: current names: bx,ii,tx,,i,
+before datacopy_privatized:
+ printing statement:0
+{[chill_t10,chill_t11,chill_t12,chill_t13,chill_t14] : 128chill_t10+chill_t12 = chill_t13 && 128chill_t11, 0 <= chill_t14 <= 128chill_t11+127, 3071 && 128chill_t10, 0 <= chill_t13 <= 128chill_t10+127, 32767 && 0 <= chill_t10 <= 255 && 0 <= chill_t11 <= 23 }
+after datacopy_privatized:
+ printing statement:0
+{[chill_t19,chill_t20,chill_t21,chill_t22,chill_t23,chill_t24] : chill_t22 = 128chill_t19+chill_t21 && 128chill_t20+chill_t23 = chill_t24 && 0, -128chill_t19 <= chill_t21 <= 127, -128chill_t19+32767 && 128chill_t20, 0 <= chill_t24 <= 128chill_t20+127, 3071 && 0 <= chill_t19 <= 255 && 0 <= chill_t20 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+before datacopy_privatized:
+ printing statement:0
+{[chill_t19,chill_t20,chill_t21,chill_t22,chill_t23,chill_t24] : chill_t22 = 128chill_t19+chill_t21 && 128chill_t20+chill_t23 = chill_t24 && 0, -128chill_t19 <= chill_t21 <= 127, -128chill_t19+32767 && 128chill_t20, 0 <= chill_t24 <= 128chill_t20+127, 3071 && 0 <= chill_t19 <= 255 && 0 <= chill_t20 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+after datacopy_privatized:
+ printing statement:0
+{[chill_t26,chill_t27,chill_t28,chill_t29,chill_t30,chill_t31] : 128chill_t26+chill_t28 = chill_t29 && chill_t31 = 128chill_t27+chill_t30 && 128chill_t26, 0 <= chill_t29 <= 128chill_t26+127, 32767 && 0, -128chill_t27 <= chill_t30 <= 127, -128chill_t27+3071 && 0 <= chill_t26 <= 255 && 0 <= chill_t27 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+ printing statement:2
+{[chill_t26,chill_t28] : -128chill_t26, 0 <= chill_t28 <= -128chill_t26+32767, 127 }
+before datacopy_privatized:
+ printing statement:0
+{[chill_t26,chill_t27,chill_t28,chill_t29,chill_t30,chill_t31] : 128chill_t26+chill_t28 = chill_t29 && chill_t31 = 128chill_t27+chill_t30 && 128chill_t26, 0 <= chill_t29 <= 128chill_t26+127, 32767 && 0, -128chill_t27 <= chill_t30 <= 127, -128chill_t27+3071 && 0 <= chill_t26 <= 255 && 0 <= chill_t27 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+ printing statement:2
+{[chill_t26,chill_t28] : -128chill_t26, 0 <= chill_t28 <= -128chill_t26+32767, 127 }
+after datacopy_privatized:
+ printing statement:0
+{[chill_t33,chill_t34,chill_t35,chill_t36,chill_t37,chill_t38] : chill_t36 = 128chill_t33+chill_t35 && 128chill_t34+chill_t37 = chill_t38 && 0, -128chill_t33 <= chill_t35 <= 127, -128chill_t33+32767 && 128chill_t34, 0 <= chill_t38 <= 128chill_t34+127, 3071 && 0 <= chill_t33 <= 255 && 0 <= chill_t34 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+ printing statement:2
+{[chill_t26,chill_t28] : -128chill_t26, 0 <= chill_t28 <= -128chill_t26+32767, 127 }
+ printing statement:3
+{[chill_t33,chill_t35] : 0 <= chill_t35 <= 127 && 0 <= chill_t33 <= 255 }
+before datacopy_privatized:
+ printing statement:0
+{[chill_t33,chill_t34,chill_t35,chill_t36,chill_t37,chill_t38] : chill_t36 = 128chill_t33+chill_t35 && 128chill_t34+chill_t37 = chill_t38 && 0, -128chill_t33 <= chill_t35 <= 127, -128chill_t33+32767 && 128chill_t34, 0 <= chill_t38 <= 128chill_t34+127, 3071 && 0 <= chill_t33 <= 255 && 0 <= chill_t34 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+ printing statement:2
+{[chill_t26,chill_t28] : -128chill_t26, 0 <= chill_t28 <= -128chill_t26+32767, 127 }
+ printing statement:3
+{[chill_t33,chill_t35] : 0 <= chill_t35 <= 127 && 0 <= chill_t33 <= 255 }
+after datacopy_privatized:
+ printing statement:0
+{[chill_t40,chill_t41,chill_t42,chill_t43,chill_t44,chill_t45] : 128chill_t40+chill_t42 = chill_t43 && chill_t45 = 128chill_t41+chill_t44 && 128chill_t40, 0 <= chill_t43 <= 128chill_t40+127, 32767 && 0, -128chill_t41 <= chill_t44 <= 127, -128chill_t41+3071 && 0 <= chill_t40 <= 255 && 0 <= chill_t41 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+ printing statement:2
+{[chill_t26,chill_t28] : -128chill_t26, 0 <= chill_t28 <= -128chill_t26+32767, 127 }
+ printing statement:3
+{[chill_t33,chill_t35] : 0 <= chill_t35 <= 127 && 0 <= chill_t33 <= 255 }
+ printing statement:4
+{[chill_t40,chill_t42] : -128chill_t40, 0 <= chill_t42 <= -128chill_t40+32767, 127 }
+ printing statement:5
+{[chill_t40,chill_t42] : -128chill_t40, 0 <= chill_t42 <= -128chill_t40+32767, 127 }
+before datacopy_privatized:
+ printing statement:0
+{[chill_t40,chill_t41,chill_t42,chill_t43,chill_t44,chill_t45] : 128chill_t40+chill_t42 = chill_t43 && chill_t45 = 128chill_t41+chill_t44 && 128chill_t40, 0 <= chill_t43 <= 128chill_t40+127, 32767 && 0, -128chill_t41 <= chill_t44 <= 127, -128chill_t41+3071 && 0 <= chill_t40 <= 255 && 0 <= chill_t41 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+ printing statement:2
+{[chill_t26,chill_t28] : -128chill_t26, 0 <= chill_t28 <= -128chill_t26+32767, 127 }
+ printing statement:3
+{[chill_t33,chill_t35] : 0 <= chill_t35 <= 127 && 0 <= chill_t33 <= 255 }
+ printing statement:4
+{[chill_t40,chill_t42] : -128chill_t40, 0 <= chill_t42 <= -128chill_t40+32767, 127 }
+ printing statement:5
+{[chill_t40,chill_t42] : -128chill_t40, 0 <= chill_t42 <= -128chill_t40+32767, 127 }
+after datacopy_privatized:
+ printing statement:0
+{[chill_t47,chill_t48,chill_t49,chill_t50,chill_t51,chill_t52] : chill_t50 = 128chill_t47+chill_t49 && 128chill_t48+chill_t51 = chill_t52 && 0, -128chill_t47 <= chill_t49 <= 127, -128chill_t47+32767 && 128chill_t48, 0 <= chill_t52 <= 128chill_t48+127, 3071 && 0 <= chill_t47 <= 255 && 0 <= chill_t48 <= 23 }
+ printing statement:1
+{[chill_t19,chill_t21] : 0 <= chill_t21 <= 127 && 0 <= chill_t19 <= 255 }
+ printing statement:2
+{[chill_t26,chill_t28] : -128chill_t26, 0 <= chill_t28 <= -128chill_t26+32767, 127 }
+ printing statement:3
+{[chill_t33,chill_t35] : 0 <= chill_t35 <= 127 && 0 <= chill_t33 <= 255 }
+ printing statement:4
+{[chill_t40,chill_t42] : -128chill_t40, 0 <= chill_t42 <= -128chill_t40+32767, 127 }
+ printing statement:5
+{[chill_t40,chill_t42] : -128chill_t40, 0 <= chill_t42 <= -128chill_t40+32767, 127 }
+ printing statement:6
+{[chill_t47,chill_t49] : 0 <= chill_t49 <= 127 && 0 <= chill_t47 <= 255 }
+ printing statement:7
+{[chill_t47,chill_t49] : 0 <= chill_t49 <= 127 && 0 <= chill_t47 <= 255 }
+for(t2 = 0; t2 <= 255; t2++) {
+  for(t4 = 0; t4 <= 127; t4++) {
+    s1(t2,t4);
+  }
+  for(t4 = 0; t4 <= 127; t4++) {
+    s2(t2,t4);
+  }
+  for(t4 = 0; t4 <= 127; t4++) {
+    s3(t2,t4);
+  }
+  for(t4 = 0; t4 <= 127; t4++) {
+    s4(t2,t4);
+  }
+  for(t4 = 0; t4 <= 127; t4++) {
+    s6(t2,t4);
+  }
+  for(t4 = 0; t4 <= 23; t4++) {
+    for(t6 = 0; t6 <= 127; t6++) {
+      for(t10 = 0; t10 <= 127; t10++) {
+        s0(t2,t4,t6,128*t2+t6,t10,128*t4+t10);
+      }
+    }
+  }
+  for(t4 = 0; t4 <= 127; t4++) {
+    s7(t2,t4);
+  }
+  for(t4 = 0; t4 <= 127; t4++) {
+    s5(t2,t4);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+x wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+y wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+z wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+Qi wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+Qr wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+kVals wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+
+kVals wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+kVals wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+kVals wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+Qr wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+Qi wo 
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  kVals
+1  x
+2  y
+3  z
+4  Qr
+5  Qi
+
+0  expArg
+1  cosArg
+2  sinArg
+3  phi
+4  i
+5  j
+6  chill_t2
+7  chill_t1
+8  chill_t4
+9  chill_t5
+10  chill_t6
+11  chill_t8
+12  chill_t9
+13  chill_t10
+14  chill_t11
+15  chill_t13
+16  chill_t14
+17  chill_t19
+18  chill_t20
+19  chill_t21
+20  chill_t22
+21  chill_t24
+22  newVariable0
+23  chill_t26
+24  chill_t27
+25  chill_t28
+26  chill_t29
+27  chill_t30
+28  chill_t31
+29  newVariable1
+30  chill_t33
+31  chill_t34
+32  chill_t35
+33  chill_t36
+34  chill_t37
+35  chill_t38
+36  newVariable2
+37  chill_t40
+38  chill_t41
+39  chill_t42
+40  chill_t43
+41  chill_t44
+42  chill_t45
+43  newVariable3
+44  chill_t47
+45  chill_t48
+46  chill_t49
+47  chill_t50
+48  chill_t51
+49  chill_t52
+50  newVariable4
+51  t2
+52  t4
+53  t6
+54  t8
+55  t10
+56  t12
+
+0  int bx = blockIdx.x
+1  int tx = threadIdx.x
+2  int ii
+3  int i
+4  int by = blockIdx.y
+5  float newVariable0
+6  float newVariable1
+7  float newVariable2
+8  float newVariable3
+9  float newVariable4
+10  float expArg
+11  float cosArg
+12  float sinArg
+13  float phi
+

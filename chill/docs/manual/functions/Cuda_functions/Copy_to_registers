@@ -1,0 +1,197 @@
+@unnumberedsubsec Copy_to_registers
+@deftypefn {Transform} {} copy_to_registers (string @var{start_loop}, string @var{array_name}) 
+
+The @code{copy_to_registers} command copies the vector @var{array_name} to an intermediate register to speed up access to frequently used small arrays. @var{start_loop} specifies the loop in which the intermediate register access should be placed.
+
+@end deftypefn
+
+@multitable @columnfractions .50 .50 
+@item
+@b{Python Script}
+@smallformat
+@cartouche
+@verbatim
+read_IR( "mpeg4_cpu")
+
+N=4096
+M=4096
+W=16
+
+Ti=32
+Tj=32
+Tii=16
+Tjj=16
+Tk=4
+
+tile_by_index(["i","j"],[Ti,Tj],
+{'l1_control':"ii",'l2_control':"jj"},
+["ii","jj","i","j","k","l"], None)
+
+tile_by_index(["i","j"],[Tii,Tjj],
+{'l1_control':"iii",'l2_control':"jjj"},
+["ii","jj","iii","i","jjj","j","k","l"],
+None)
+cudaize(0, "kernel_GPU",{'curr':W*W,
+'prev':(N+W)*(M+W),'result':N*M}, 
+["ii","jj"], ["i","j"], [])
+
+copy_to_registers("jjj","result")
+
+
+@end verbatim
+@end cartouche
+@end smallformat
+@tab @b{Original code}
+@smallformat
+@cartouche
+@verbatim
+#define N1 4096
+#define N2 4096
+#define WINDOW_SIZE 16
+
+void mpeg4_cpu(float result[N1][N2], 
+float prev[N2+WINDOW_SIZE][N2+WINDOW_SIZE], 
+float  curr[WINDOW_SIZE*WINDOW_SIZE])
+{
+	unsigned int i;
+	unsigned int j;
+	unsigned int k;
+	unsigned int l;
+
+    for ( i = 0; i < N1; ++i)    
+     for ( j = 0; j < N2; ++j) 
+      for ( k = 0; k < WINDOW_SIZE; ++k) 
+       for ( l = 0; l < WINDOW_SIZE; ++l) 
+		result[i][j] += 
+		prev[i+k][j+l] * 
+		curr[k*WINDOW_SIZE+l];
+}
+
+@end verbatim
+@end cartouche
+@end smallformat
+@end multitable
+
+@multitable @columnfractions .50 .50
+@item
+@b{Output on stdout}
+@smallformat
+@cartouche
+@verbatim
+
+kernel_GPU<<<dimGrid0,dimBlock0>>>((
+float (*)[4096])float * devI1Ptr, 
+(float (*)[4112])float * devI2Ptr, devI3Ptr)
+for (t2 = 0; t2 <= 127; t2 += 1)
+ for (t4 = 0; t4 <= 127; t4 += 1)
+  for (t6 = 0; t6 <= 1; t6 += 1)
+   for (t8 = 0; t8 <= 15; t8 += 1) {
+    for (t12 = 0; t12 <= 15; t12 += 1)
+     for (t14 = 32 * t4 + t12; t14 <= 32 *
+      t4 + t12 + 16; t14 += 16)
+      _P1[(t14 - (32 * t4 + t12)) / 16] =
+      result[t8 + 32 * t2 + 16 * t6][t14];
+for (t12 = 0; t12 <= 1; t12 += 1)
+ for (t14 = 0; t14 <= 15; t14 += 1)
+  for (t18 = 0; t18 <= 15; t18 += 1)
+   for (t20 = 0; t20 <= 15; t20 += 1)
+    _P1[(32 * t4 + 16 * t12 + t14 -
+    (32 * t4 + t14)) / 16] += prev
+    [32 * t2 + 16 * t6 + t8 + t18]
+    [32 * t4 + 16 * t12 + t14 + t20] *
+    curr[t18 * (unsigned int)16 + t20];
+for (t12 = 0; t12 <= 15; t12 += 1)
+ for (t14 = 32 * t4 + t12; t14 <= 32 *
+  t4 + t12 + 16; t14 += 16)
+  result[t8 + 32 * t2 + 16 * t6][t14] =
+   _P1[(t14 - (32 * t4 + t12)) / 16];
+}
+
+@end verbatim
+@end cartouche
+@end smallformat
+@tab @b{Transformed code}
+@smallformat
+@cartouche
+@verbatim
+
+
+
+__global__ void kernel_GPU(float *result[4096], 
+                           float *prev[4096 + 16], 
+                           float *curr) {
+float _P1[2];
+int ty = threadIdx.y;
+int jjj;
+int l;
+int k;
+int tx = threadIdx.x;
+int iii;
+int by = blockIdx.y;
+int bx = blockIdx.x;
+{ for (iii = 0; iii <= 1; iii += 1) 
+  {
+   for (k = 0; k <= 15; k += 1) 
+    for (l = 32 * by + k;
+         l <= 32 * by + k + 16;
+         l += 16) 
+      _P1[(l - (32 * by + k)) / 16] = 
+      result[tx + 32 * bx + 16 * iii][l];
+    for (jjj = 0; jjj <= 1; jjj += 1) 
+    {
+      for (k = 0; k <= 15; k += 1) 
+       for (l = 0; l <= 15; l += 1) 
+        _P1[(32 * by + 16 * jjj + ty - 
+        (32 * by + ty)) / 16] += 
+        prev[32 * bx + 16 * iii + tx + k]
+        [32 * by + 16 * jjj + ty + l] * 
+        curr[k * (unsigned int)16 + l];
+     }
+     for (k = 0; k <= 15; k += 1) 
+      for (l = 32 * by + k;
+      l <= 32 * by + k + 16;
+      l += 16) 
+       result[tx + 32 * bx + 16 * iii][l] =
+       _P1[(l - (32 * by + k)) / 16];
+  }
+ }
+}
+
+#define N1 4096
+
+#define N2 4096
+
+#define WINDOW_SIZE 16
+
+void mpeg4_cpu(float result[4096][4096], 
+float prev[4096 + 16][4096 + 16], 
+float curr[16 * 16]) {
+  float * devI3Ptr;
+  float * devI2Ptr;
+  float * devI1Ptr;
+  cudaMalloc((void **)&devI1Ptr,
+  16777216 * sizeof(float));
+  cudaMemcpy(devI1Ptr, result,
+  16777216 * sizeof(float), 
+  cudaMemcpyHostToDevice);
+  cudaMalloc((void **)&devI2Ptr, 
+  16908544 * sizeof(float));
+  cudaMemcpy(devI2Ptr, prev, 16908544 * 
+  sizeof(float), cudaMemcpyHostToDevice);
+  cudaMalloc((void **)&devI3Ptr, 
+  256 * sizeof(float));
+  cudaMemcpy(devI3Ptr, curr, 256 * 
+  sizeof(float), cudaMemcpyHostToDevice);
+  dim3 dimGrid0 = dim3(128, 128);
+  dim3 dimBlock0 = dim3(16, 16);
+  kernel_GPU<<<dimGrid0,dimBlock0>>>
+  ((float (*)[4096])float * devI1Ptr, 
+  (float (*)[4112])float * devI2Ptr, devI3Ptr);
+  cudaFree(devI1Ptr);
+  cudaFree(devI2Ptr);
+  cudaFree(devI3Ptr);
+}
+@end verbatim
+@end cartouche
+@end smallformat
+@end multitable

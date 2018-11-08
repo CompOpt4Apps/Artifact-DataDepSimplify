@@ -1,0 +1,1056 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options false
+\language english
+\inputencoding latin9
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Sparse Constraints Design Specifications
+\end_layout
+
+\begin_layout Author
+Alan LaMielle, Michelle Strout
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+date{June 7, 2010}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Summary
+\end_layout
+
+\begin_layout Standard
+This document describes the design of a library for representing a subset
+ of presburger arithmetic.
+ It supports a single level of existential quantification, no universal
+ quantifiers, and adds support for arbitrarily nested uninterpreted function
+ symbols (UFSs) in constraint expressions.
+\end_layout
+
+\begin_layout Standard
+The Omega library and the Integer Set Library (ISL) are two libraries that
+ seek to represent similar mathematical entities.
+ Omega has limited support for UFSs and ISL supports arbitrary nesting of
+ existential quantifiers.
+\end_layout
+
+\begin_layout Subsection
+General Approach
+\end_layout
+
+\begin_layout Standard
+The general approach for representing sets and relations is based on the
+ standard approach taken by many polyhedral libraries: matrices of coefficients
+ where each row represents a single constraint and each column represents
+ a dimension of the polyhedron.
+ Sparse constraints differs in its requirement to support UFSs.
+ For this feature, we allocate an additional column in the coefficient vectors
+ for each 
+\emph on
+instance
+\emph default
+ of a UFS.
+ For example, the expressions 
+\begin_inset Formula $f(i)$
+\end_inset
+
+ and 
+\begin_inset Formula $f(j)$
+\end_inset
+
+ are different instances of the UFS 
+\begin_inset Formula $f$
+\end_inset
+
+ and thus will each have a distinct column in the coefficient vector.
+\end_layout
+
+\begin_layout Section
+Classes and Interfaces
+\end_layout
+
+\begin_layout Standard
+SparseConstraints: 
+\end_layout
+
+\begin_layout Itemize
+SymTable (NEED ptr to ST) 
+\end_layout
+
+\begin_layout Itemize
+Set of Conjuncts (NOT ptrs to conjuncts) 
+\end_layout
+
+\begin_layout Standard
+Subclasses of SparseConstraints: 
+\end_layout
+
+\begin_layout Itemize
+Set (e.g., 
+\begin_inset Formula $\{[a,b]:0\le a\le10\wedge20\le b\le n\}$
+\end_inset
+
+).
+ Have Set take a list of strings in the constructor.
+ It will use the list size to determine the arity and create an array of
+ STEs that big.
+ The constructor will then look through the strings creating either ConstVal
+ STEs or putting the strings into a set to pass to the Symbol table constructor.
+ After the symbol table constructor is done, the Set constructor will have
+ to loop through the list of strings again to get pointers to the appropriate
+ TupleVar STEs.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Contains arity of the tuple variables
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Relation (e.g., 
+\begin_inset Formula $\{[a]\rightarrow[b]:0\le a\le10\wedge20\le b\le n\}$
+\end_inset
+
+).
+ The Relation will take two lists of strings in the constructor, one for
+ the input tuple and one for the output tuple.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Contains arity of the input tuple variables and output tuple variables
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+SymTable 
+\end_layout
+
+\begin_layout Itemize
+Fields:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+int num_symconsts; 
+\end_layout
+
+\begin_layout Itemize
+int num_tuplevars; 
+\end_layout
+
+\begin_layout Itemize
+int num_existvars; 
+\end_layout
+
+\begin_layout Itemize
+int num_ufcalls; 
+\end_layout
+
+\begin_layout Itemize
+map<string,STE*> mSymToSTE; 
+\end_layout
+
+\begin_layout Itemize
+map<pair<TypeEnum,int>,STE*> mTypeColToSTE; 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Methods:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+SymTable( list<string> tuplevars, set<string> symconsts ): Constructor will
+ create STEs with type and column info for tuplevars and symconsts.
+ Useful for testing only.
+ Might want to remove due to old functionality.
+\end_layout
+
+\begin_layout Itemize
+SymTable( set<string> symconsts, set<string> tuplevars, set<string> existentials
+, int numUFCalls): Constructor will create STEs with type and column info
+ for tuplevars, existentials, and symconsts and will allow up to numUFCalls
+ to be inserted into the symbol table.
+\end_layout
+
+\begin_layout Itemize
+SymTable(SymTable&): Copy constructor will fail assertion upon calling.
+\end_layout
+
+\begin_layout Itemize
+STE * lookup( string sym ); // need this to lookup variables in constraints.
+ If doing a lookup on unknown string will create an existential variable
+ STE and return ptr to that.
+ 
+\end_layout
+
+\begin_layout Itemize
+STE * lookup( string fname, list<ExpVec> params ); // Use funcExpString()
+ to index into map.
+ Create a new STE for UFCall if one doesn't already exist.
+ 
+\end_layout
+
+\begin_layout Itemize
+STE * lookup( TypeEnum symtype, int col ); // this is for accessing STE
+ while in ExpVec, for printing, anything else? 
+\end_layout
+
+\begin_layout Itemize
+// No inserts on purpose.
+ We will either be creating a new STE for a existential var or for a funcExp
+ the first time we look them up.
+ 
+\end_layout
+
+\begin_layout Itemize
+void incrNumUFCalls(); // increment the number of uninterpreted function
+ calls 
+\end_layout
+
+\begin_layout Itemize
+private string funcExpString(string fname, list<ExpVec> params); // Create
+ a string by concatenating the fname with the toString() results for the
+ param ExpVec representations.
+ 
+\end_layout
+
+\begin_layout Itemize
+constructExpVec(); 
+\begin_inset Newline newline
+\end_inset
+
+Create an empty ExpVec, useful for testing only.
+\end_layout
+
+\begin_layout Itemize
+constructExpVec(string var, int coeff); 
+\begin_inset Newline newline
+\end_inset
+
+ Create an ExpVec where the given var has the given coefficient.
+ 
+\end_layout
+
+\begin_layout Itemize
+constructExpVec(int const_coeff); 
+\begin_inset Newline newline
+\end_inset
+
+ Create an ExpVec the given constant coefficient.
+ 
+\end_layout
+
+\begin_layout Itemize
+constructExpVec(string fname, list<ExpVec> params, int coeff); 
+\begin_inset Newline newline
+\end_inset
+
+ Create an ExpVec where the given function call has the given coefficient.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+STE base class: 
+\end_layout
+
+\begin_layout Itemize
+String id; 
+\end_layout
+
+\begin_layout Itemize
+TypeEnum symtype; 
+\end_layout
+
+\begin_layout Itemize
+int col; 
+\end_layout
+
+\begin_layout Standard
+STE Subclasses: 
+\end_layout
+
+\begin_layout Itemize
+TupleVar 
+\end_layout
+
+\begin_layout Itemize
+ExistVar 
+\end_layout
+
+\begin_layout Itemize
+SymConst 
+\end_layout
+
+\begin_layout Itemize
+UFCall( string fname, list<ExpVec> paramIDs) 
+\end_layout
+
+\begin_layout Standard
+Conjunction: 
+\end_layout
+
+\begin_layout Itemize
+Array of tuple variables
+\end_layout
+
+\begin_layout Itemize
+Set of Equality 
+\end_layout
+
+\begin_layout Itemize
+Set of Inequality 
+\end_layout
+
+\begin_layout Standard
+Equality 
+\end_layout
+
+\begin_layout Itemize
+ExpVec 
+\end_layout
+
+\begin_layout Standard
+Inequality 
+\end_layout
+
+\begin_layout Itemize
+ExpVec 
+\end_layout
+
+\begin_layout Standard
+ExpVec 
+\end_layout
+
+\begin_layout Itemize
+Public constructor.
+ Decided to go with a public constructor to make testing easier and avoid
+ making the SymbolTable a friend.
+ In general, should still use factory methods in the SymbolTable to construct
+ an ExpVec.
+ 
+\end_layout
+
+\begin_layout Itemize
+4 integer vectors, constructor should take size for each one 
+\end_layout
+
+\begin_layout Itemize
+vector<int> symconsts_coeffs; 
+\end_layout
+
+\begin_layout Itemize
+vector<int> tuplevars_coeffs; 
+\end_layout
+
+\begin_layout Itemize
+vector<int> existvars_coeffs; 
+\end_layout
+
+\begin_layout Itemize
+vector<int> ufcalls_coeffs; 
+\end_layout
+
+\begin_layout Itemize
+int const_coeff; 
+\end_layout
+
+\begin_layout Itemize
+void add( int addVal ); // Add addVal to const entry in ExpVec.
+ 
+\end_layout
+
+\begin_layout Itemize
+operator+( ExpVec const & other ); // add other ExpVec to this ExpVec 
+\end_layout
+
+\begin_layout Itemize
+string toString(); //returns the ExpVec vector sizes
+\end_layout
+
+\begin_layout Itemize
+string vectorStrings(); //returns the vectors inside the ExpVec as strings
+\end_layout
+
+\begin_layout Standard
+Notes: Everything except SymTable and maybe SparseConstraints is going to
+ need a copy constructor.
+\end_layout
+
+\begin_layout Section
+Procedures
+\end_layout
+
+\begin_layout Standard
+Building sparse constraints from an AST will be done in two passes (i.e.
+ two visitors):
+\end_layout
+
+\begin_layout Subsection
+BuildSymTableVisitor
+\end_layout
+
+\begin_layout Standard
+BuildSymTableVisitor ( list<string> symbolics ) will visit an AST to create
+ the SymbolTable for a SparseConstraints object.
+ 
+\end_layout
+
+\begin_layout Itemize
+The SymbolTable constructor will have to create SymConst STE instances for
+ each symbolic and insert them in the appropriate hash tables.
+ 
+\end_layout
+
+\begin_layout Itemize
+The BuildSymTableVisitor constructor will have to keep track of the symbolics
+ list and upon visiting the tuple variables create a set of them and THEN
+ call the SymbolTable constructor.
+ 
+\end_layout
+
+\begin_layout Itemize
+SymTable * getSymTable(); 
+\end_layout
+
+\begin_layout Standard
+This visitor will call the SymTable constructor and do lookup calls for
+ all variable identifiers in expressions and count count the function calls
+ (using the incrNumUFCalls() method).
+\end_layout
+
+\begin_layout Subsection
+BuildSparseConstraints
+\end_layout
+
+\begin_layout Standard
+BuildSparseConstraints ( SymTable * ST ): This visitor is going to call
+ the lookup for UFCalls in the ST upon visiting the FuncExp nodes in the
+ AST and it will create a SparseConstraints instance that it will add constraint
+s to when visiting equality and inequalities.
+ Each expression node in AST should be mapped to an ExpVec in this visitor.
+ 
+\end_layout
+
+\begin_layout Itemize
+map<Node*,ExpVec> mNodeToExpVec; 
+\end_layout
+
+\begin_layout Itemize
+When visiting expressions will be building ExpVec instances and mapping
+ nodes in the AST to the ExpVec instances.
+ 
+\end_layout
+
+\begin_layout Itemize
+visitUnion: Just do a union operation.
+ (Alan and MMS needs to do ST merges first) 
+\end_layout
+
+\begin_layout Itemize
+visitNormExp: Just add all ExpVec for included expressions and add in constant.
+ 
+\end_layout
+
+\begin_layout Itemize
+visitVarExp: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+mNodeToExpVec[node] = ST.constructExpVec( varname, coeff ) 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+visitFuncExp: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+mNodeToExpVec[node] = ST.constructExpVec( name, list of child ExpVec, coeff
+ ) 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+outEquality:
+\end_layout
+
+\begin_deeper
+\begin_layout --Separator--
+ExpVec vec = mNodeToExpVec.find(node.getExpression())
+\end_layout
+
+\begin_layout Itemize
+EqConjSet.insert(SREquality(vec))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+outInequality:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ExpVec vec = mNodeToExpVec.find(node.getExpression())
+\end_layout
+
+\begin_layout Itemize
+IeqConjSet.insert(SRInequality(vec))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+outConjunction:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+create conjunction out of the EqConjSet and the IeqConjSet and place itself
+ into a set
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+SparseConstraints::normalize()
+\end_layout
+
+\begin_layout Itemize
+Ensure that any variable tuple elements have a unique variable name.
+ 
+\end_layout
+
+\begin_layout Itemize
+Project out a variable: Alan will figure out this and get it working before
+ we do the compose operation.
+ 
+\end_layout
+
+\begin_layout Subsection
+SparseConstraints output
+\end_layout
+
+\begin_layout Standard
+We would like to output a set or relation object 
+\end_layout
+
+\begin_layout Itemize
+to an omega string so as to match input or 
+\end_layout
+
+\begin_layout Itemize
+to a dot file as shown for the example 
+\family typewriter
+{[0,x,x,y] : x < 10 and y = f(x,g(x,1)) and i > x + y }
+\family default
+ in Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:SCvis"
+
+\end_inset
+
+.
+ (NOTE: the text .dot file is in the git repository under doc/).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename sparse_constraints-dot.pdf
+	height 100theight%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+SparseConstraints object for 
+\begin_inset Formula $\{[0,x,x,y]\;|\;(x<10)\wedge(y=f(x,g(x,1)))\wedge(i>x+y)\}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:SCvis"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+SymbolTable::mergeWith(SymbolTable & other)
+\end_layout
+
+\begin_layout Standard
+Anytime we do an operation that combines two SparseConstraint (i.e., Set or
+ Relation) instances in some way (i.e., union, compose, apply, etc.), we need
+ to combine their symbol tables.
+ The approach will be to add unique symbols from the 
+\family typewriter
+other
+\family default
+ SymbolTable to the 
+\family typewriter
+this
+\family default
+ SymbolTable.
+ In the process, we should generate an object called an STMap that can help
+ us convert constraints using the 
+\family typewriter
+other
+\family default
+ symbol table to constraints using the new symbol table.
+\end_layout
+
+\begin_layout Subsection
+Union
+\end_layout
+
+\begin_layout Itemize
+Combine symbol tables 
+\end_layout
+
+\begin_layout Itemize
+Iterate over 2 sets of input conjuncts 
+\end_layout
+
+\begin_layout Itemize
+Convert all old expression vectors from old ST to new ST for each new conjunct
+ in new SparseConstraints object.
+ 
+\end_layout
+
+\begin_layout Subsection
+Compose
+\end_layout
+
+\begin_layout Standard
+Can't do this one until we can project out existential variables.
+ 
+\end_layout
+
+\begin_layout Itemize
+Combine symbol tables 
+\end_layout
+
+\begin_layout Itemize
+Outer product between conjuncts of input SparseConstraints 
+\end_layout
+
+\begin_layout Itemize
+Convert all old expression vectors from old ST to new ST for each new conjunct
+ in new SparseConstraints object.
+ 
+\end_layout
+
+\begin_layout Itemize
+Add equality constraints constraints that set 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textquotedbl
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+inner
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textquotedbl
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+ tuple variables equal to each other 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+section{Tricky bits}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+begin{itemize}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+item symbol table indexing by var names, tuple position, function name
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%and expression vector as well as by symbol type and column for accessing
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%within expression vector
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+item what needs to be defined for a member of a std::set
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+end{itemize}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% MMS, 6/28/10, these have been moved into redmine
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+section{Concrete Tasks}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+begin{itemize}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+item Create SymTable class and STE class/subclasses
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+item Create BuildSymTableVisitor
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+item Create SparseConstraints/Set/Relation classes, other classes related
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%to this (Conjunction, ExpVec, etc).
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+item Create BuildSparseConstraints visitor
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+end{itemize}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

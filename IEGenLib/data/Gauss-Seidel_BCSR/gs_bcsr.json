@@ -1,0 +1,182 @@
+[
+  [
+    {
+      "Name" : "BCSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "1",
+      "Relation" : "{[i,ii] -> [ip,jp,jjp,iip]: i < ip && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jjp && jjp <= BS && rowptr(ip) <= jp && jp < rowptr(ip+1) && i = colidx(jp) && ii = jjp}",
+
+      "Efficient Inspector complexity:" : "O( nnz ): note all ii, jjp, iip can be projected",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz ) )",
+      "Expected" : "{[i,ii] -> [ip,jp,jjp,iip]: i < ip && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jjp && jjp <= BS && rowptr(ip) <= jp && jp < rowptr(ip+1) && i = colidx(jp) && ii = jjp}",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "colidx",
+           "Domain" : "{[i]:0<=i &&i<nnz}",
+           "Range" : "{[j]:0<=j &&j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "rowptr",
+           "Domain" : "{[j]:0<=j &&j<n}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+
+      ],
+      "Do Not Project Out" :
+      [
+        "i", "ip"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is the BCSR Gauss-Seidel code. Dependence analysis",
+                  "of this code would identify 9 pair of read/write or",
+                  "write/write data accesses that may produce data dependences.",
+                  "These pairs produce 18 conjunctions considering the ordering",
+                  "of accesses (Flow and Anti dependence). Overall, there are 18",
+                  "distinct conjunctions for the complete dependence relation.",
+                  "for (int i = 0; i < n; ++i) {",
+                  "  for (int ii = 0; ii < BS; ++ii) {",
+                  "S0: sum[ii] = b[i][ii];",
+                  "  }",
+                  "  for (int j = rowptr[i]; j < rowptr[i + 1]; ++j) {",
+                  "    for (int jj = 0; jj < BS; ++jj) {",
+                  "      for (int ii = 0; ii < BS; ++ii) {",
+                  "S1:     sum[ii] -= values[j][jj][ii]*y[colidx[j]][jj];",
+                  "      }",
+                  "    }",
+                  "  }",
+                  "  for (int ii = 0; ii < BS; ++ii) {",
+                  "S2: y[i][ii] = 0; ",
+                  "  }",
+                  "  for (int jj = 0; jj < BS; ++jj) {",
+                  "    for (int ii = 0; ii < BS; ++ii) {",
+                  "S3:   y[i][ii] += idiag[i][jj][ii]*sum[jj]; ",
+                  "    }",
+                  "  }",
+                  "}"
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (y[colidx[j]][jj]);  a write in S2 (y[i][ii]);"
+                  ]
+    },
+    {
+      "Name" : "BCSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "2",
+      "Relation" : "{[i,ii] -> [ip,jp,jjp,iip]: ip < i && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jjp && jjp <= BS && rowptr(ip) <= jp && jp < rowptr(ip+1) && i = colidx(jp) && ii = jjp}",
+
+      "Efficient Inspector complexity:" : "O( nnz ): note all ii, jjp, iip can be projected",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz ) )",
+      "Expected" : "{[i,ii] -> [ip,jp,jjp,iip]: ip < i && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jjp && jjp <= BS && rowptr(ip) <= jp && jp < rowptr(ip+1) && i = colidx(jp) && ii = jjp}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (y[colidx[j]][jj]);  a write in S2 (y[i][ii]);"
+                  ]
+    },
+    {
+      "Name" : "BCSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "3",
+      "Relation" : "{[i,jj,ii] -> [ip,jp,jjp,iip]: i < ip && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jj && jj <= BS && 0 <= jjp && jjp <= BS && rowptr(ip) <= jp && jp < rowptr(ip+1) && i = colidx(jp) && ii = jjp}",
+
+      "Efficient Inspector complexity:" : "O( nnz ): note all ii, jjp, iip can be projected",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz ) )",
+      "Expected" : "{[i,jj,ii] -> [ip,jp,jjp,iip]: i < ip && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jj && jj <= BS && 0 <= jjp && jjp <= BS && rowptr(ip) <= jp && jp < rowptr(ip+1) && i = colidx(jp) && ii = jjp}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (y[colidx[j]][jj]);  a write in S3 (y[i][ii]);"
+                  ]
+    },
+    {
+      "Name" : "BCSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "4",
+      "Relation" : "{[i,jj,ii] -> [ip,jp,jjp,iip]: ip < i && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jj && jj <= BS && 0 <= jjp && jjp <= BS && rowptr(ip) <= jp && jp < rowptr(ip+1) && i = colidx(jp) && ii = jjp}",
+
+      "Efficient Inspector complexity:" : "O( nnz ): note all ii, jjp, iip can be projected",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz ) )",
+      "Expected" : "{[i,jj,ii] -> [ip,jp,jjp,iip]: ip < i && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jj && jj <= BS && 0 <= jjp && jjp <= BS && rowptr(ip) <= jp && jp < rowptr(ip+1) && i = colidx(jp) && ii = jjp}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (y[colidx[j]][jj]);  a write in S3 (y[i][ii]); "
+                  ]
+    },
+    {
+      "Name" : "BCSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "5",
+      "Relation" : "{[i,ii] -> [ip,iip]: i < ip && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && i = ip && ii = iip}",
+
+      "Efficient Inspector complexity:" : "O( n^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (y[i][ii]);  a write in S2 (y[i][ii]);"
+                  ]
+    },
+    {
+      "Name" : "BCSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "6",
+      "Relation" : "{[i,ii] -> [ip,iip]: ip < i && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && i = ip && ii = iip}",
+
+      "Efficient Inspector complexity:" : "O( n^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (y[i][ii]);  a write in S2 (y[i][ii]);"
+                  ]
+    },
+    {
+      "Name" : "BCSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "7",
+      "Relation" : "{[i,jj,ii] -> [ip,jjp,iip]: i < ip && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jj && jj <= BS && 0 <= jjp && jjp <= BS && i = ip && ii = iip}",
+
+      "Efficient Inspector complexity:" : "O( n^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (y[i][ii]);  a write in S3 (y[i][ii]); "
+                  ]
+    },
+    {
+      "Name" : "BCSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "8",
+      "Relation" : "{[i,jj,ii] -> [ip,jjp,iip]: ip < i && 0 <= i && i < n && 0 <= ip && ip < n && 0 <= ii && ii <= BS && 0 <= iip && iip <= BS && 0 <= jj && jj <= BS && 0 <= jjp && jjp <= BS && i = ip && ii = iip}",
+
+      "Efficient Inspector complexity:" : "O( n^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (y[i][ii]);  a write in S3 (y[i][ii]);"
+                  ]
+    }
+  ]
+]

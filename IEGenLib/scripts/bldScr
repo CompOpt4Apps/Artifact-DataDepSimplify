@@ -1,0 +1,565 @@
+#!/bin/bash
+set -x
+
+id
+
+# This is a nightly build script.
+##################################################
+#******** CURRENTLY INSTALLED AS A CRON JOB FOR mstrout  ON PIPPIN ******
+##################################################
+#
+# This script checks out a clean version of the IEGenLib sources and
+# runs configure to generate make files with the options of generating
+# the parser and adding the python bindings. It specifically uses
+# svn export so that all the .svn, etc files don't get checked out.
+#
+# The script then runs make all and then make install to put the executables in 
+# the correct locations.
+#
+# Next it runs the tests.
+#
+# Next it runs doxygen to create the documentation.
+#
+# If it is running on a Linux machine, it then runs the script to 
+# build a distribution tar file, and finally copies this file plus
+# the built documentation to the website.
+#
+# In all of these commands, output and error messages are written to
+# log files at the top level where the build took place.
+#
+# The script searches for the strings Error, error, and FAILED in these 
+# files, and puts any lines that contain it into an error file.
+# If there were errors it sets a variable to that affect. It does
+# the same for warnings.
+#
+# Finally it sends mail with the build results, with the overall outcome
+# (failed or OK) in the subject line, and includes the contents
+# of the error file as the body of the email.
+
+##########################################################
+# This script runs first on a Mac, where it checksout sources, builds,
+# and installs them. It changes the name of the installation directory,
+# then uses rsync to copy them over to where the Linux nightly build
+# will happen. That way, once the Linux build is over, a tar that 
+# includes the Mac binaries can be created.
+#
+# This script figures out what kind of machine it is
+# running on and only does the appropriate actions. 
+#
+# It runs via cron, first on a Mac OSX machine, then later on a Linux-64 
+# bit machine.
+#
+# We also build a distribution tar-ball. Since we're shipping both Linux-64
+# and MacOS binaries, there have to be 2 installation directories, each named
+# for the OS (iegen-LINUX64 and iegen-MACOSX).
+#
+# This means when this script finishes on the Linux machine it needs to rename
+# the installation directory 'iegen'. Likewise, when the script runs on a Mac
+# it needs to rename the 'iegen' directory prior to creating the tar-ball.
+
+
+###############################################################################
+# all configuration information belongs here
+###############################################################################
+# Directory where the tar file and html documentation pages need to be 
+# put. Right now we have 2 directories because one is failing.
+#
+#webDir="/s/parsons/c/fac/mstrout/public_html/PIESwebTEST/"
+webDir="/s/bach/e/proj/hpc/www/PIES/"
+# this is the directory where we should be during nightly builds
+# they are different for mac and linux.  IEGLibBld/ will be appended
+# to both of these and needs to exist already.
+nightlyWorkingDirLinux="/s/bach/e/proj/rtrt"
+nightlyWorkingDirMac="/users/mstrout"
+# the svn coordinates
+svnLoc="/s/bach/e/proj/rtrt/SVNRepository/IEGenProject/trunk/IEGen"
+svnProtFile="file://"
+svnProtSSH="svn+ssh://little-bear.cs.colostate.edu"
+# the location to store the nightly builds
+nightlyBuildStoreServer="mstrout@little-bear.cs.colostate.edu"
+nightlyBuildStore="/s/bach/e/proj/rtrt/IEGLibBld"
+# who should recieve emails from this script?
+recipients="mstrout@cs.colostate.edu, cathie@cs.colostate.edu"
+echo $webDir
+
+# First figure out what OS we're running on. IEGenLib can be built for
+# Linux-32, Linux-64, and Mac OSX operating systems. 
+#
+if [ `uname -sp | grep -i linux | wc -l` -gt 0 ]
+then
+ osName=LINUX
+
+elif [ `uname -sp | grep -i darwin | wc -l` -gt 0 ]
+then
+ osName=MACOSX
+fi
+
+if [ `uname -sp | grep 64 | wc -l` -gt 0 ]
+then
+ machInfo=64
+else
+ machInfo=""
+fi
+
+echo $osName
+echo $machInfo
+
+# Change directories to where we will do the nightly build
+# If we're on a Linux system, we'll assume that we can get to the
+# main project directory via NFS
+#
+if [ $osName == "LINUX" ]
+  then
+    cd $nightlyWorkingDirLinux
+    nightlyPathPrefix=$nightlyWorkingDirLinux
+    nightlyBuildStore=${nightlyPathPrefix}/IEGLibBld
+
+# If we're on a Mac, then just build where we are:
+#
+  elif [ $osName == "MACOSX" ]
+    then
+      cd $nightlyWorkingDirMac
+      nightlyPathPrefix=$nightlyWorkingDirMac
+      nightlyBuildStore=${nightlyPathPrefix}/IEGLibBld
+  else
+    echo "Fatal error in build; osName not set properly: ${osName}"
+    exit 2
+fi
+
+# We need a directory to save the nightly builds into, and one for 
+# temporary email files. Create the first if it doesn't exist, then 
+# change directories to it, and create the second if it doesn't exist.
+#
+if [ -d $nightlyBuildStore ]
+  then
+    echo "nightly builds directory already exists"
+  else
+    echo "nightly builds directory doesn't exist - creating it"
+    mkdir $nightlyBuildStore 
+    chmod 775 $nightlyBuildStore 
+fi
+
+# Directory where nightly builds will be put.
+#
+cd $nightlyBuildStore
+
+#Directory for temporary email files.
+#
+if [ -d tmp ]
+  then
+    echo "temporary emails directory already exists"
+  else
+    echo "temporary emails directory doesn't exist - creating it"
+    mkdir tmp
+    chmod 775 tmp
+fi
+
+# Figure out if there are 6 subdirectories here already; this is the
+# max number of nightly builds we'll keep. Since we have the tmp directory
+# here too, the max number of directories we want is 6. Then we have to
+# make sure that tmp isn't considered for the oldest test.
+#
+numDirs=`find . -mindepth 1 -maxdepth 1 -type d -print | wc -l`
+if [ ${numDirs} -gt 6  ]
+  then
+    echo ">6: " ${numDirs}
+    OldestDir=`ls -ltr | grep '^d'| grep -v 'tmp' | head -n1 | awk '{ print $9 }'`
+    echo "Removing OldestDir: " ${OldestDir}
+    rm -rf ${OldestDir}
+  else
+    echo "less than 6:"
+    echo ${numDirs}
+fi
+
+# Create a temporary directory name for the build, a directory from
+# this name, and cd to that directory
+#
+bldName=`date +"%d%m%y"`
+echo ${bldName}
+
+if [ -d ${bldName} ]
+  then
+    echo "this day's build directory already exists"
+  else
+    echo "this day's build directory doesn't exist - creating it"
+    mkdir ${bldName}
+    chmod 775 ${bldName}
+fi
+
+cd ${bldName}
+
+# Checkout all the files. Use svn export so we don't get all the .svn files
+# and other extra files like .DS_STORE on a Mac.
+#
+# Since we build first on a Mac, and part of that script uses rsync to
+# copy the binaries over to where the Linux version will be checked out,
+# we have to use the --force option on svn export so that the sources
+# actually get checked out eventhough some of the directory structure already
+# exists.
+#
+# Also, since the Linux version is building on the NSF-mounted systems,
+# we use the file checkout verison of svn rather than the ssh version.
+# The Mac isn't part of this mounted file system, so we have to use the
+# ssh version of svn. There appear to be deep problems trying to get
+# both of them working with ssh tunneling so that you don't have to type
+# in passwords on checkout, which obviously doesn't work from cron jobs.
+#
+if [ $osName == "LINUX" ]
+  then 
+    svn export --force ${svnProtFile}${svnLoc}
+
+elif [ $osName == "MACOSX" ]
+  then
+    svn export --force ${svnProtSSH}${svnLoc}
+fi
+
+# Go to the top level build directory
+#
+chmod 775 IEGen
+cd IEGen
+
+# Generate make files using cmake; include building the parser and
+# including python bindings. Note: the current Mac I'm using doesn't
+# have a good enough version of Bison to build the parser!
+#
+instDir="iegen-${osName}${machInfo}"
+if [ $osName == "LINUX" ]
+  then
+    ./configure --gen-parser --build-python --prefix $instDir >outConfigure 2>&1
+
+# If we're on a Mac, then just build where we are:
+# do not use gen-parser, we want to stick to using the Linux version
+#
+  elif [ $osName == "MACOSX" ]
+    then
+      ./configure --build-python >outConfigure --prefix $instDir 2>&1
+fi
+chmod 664 outConfigure
+
+# Build the project
+#
+make all >outMakeAll 2>&1
+chmod 664 outMakeAll
+
+# Go to the directory where the tests were installed and run them
+#
+export IEGEN_HOME=`pwd`
+make mtest > outMakeMtest 2>&1
+chmod 664 outMakeMtest
+
+# Install the project
+#
+make install >outMakeInstall 2>&1
+chmod 664 outMakeInstall
+
+
+# Make the documentation too if we are on a LINUX machine. 
+# We want to process the output file to check for errors and
+# warnings AFTER all the other build output files since there
+# can be a lot of warnings we don't really care about, but that
+# would clutter up the summary email. Therefore the output
+# file name doesn't start with 'out'.
+# This make has to be run at the top level build
+# directory for the documents. Making them consists of running
+# the Doxygen command on several source file directories (see
+# IEGen/doc/doxyconfig), which creates an html directory and 
+# a latex directory in IEGen/doc. 
+#
+# Then you have to run make in the latex directory to create a single pdf
+# file, so make docs also does this.
+#
+if [ $osName == "LINUX" ]
+  then
+    make docs >makeDocsOut 2>&1
+    chmod 664 makeDocsOut
+  fi
+
+# If we are running on a Mac, we need to copy the installation directory
+# into the nightly build area so that it gets bundled up in the distribution
+# tar file.
+#
+if [ $osName == "MACOSX" ]
+  then
+    pwd
+    rsync --rsync-path="mkdir -p ${nightlyWorkingDirLinux}/IEGLibBld/${bldName}/IEGen/ && rsync" -r -p $instDir ${nightlyBuildStoreServer}:${nightlyWorkingDirLinux}/IEGLibBld/${bldName}/IEGen
+    ssh ${nightlyBuildStoreServer} chgrp -R rtrt ${nightlyWorkingDirLinux}/IEGLibBld/${bldName}
+    ssh ${nightlyBuildStoreServer} chmod -R 775 ${nightlyWorkingDirLinux}/IEGLibBld/${bldName}
+fi
+
+
+# Next make the distribution file, initially if this script is running
+# on a Linux machine. Eventually this should only happen on the Mac
+# We're still in the IEGen directory
+# 
+if [ $osName == "LINUX" ]
+  then
+    scripts/make_dist_tarball.sh >outMakeDistr 2>&1
+    chmod 664 outMakeDistr
+fi
+
+# Next we're going to copy the distribution file and the html pages
+# into the website area if we are on a Linux system. 
+#
+#
+if [ $osName == "LINUX" ]
+  then
+    cd doc
+    rsync -r -p html $webDir/iegenLibR1Docs/
+    rsync -p latex/refman.pdf $webDir/iegenLibR1Docs/
+    cd ..
+    rsync -p *.tgz $webDir/iegenLibTars/iegenlib-NB.tgz
+    chgrp -R rtrt $webDir
+    chmod -R o+rx $webDir
+    chmod -R g+rwx $webDir
+fi
+
+################################################################################
+# The build is done and all of the files are in place
+# Now go back to the top level build directory and check for error messages
+# from the configure, make all, make install, and FAILED messages
+# from the tests. Also look for all Warnings.
+#
+################################################################################
+
+# File that has the output file name in it in case there are errors.
+# This file will also contain any warning lines that are in the output files.
+#
+rm -f errBld
+touch errBld
+chmod 664 errBld
+
+numErr=0
+
+# Variable for warnings in any of the output files.
+#
+
+numWarn=0
+
+# First loop through the building files looking for the string 'error' or 
+# 'Error' or FAILED.
+# Add the file name into the errBld file and just the line with the string
+# if it exists into the numBld file.
+#
+for i in `ls out*`
+  do
+    # Do a special check on the make test output
+    # This is looking for memory errors in the valgrind output
+    if [[ "$i" == *Mtest* ]] 
+    then
+      if [ `grep -i -e "FAILED" $i | wc -l` -gt 0 ]
+        then
+          numErr=$[ ${numErr} +1 ]
+          echo ${numErr}
+          echo $i ":" >>errBld
+          grep -i -e " err" -e " fail" $i >>errBld
+          echo $i "file HAS errors"
+      else
+          echo $i "file has no TEST errors"
+          echo $i ": no TEST errors" >>errBld
+      fi
+      memErrors=0
+      if [ `grep -i -e "definitely lost: 0 bytes in 0 blocks" $i | wc -l` -eq 0 ]
+      then
+        memErrors=1
+      fi
+
+      if [ `grep -i -e "indirectly lost: 0 bytes in 0 blocks" $i | wc -l` -eq 0 ]
+      then
+        memErrors=1
+      fi
+
+      if [ `grep -i -e "possibly lost: 0 bytes in 0 blocks" $i | wc -l` -eq 0 ]
+      then
+        memErrors=1
+      fi
+
+      if [ `grep -i -e "Invalid free" $i | wc -l` -gt 0 ]
+      then
+        memErrors=1
+      fi
+
+      if [ `grep -i -e "Invalid read" $i | wc -l` -gt 0 ]
+      then
+        memErrors=1
+      fi
+
+# Looking for: 
+#    ==22686== ERROR SUMMARY: 0 errors from 0 contexts (supressed: 2 from 2)
+#
+#----------------
+# 24-July-2012: MMS authorized the commenting-out of the following memErrors
+#    variable update situation.  Suppressed errors are documented per system
+#    in the default suppression file, default.supp, found on one Linux box
+#    at /usr/lib64/valgrind/default.supp  These include known errors that
+#    valgrind will find in the system code such as the operating system,
+#    compilers, libraries, etc.
+#----------------
+#      errSumm=`grep "ERROR SUMMARY" $i | sed s/==[0-9][0-9][0-9][0-9][0-9]==// \
+#               | grep 'suppressed: [1-9]' | wc -l`
+#      if [ $errSumm -gt 0 ]
+#        then 
+#          memErrors=1
+#      fi
+#----------------
+
+# Looking for: 
+#    ==14047== ERROR SUMMARY: 2 errors from 2 contexts (supressed: 0 from 0)
+#
+      errSumm1=`grep "ERROR SUMMARY" $i | sed s/==[0-9][0-9][0-9][0-9][0-9]==//\
+               | grep '[1-9] errors' | wc -l`
+      if [ $errSumm1 -gt 0 ]
+        then 
+          memErrors=1
+      fi
+
+      if [ $memErrors -gt 0 ]
+      then
+        numErr=$[ ${numErr} +1 ]              # linking $memErrors with $numErr
+        echo $i "file HAS memory errors" >>errBld
+      else
+	echo $i ": no memory Errors" >>errBld
+      fi
+
+      echo "" >>errBld
+      continue
+    fi
+
+    if [ `grep -i -e " err" -e " fail" $i | wc -l` -gt 0 ]
+      then
+        numErr=$[ ${numErr} +1 ]
+        echo ${numErr}
+        echo $i ":" >>errBld
+        grep -i -e " err" -e " fail" $i >>errBld
+        echo $i "file HAS errors"
+
+    else
+        echo $i "file has no errors"
+        echo $i ": no errors" >>errBld
+    fi
+
+    # Next check for warnings in the file. If there are any, add these
+    # lines to the errBld file.
+    #
+    if [ `grep -i -e " warn" $i | wc -l` -gt 0 ]
+      then
+        numWarn=$[ ${numWarn} +1 ]
+        echo ${numWarn}
+        echo $i ":" >>errBld
+        grep -i -e " warn" $i >>errBld
+        echo $i "file HAS warnings"
+
+    else
+        echo $i "file is OK"
+        echo $i ": no Warnings" >>errBld
+    fi
+
+    echo "" >>errBld
+done
+
+
+# Now process the documentation output file if we are running on
+# LINUX. Again, check for errors first. In this case it is working on things 
+# like yyerror, so the grep has to look for a space before the word error.
+
+if [ $osName == "LINUX" ]
+  then
+    docErr=0
+    docWarn=0
+
+    if [ `grep -i -e " error" makeDocsOut | wc -l` -gt 0 ]
+      then 
+           docErr=$[ ${docErr} +1 ]
+           echo ${docErr}
+           echo "makeDocsOut: Errors" >>errBld
+           grep -i -e " error" makeDocsOut >>errBld
+           echo "makeDocsOut file HAS errors"
+
+      else
+           echo "makeDocsOut file has no errors"
+           echo "makeDocsOut: no errors" >>errBld
+    fi
+
+    if [ `grep -i -e " warn" makeDocsOut | wc -l` -gt 0 ]
+      then 
+           docWarn=$[ ${docWarn} +1 ]
+           echo ${docWarn}
+           echo "makeDocsOut: WARNINGS!" >>errBld
+
+    # Don't actually put the documenation warnings in the file that will 
+    # be mailed to everyone.
+    #
+           echo "makeDocsOut file HAS WARNINGS!"
+
+      else
+           echo "makeDocsOut is OK" 
+           echo "makeDocsOut: no Warnings" >>errBld
+    fi
+fi
+
+# Set up a variable to hold a string about the overall results.
+# This string will be part of the subject line of the email about the build.
+#
+failedVar="iegenlib: " 
+
+if [ ${numWarn} -gt 0 ]
+  then
+    failedVar="${failedVar} warnings "
+  else
+    failedVar="${failedVar} NO warnings "
+fi
+
+# 
+if [ ${numErr} -gt 0 ]
+  then
+    failedVar="${failedVar}, but something failed!"
+  else
+    failedVar="${failedVar}, and NO errors!"
+fi
+
+if [ $osName == "LINUX" ]
+  then
+    if [ ${docWarn} -gt 0 ]
+      then
+        failedVar="${failedVar}, but doc problems"
+    fi
+fi
+echo $failedVar
+
+################################################################################
+# ERROR scan complete - now email the message
+################################################################################
+# Build an email to send with these results.
+#
+subjDate=`date +"%m%d"`
+SUBJECT="${subjDate}-${osName} IEGenLib Build Results - ${failedVar}"
+EMAIL=$recipients
+
+pwd 
+fullPath=${nightlyPathPrefix}/IEGLibBld
+echo $fullPath
+
+# This is the file that contains the body of the email.
+#
+EMAILMESSAGE="${fullPath}/tmp/emailmessage"
+echo $EMAILMESSAGE
+echo "This is the result of the IEGenLib build on ${osName}:"> $EMAILMESSAGE
+chmod 664 $EMAILMESSAGE
+echo "For complete results, please see out* files in ${fullPath}${bldName}/IEGen. " >>$EMAILMESSAGE
+echo "The output files are listed below along with their results: a message if there were no problems, and lines from the file if there were errors or warnings" >>$EMAILMESSAGE
+echo -e "The output files are generated by running the configure script, make all, make install, run_iegenlib_tests, make docs, and the script to build a distribution tgz file. \n" >>$EMAILMESSAGE
+cat errBld >>$EMAILMESSAGE
+
+# Send an email using /bin/mail on Linux. If we're on the Mac, just
+# bundle up the err info and copy it over to the Linux system 
+#
+if [ $osName == "LINUX" ]
+  then
+    /bin/mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
+
+# If we're on a Mac, use ssh to send the mail
+#
+  elif [ $osName == "MACOSX" ]
+    then
+      ssh $nightlyBuildStoreServer  /bin/mail -s "'$SUBJECT'" "$EMAIL" < $EMAILMESSAGE
+fi
+

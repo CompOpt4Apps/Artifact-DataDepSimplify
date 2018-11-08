@@ -1,0 +1,352 @@
+[
+  [
+    {
+      "Name" : "Incomplete LU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "1",
+      "Relation" : "[m] -> {[i,k] -> [ip,kp]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k = kp }",
+
+      "Efficient Inspector complexity:" : "O( nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Correlated Mono",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "colidx",
+           "Domain" : "{[i]:0<=i &&i<nnz}",
+           "Range" : "{[j]:0<=j &&j<m}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "rowptr",
+           "Domain" : "{[j]:0<=j &&j<m}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "diagptr",
+           "Domain" : "{[j]:0<=j &&j<m}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+        {
+          "Type" : "CoMonotonicity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 = e2 => rowptr(e1) <= diagptr(e2)",
+          "p" : "e1 = e2",
+          "q" : "rowptr(e1) <= diagptr(e2)"
+        },
+        {
+          "Type" : "CoMonotonicity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 < e2 => diagptr(e1) < rowptr(e2)",
+          "p" : "e1 < e2",
+          "q" : "diagptr(e1) < rowptr(e2)"
+        }
+      ],
+      "Do Not Project Out" :
+      [
+        "i", "ip"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is the Gauss-Seidel code. Dependence analysis of",
+                  "this code would identify 1 pair of read/write data accesses",
+                  "(in S1) that may produce data dependences. This pair produces",
+                  "two distinct conjunctions considering the ordering of accesses",
+                  "(Flow and Anti dependence). Overall, there are 2 distinct",
+                  "conjunctions for the complete dependence relation.",
+                  "  for (i=0; i < N; i++) {",
+                  "    double sum = b[i];",
+                  "    for (j=rowptr[i];j<rowptr[i + 1];j++) {",
+                  "S1:   sum -= values[j]*y[colidx[j]];",
+                  "    }",
+                  "S2: y[i] = sum*idiag[i];",
+                  "  }"
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (y[colidx[j]]);  a write in S2 (y[i]); "
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "2",
+      "Relation" : "[m] -> {[i,k] -> [ip,kp]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k = kp }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Correlated Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (v[k]);  a write in S1 (v[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "3",
+      "Relation" : "[m] -> {[i,k] -> [ip,kp]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k = diagptr(colidx(kp)) }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n) = O( nnz*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Combination of Mono and Correlated Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (v[diag[col[k]]]);  a write in S1 (v[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "4",
+      "Relation" : "[m] -> {[i,k] -> [ip,kp]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k = diagptr(colidx(kp)) }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n) = O( nnz*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Combination of Mono and Correlated Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (v[diag[col[k]]]);  a write in S1 (v[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "5",
+      "Relation" : "[m] -> {[i,k] -> [ip,kp,j1p,j2p]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1p) = colidx(j2p) && k = kp}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n) ",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Correlated Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (v[k]);  a read in S2 (v[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "6",
+      "Relation" : "[m] -> {[i,k] -> [ip,kp,j1p,j2p]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1p) = colidx(j2p) && k = kp}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Correlated Mono",
+      "What helps to detect unsat 2:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (v[k]);  a read in S2 (v[k]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "7",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && colidx(j1) = colidx(j2) && j1 = kp}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (v[k]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "8",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && colidx(j1) = colidx(j2) && j1 = kp}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Correlated Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (v[k]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "9",
+      "Relation" : "[m] -> {[i,k] -> [ip,kp,j1p,j2p]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1p) = colidx(j2p) && k = j2p}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (v[k]);  a read in S2 (v[j2]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "10",
+      "Relation" : "[m] -> {[i,k] -> [ip,kp,j1p,j2p]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1p) = colidx(j2p) && k = j2p}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3/n)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (v[k]);  a read in S2 (v[j2]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "11",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && colidx(j1) = colidx(j2) && j1 = diagptr(colidx(kp))}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*n*(nnz/n)*(nnz/n) = O(nnz^3/n)",
+      "Efficient Inspector complexity after adding domain info (combination of correlated mono and mono add an useful equlaity: i = colidx(kp) ):" : "n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3 / n^2)",
+      "Expected" : "[m] -> {[i,k,j1,j2] -> [ip,kp]: i = colidx(kp) && rowptr(colidx(kp)) = rowptr(i) && i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && colidx(j1) = colidx(j2) && j1 = diagptr(colidx(kp))}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (v[diag[col[k]]]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "12",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && colidx(j1) = colidx(j2) && j1 = diagptr(colidx(kp))}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*n*(nnz/n)*(nnz/n) = O(nnz^3/n)",
+      "Efficient Inspector complexity after adding domain info (combination of correlated mono and mono add an useful equlaity: i = colidx(kp) ):" : "n*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^3 / n^2)",
+      "Expected" : "[m] -> {[i,k,j1,j2] -> [ip,kp]: i = colidx(kp) && rowptr(i) = rowptr(colidx(kp))&& ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && colidx(j1) = colidx(j2) && j1 = diagptr(colidx(kp))}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (v[diag[col[k]]]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "13",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp,j1p,j2p]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1) = colidx(j2) && colidx(j1p) = colidx(j2p) && j1 = j1p}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5 / n^3)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (v[j1]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "14",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp,j1p,j2p]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1) = colidx(j2) && colidx(j1p) = colidx(j2p) && j1 = j1p}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5 / n^3)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (v[j1]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "15",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp,j1p,j2p]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1) = colidx(j2) && colidx(j1p) = colidx(j2p) && j1 = kp}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5 / n^3)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (v[k]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "16",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp,j1p,j2p]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1) = colidx(j2) && colidx(j1p) = colidx(j2p) && j1 = kp}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5 / n^3)",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+      "What helps to detect unsat 2:" : "Correlated Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (v[k]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "17",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp,j1p,j2p]: i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1) = colidx(j2) && colidx(j1p) = colidx(j2p) && j1 = j2p}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5 / n^3)",
+      "Efficient Inspector complexity after adding domain info (combination of correlated mono and mono add an useful equlaity: i = colidx(kp) ):" : "n*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^5 / n^4)",
+      "Expected" : "[m] -> {[i,k,j1,j2] -> [ip,kp,j1p,j2p]: i = colidx(kp) && diagptr(j1) = diagptr(j2p) && rowptr(i) = rowptr(colidx(kp)) && rowptr(i + 1) = rowptr(colidx(kp) + 1) && rowptr(j1) = rowptr(j2p) && i < ip && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1) = colidx(j2) && colidx(j1p) = colidx(j2p) && j1 = j2p}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (v[j2]);  a write in S2 (v[j1]);"
+                  ]
+    },
+    {
+      "Name" : "CSR_ILU",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "18",
+      "Relation" : "[m] -> {[i,k,j1,j2] -> [ip,kp,j1p,j2p]: ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1) = colidx(j2) && colidx(j1p) = colidx(j2p) && j1 = j2p}",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n)*(nnz/n)*n*(nnz/n)*(nnz/n) = O( nnz^5 / n^3)",
+      "Efficient Inspector complexity after domain info (combination of correlated mono and mono add an useful equlaity: i = colidx(kp) ):" : "n*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n)*(nnz/n) = O( nnz^5 / n^4)",
+      "Expected" : "[m] -> {[i,k,j1,j2] -> [ip,kp,j1p,j2p]: i = colidx(kp) && diagptr(j1) = diagptr(j2p) && rowptr(i) = rowptr(colidx(kp)) && rowptr(i + 1) = rowptr(colidx(kp) + 1) && rowptr(j1) = rowptr(j2p) && ip < i && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(i) <= k && k < diagptr(i) && rowptr(ip) <= kp && kp < diagptr(ip) && k < j1 && j1 < rowptr(1+i) && kp < j1p && j1p < rowptr(1+ip) && diagptr(colidx(k)) < j2 && j2 < rowptr(1+colidx(k)) && diagptr(colidx(kp)) < j2p && j2p < rowptr(1+colidx(kp)) && colidx(j1) = colidx(j2) && colidx(j1p) = colidx(j2p) && j1 = j2p}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S2 (v[j2]);  a write in S2 (v[j1]);"
+                  ]
+    }
+  ]
+]

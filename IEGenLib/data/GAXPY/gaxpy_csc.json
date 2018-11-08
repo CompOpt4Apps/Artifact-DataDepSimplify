@@ -1,0 +1,55 @@
+[
+  [
+    {
+      "Name" : "CSC Gaxpy",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "1",
+      "Relation" : "",
+      "Expected" : "",
+      "UFS" :
+      [
+        { 
+           "Name" : "Ai",
+           "Domain" : "{[i]: 0<=i && i<nnz}",
+           "Range" : "{[j]: 0<=j && j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "Ap",
+           "Domain" : "{[j]:0<=j &&j<n}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+
+      ],
+      "Do Not Project Out" :
+      [
+        "i", "ip"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is the gaxpy code from CSparse library",
+                  "that is a version of Sparse Matrix/Dense Vector Multiply.",
+                  " Dependence analysis of this code would identify",
+                  "1 pair of write/write data accesses (in S1) that may",
+                  "produce data dependences. This pair produces two distinct",
+                  "conjunctions considering the ordering of accesses",
+                  "(Flow and Anti dependence).",
+                  "for (j = 0 ; j < n ; j++){",
+                  "  for (p = Ap [j] ; p < Ap [j+1] ; p++){",
+                  "S1:  y[Ai[p]] += A[p] * x[j];",
+                  "  }",
+                  "}"
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (y[Ai[p]]);  a write in S1 (y[Ai[p]]); "
+                  ]
+    }
+  ]
+]

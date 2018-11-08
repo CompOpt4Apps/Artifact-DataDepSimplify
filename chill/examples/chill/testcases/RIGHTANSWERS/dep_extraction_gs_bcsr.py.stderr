@@ -1,0 +1,1 @@
+rowptr[1 * chill_idx1]rowptr[1 * chill_idx1 + 1]rowptr[1 * chill_idx1 + 1]rowptr[1 * chill_idx1]colidx[1 * chill_idx2]colidx[1 * chill_idx2 + 1]colidx[1 * chill_idx2p]colidx[1 * chill_idx2p + 1]

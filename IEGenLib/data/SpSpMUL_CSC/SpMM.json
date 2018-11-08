@@ -1,0 +1,140 @@
+[
+  [
+    {
+      "Name" : "SpMM for CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "1",
+      "Relation" : "{ [j,p1,p2,nz] -> [jp,p1,p2,nzp]: nz = nzp && j < jp && 0 <= j && j < n && 0 <= jp && jp < n && Bp(j) <= p1 && p1 < Bp(j+1) && Ap(Bp(j)) <= p2 && p2 < Ap(Bp(j+1)) && Bp(jp) <= p1p && p1p < Bp(jp+1) && Ap(Bp(jp)) <= p2p && p2p < Ap(Bp(jp+1)) && Cp(j) <= nz && nz < Cp(j+1) && Cp(jp) <= nzp && nzp < Cp(jp+1) }",
+
+      "Efficient Inspector complexity:" : "O( n^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "Ai",
+           "Domain" : "{[i]:0<=i &&i<nnz_A}",
+           "Range" : "{[j]:0<=j &&j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "Ap",
+           "Domain" : "{[j]:0<=j &&j<n}",
+           "Range" : "{[i]:0<=i &&i<nnz_A}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "Bi",
+           "Domain" : "{[i]:0<=i &&i<nnz_B}",
+           "Range" : "{[j]:0<=j &&j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "Bp",
+           "Domain" : "{[j]:0<=j &&j<n}",
+           "Range" : "{[i]:0<=i &&i<nnz_B}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "Ci",
+           "Domain" : "{[i]:0<=i &&i<nnz_C}",
+           "Range" : "{[j]:0<=j &&j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "Cp",
+           "Domain" : "{[j]:0<=j &&j<n}",
+           "Range" : "{[i]:0<=i &&i<nnz_C}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+      ],
+      "Do Not Project Out" :
+      [
+        "i", "ip"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is the SpMM for CSC.",
+                  "  for (j = 0 ; j < n ; j++){",
+                  "    std::fill_n(x,n,0); //Zero initialization",
+                  "",
+                  "    int nz = Cp [j];",
+                  "    for (p1 = Bp [j] ; p1 < Bp [j+1] ; p1++){",
+                  "      for (p2 = Ap [Bi[p1]] ; p2 < Ap [Bi[p1]+1] ; p2++){",
+                  "        if ( x[Ai [p2]] == 0)",
+                  "S1:       Ci [nz++] = Ai [p2]; ",
+                  "        x [Ai [p2]] += Bx [p1] * Ax [p2] ;",
+                  "      }",
+                  "    }",
+                  "",
+                  "    for (p = Cp [j] ; p < nz ; p++){",
+                  "S2:   Cx [p] = x [Ci [p]] ;",
+                  "    }",
+                  "  }"
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    "",
+                    "a write in S1 (Ci [nz++]);  a write in S1 (Ci [nz++]);"
+                  ]
+    },
+    {
+      "Name" : "SpMM CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "2",
+      "Relation" : "{{ [j,p1,p2,nz] -> [jp,p1,p2,nzp]: nz = nzp && jp < j && 0 <= j && j < n && 0 <= jp && jp < n && Bp(j) <= p1 && p1 < Bp(j+1) && Ap(Bp(j)) <= p2 && p2 < Ap(Bp(j+1)) && Bp(jp) <= p1p && p1p < Bp(jp+1) && Ap(Bp(jp)) <= p2p && p2p < Ap(Bp(jp+1)) && Cp(j) <= nz && nz < Cp(j+1) && Cp(jp) <= nzp && nzp < Cp(jp+1) }",
+
+      "Efficient Inspector complexity:" : "O( n^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S1 (Ci [nz++]);  a write in S1 (Ci [nz++]);"
+                  ]
+    },
+    {
+      "Name" : "SpMM CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "3",
+      "Relation" : "{ [j,p,nz] -> [jp,pp,nzp]: p = pp && j < jp && 0 <= j && j < n && 0 <= jp && jp < n && Cp(j) <= nz && nz < Cp(j+1) && Cp(j) <= p && p < nz && Cp(jp) <= nzp && nzp < Cp(jp+1) && Cp(jp) <= pp && pp < nzp }",
+
+      "Efficient Inspector complexity:" : "O( n^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (Cx[p]);  a write in S2 (Cx [p]);"
+                  ]
+    },
+    {
+      "Name" : "SpMM CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "4",
+      "Relation" : "{ [j,p,nz] -> [jp,pp,nzp]: p = pp && jp < j && 0 <= j && j < n && 0 <= jp && jp < n && Cp(j) <= nz && nz < Cp(j+1) && Cp(j) <= p && p < nz && Cp(jp) <= nzp && nzp < Cp(jp+1) && Cp(jp) <= pp && pp < nzp }",
+
+      "Efficient Inspector complexity:" : "O( n^2 )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (Cx[p]);  a write in S2 (Cx [p]);"
+                  ]
+    }
+  ]
+]

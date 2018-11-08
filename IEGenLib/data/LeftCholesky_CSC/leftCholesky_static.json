@@ -1,0 +1,444 @@
+[
+  [
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "1",
+      "Relation" : "{ [colNo] -> [colNop, ip, lp] : lC(colNo) = lp && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n) = O( nnz*n )",
+      "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: colNo = pruneSet(ip)):" : "O( nnz )",
+      "Expected" : "{ [colNo] -> [colNop, ip, lp] : colNo = pruneSet(ip) &&  finger(colNo) = finger(pruneSet(ip)) && lC(colNo) = lC(pruneSet(ip)) && prunePtr(colNo) = prunePtr(pruneSet(ip)) && lC(colNo) = lp && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )}",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "lC",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_L}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "lR",
+           "Domain" : "{[i]: 0<=i && i<nnz_L}",
+           "Range" : "{[j]: 0<=j && j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "prunePtr",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_L}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        },
+        { 
+           "Name" : "pruneSet",
+           "Domain" : "{[j]: 0<=j && j<nnz_L}",
+           "Range" : "{[j]: 0<=j && j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "finger",
+           "Domain" : "{[i]: 0<=i && i<=n}",
+           "Range" : "{[j]: 0<=j && j<nnz_L}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+        {
+          "Type" : "Triangularity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  e1 < prunePtr(e2) => pruneSet(e1) < e2",
+          "p" : "e1 < prunePtr(e2)",
+          "q" : "pruneSet(e1) < e2"
+        },
+        {
+          "Type" : "Triangularity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  lC(e1) < e2 => e1 < lR(e2)",
+          "p" : "lC(e1) < e2",
+          "q" : "e1 < lR(e2)"
+        }
+      ],
+      "Do Not Project Out" :
+      [
+        "colNo", "colNop"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is a version of left Cholesky. Dependence",
+                  "analysis of this code would identify 29 pair of",
+                  "read/write or writ/write data accesses (in S1 through s8)",
+                  "that may produce data dependences. These pairs produce",
+                  "two conjunctions considering the ordering of accesses",
+                  "(Flow and Anti dependence). Overall, there are 34 distinct",
+                  "conjunctions for the complete dependence relation.",
+                  "for (int colNo = 0; colNo < n; ++colNo) {",
+                  "    //Uncompressing a col into a 1D array",
+                  "    for (int nzNo = c[colNo]; nzNo < c[colNo + 1]; ++nzNo) {",
+                  "        f[r[nzNo]] = values[nzNo];//Copying nonzero of the col",
+                  "    }",
+                  "    for (int i = prunePtr[colNo]; i < prunePtr[colNo + 1]; ++i) {",
+                  "        spCol = pruneSet[i];",
+                  "        for (int l = lC[spCol]; l < lC[spCol + 1]; ++l) {",
+                  "            if (lR[l] >= colNo) {",
+                  "S1:             f[lR[l]] -= lValues[l] * lValues[finger[spCol]];",
+                  "            }",
+                  "        }",
+                  "S4:     finger[spCol]++;",
+                  "    }",
+                  "S5: finger[colNo]++;//Skip diagonal row",
+                  "    if (f[colNo] <= 0)",
+                  "        return false; //The matrix is not SPD",
+                  "    double tmpSqrt = sqrt(f[colNo]);",
+                  "    f[colNo] = 0;",
+                  "S2: lValues[lC[colNo]] = tmpSqrt;",
+                  "    for (int j = lC[colNo] + 1; j < lC[colNo + 1]; ++j) {",
+                  "S3:     lValues[j] = f[lR[j]] / tmpSqrt;",
+                  "        f[lR[j]] = 0;",
+                  "    }",
+                  "}"
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lValues[l]);  a write in S2 (lValues[lC[colNo]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "2",
+      "Relation" : "{ [colNo] -> [colNop, ip, lp] : lC(colNo) = lp && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )  }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n) = O( nnz*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lValues[l]);  a write in S2 (lValues[lC[colNo]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "3",
+      "Relation" : "{ [colNo] -> [colNop, ip, lp] : lC(colNo) = finger( pruneSet(ip) ) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )}",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n) = O( nnz*n )",
+      "Efficient Inspector complexity after adding domain info (correlated mono adds an useful equlaity: colNo = pruneSet(ip)):" : "O( nnz )",
+      "Expected" : "{ [colNo] -> [colNop, ip, lp] : colNo = pruneSet(ip) && finger(colNo) = finger(pruneSet(ip)) && finger(colNo) = lC(colNo) && finger(colNo) = lC(pruneSet(ip)) && finger(pruneSet(ip)) = lC(colNo) && prunePtr(colNo) = prunePtr(pruneSet(ip)) && lC(colNo) = finger( pruneSet(ip) ) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )}",
+
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lValues[finger[pruneSet[i]]]);  a write in S2 (lValues[lC[colNo]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "4",
+      "Relation" : "{ [colNo] -> [colNop, ip, lp] : lC(colNo) = finger( pruneSet(ip) ) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )}",
+
+      "Efficient Inspector complexity:" : "O( n*nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lValues[finger[pruneSet[i]]]);  a write in S2 (lValues[lC[colNo]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "5",
+      "Relation" : "{ [colNo,j] -> [colNop, ip, lp] : j = lp && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC(colNo) < j && j < lC(colNo+1) }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n) = O( n*nnz ): note both j and lp can be projected",
+      "Efficient Inspector complexity after adding domain info (mono adds an useful equlaity: colNo = pruneSet(ip)):" : "O( nnz )",
+      "Expected" : "{ [colNo,j] -> [colNop, ip, lp] : colNo = pruneSet(ip) && j = lp && finger(colNo) = finger(pruneSet(ip)) && finger(colNo + 1) = finger(pruneSet(ip) + 1) && lC(colNo) = lC(pruneSet(ip)) && lC(colNo + 1) = lC(pruneSet(ip) + 1) && prunePtr(colNo) = prunePtr(pruneSet(ip)) && prunePtr(colNo + 1) = prunePtr(pruneSet(ip) + 1) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC(colNo) < j && j < lC(colNo+1) }",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lValues[l]);  a write in S3 (lValues[j]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "6",
+      "Relation" : " {[colNo,j] -> [colNop, ip, lp] : j = lp && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC(colNo) < j && j < lC(colNo+1) }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n) = O( n*nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lValues[l]);  a write in S3 (lValues[j]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "7",
+      "Relation" : "{ [colNo,j] -> [colNop, ip, lp] : j = finger( pruneSet(ip) ) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC(colNo) < j && j < lC(colNo+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )}",
+
+      "Efficient Inspector complexity:" : "O( n*nnz )",
+      "Efficient Inspector complexity after adding domain info (correlated mono adds an useful equlaity: colNo = pruneSet(ip)):" : "O( nnz )",
+      "Expected" : "{ [colNo,j] -> [colNop, ip, lp] : colNo = pruneSet(ip) && j = finger( pruneSet(ip) ) && finger(colNo) = finger(pruneSet(ip)) && finger(colNo + 1) = finger(pruneSet(ip) + 1) && lC(colNo) = lC(pruneSet(ip)) && lC(colNo + 1) = lC(pruneSet(ip) + 1) && prunePtr(colNo) = prunePtr(pruneSet(ip)) && prunePtr(colNo + 1) = prunePtr(pruneSet(ip) + 1) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC(colNo) < j && j < lC(colNo+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )}",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lValues[finger[spCol]]);  a write in S3 (lValues[j]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "8",
+      "Relation" : "{ [colNo,j] -> [colNop, ip, lp] : j = finger( pruneSet(ip) ) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) && lC(colNo) < j && j < lC(colNo+1) && lC( pruneSet(ip) ) <= finger( pruneSet(ip) ) && finger( pruneSet(ip) ) < lC( pruneSet(ip) + 1 )}",
+
+      "Efficient Inspector complexity:" : "O( n*nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular combined with Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (lValues[finger[spCol]]);  a write in S3 (lValues[j]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "9",
+      "Relation" : "{ [colNo] -> [colNop] : lC(colNo) = lC(colNop) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (lValues[lC[colNo]]);  a write in S2 (lValues[lC[colNo]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "10",
+      "Relation" : "{ [colNo] -> [colNop] : lC(colNo) = lC(colNop) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (lValues[lC[colNo]]);  a write in S2 (lValues[lC[colNo]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "11",
+      "Relation" : "{ [colNo, j] -> [colNop] : j = lC(colNop) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && lC(colNo) < j && j < lC(colNo+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (lValues[lC[colNo]]);  a write in S3 (lValues[j]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "12",
+      "Relation" : "{ [colNo, j] -> [colNop] : j = lC(colNop) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && lC(colNo) < j && j < lC(colNo+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (lValues[lC[colNo]]);  a write in S3 (lValues[j]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "13",
+      "Relation" : "{ [colNo, j] -> [colNop, jp] : j = jp && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && lC(colNo) < j && j < lC(colNo+1) && lC(colNop) < jp && jp < lC(colNop+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (lValues[j]);  a write in S3 (lValues[j]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "14",
+      "Relation" : "{ [colNo, j] -> [colNop, jp] : j = jp && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && lC(colNo) < j && j < lC(colNo+1) && lC(colNop) < jp && jp < lC(colNop+1) }",
+
+      "Efficient Inspector complexity:" : "O( n*n )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Mono",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S3 (lValues[j]);  a write in S3 (lValues[j]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "15",
+      "Relation" : "{ [colNo, i, l] -> [colNop, ip] : pruneSet(i) = pruneSet(ip) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNo) <= i && i < prunePtr(colNo+1) && lC(pruneSet(i)) <= l && l < lC(pruneSet(i)+1) && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1)  }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n) = O( nnz^2 ) )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz^2 ) )",
+      "Expected" : "{ [colNo, i, l] -> [colNop, ip] : pruneSet(i) = pruneSet(ip) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNo) <= i && i < prunePtr(colNo+1) && lC(pruneSet(i)) <= l && l < lC(pruneSet(i)+1) && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1)  }",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (finger[pruneSet[i]]);  a write in S4 (finger[pruneSet[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "16",
+      "Relation" : "{ [colNo, i, l] -> [colNop, ip] : pruneSet(i) = pruneSet(ip) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNo) <= i && i < prunePtr(colNo+1) && lC(pruneSet(i)) <= l && l < lC(pruneSet(i)+1) && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n) = O( nnz^2 ) )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz^2 ) )",
+      "Expected" : "{ [colNo, i, l] -> [colNop, ip] : pruneSet(i) = pruneSet(ip) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNo) <= i && i < prunePtr(colNo+1) && lC(pruneSet(i)) <= l && l < lC(pruneSet(i)+1) && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1)  }",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (finger[pruneSet[i]]);  a write in S4 (finger[pruneSet[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "17",
+      "Relation" : "{ [colNo, i] -> [colNop, ip] : pruneSet(i) = pruneSet(ip) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNo) <= i && i < prunePtr(colNo+1) && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1)  }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n) = O( nnz^2 ) )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz^2 ) )",
+      "Expected" : "{ [colNo, i] -> [colNop, ip] : pruneSet(i) = pruneSet(ip) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNo) <= i && i < prunePtr(colNo+1) && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1)  }",
+
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S4 (finger[pruneSet[i]]);  a write in S4 (finger[pruneSet[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "18",
+      "Relation" : "{ [colNo, i] -> [colNop, ip] : pruneSet(i) = pruneSet(ip) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNo) <= i && i < prunePtr(colNo+1) && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) }",
+
+      "Efficient Inspector complexity:" : "n*n*(nnz/n)*(nnz/n) = O( nnz^2 ) )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz^2 ) )",
+      "Expected" : "{ [colNo, i] -> [colNop, ip] : pruneSet(i) = pruneSet(ip) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNo) <= i && i < prunePtr(colNo+1) && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) }",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S4 (finger[pruneSet[i]]);  a write in S4 (finger[pruneSet[i]]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "19",
+      "Relation" : "{ [colNo] -> [colNop, ip, lp] : colNo = pruneSet(ip) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) }",
+
+      "Efficient Inspector complexity:" : "n*(nnz/n)*(nnz/n) = O( (nnz^2)/n ) )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( (nnz^2)/n ) )",
+      "Expected" : "{ [colNo] -> [colNop, ip, lp] : colNo = pruneSet(ip) && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) }",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (finger[pruneSet[i]]);  a write in S5 (finger[colNo]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "20",
+      "Relation" : "{ [colNo] -> [colNop, ip, lp] : colNo = pruneSet(ip) && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n && prunePtr(colNop) <= ip && ip < prunePtr(colNop+1) && lC(pruneSet(ip)) <= lp && lp < lC(pruneSet(ip)+1) }",
+
+      "Efficient Inspector complexity:" : "O( nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (finger[pruneSet[i]]);  a write in S5 (finger[colNo]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "21",
+      "Relation" : "{ [colNo] -> [colNop] : colNo = colNop && colNo < colNop && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S5 (finger[colNo]);  a write in S5 (finger[colNo]);"
+                  ]
+    },
+    {
+      "Name" : "CSC left Cholesky",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "22",
+      "Relation" : "{ [colNo] -> [colNop] : colNo = colNop && colNop < colNo && 0 <= colNo && colNo < n && 0 <= colNop && colNop < n }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S5 (finger[colNo]);  a write in S5 (finger[colNo]);"
+                  ]
+    }
+  ]
+]

@@ -1,0 +1,135 @@
+[
+  [
+    {
+      "Name" : "Forward solve for CSCR",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "1",
+      "Relation" : "{ [j] -> [jp]: j<jp and j=jp and  0 <= j && j < n && 0 <= jp && jp < n  }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "Li",
+           "Domain" : "{[i]:0<=i &&i<nnz}",
+           "Range" : "{[j]:0<=j &&j<n}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_NONE"
+        },
+        { 
+           "Name" : "Lp",
+           "Domain" : "{[j]:0<=j &&j<n}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+        {
+          "Type" : "Triangularity",
+          "UniQuantVar" : "[e1,e2]",
+          "Rule (comment)" : "Forall e1,e2,  Li(e1) < e2 => e1 < Lp(e2)",
+          "p" : "Lp(e1) < e2",
+          "q" : "e1 < Li(e2)"
+        }
+      ],
+      "Do Not Project Out" :
+      [
+        "i", "ip"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is the Forward solve for CSR.",
+                  ""
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    ""
+                  ]
+    },
+    {
+      "Name" : "Forward solve for CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "2",
+      "Relation" : "{ [j] -> [jp]: jp<j and j=jp and  0 <= j && j < n && 0 <= jp && jp < n  }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    ""
+                  ]
+    },
+    {
+      "Name" : "Forward solve for CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "3",
+      "Relation" : "{ [j,p] -> [jp,pp]: j = Li (pp) && j < jp && 0 <= j && j < n && 0 <= jp && jp < n && Lp(j) <= p && p < Lp(j+1) && Lp(jp) <= pp && pp < Lp(jp+1) }",
+
+      "Efficient Inspector complexity:" : "O( nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Lower Triangular",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    ""
+                  ]
+    },
+    {
+      "Name" : "Forward solve for CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "4",
+      "Relation" : "{ [j,p] -> [jp,pp]: j = Li (pp) && jp < j && 0 <= j && j < n && 0 <= jp && jp < n && Lp(j) <= p && p < Lp(j+1) && Lp(jp) <= pp && pp < Lp(jp+1) }",
+
+      "Efficient Inspector complexity:" : "O( nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz ) )",
+      "Expected" : "{ [j,p] -> [jp,pp]: j = Li (pp) && jp < j && 0 <= j && j < n && 0 <= jp && jp < n && Lp(j) <= p && p < Lp(j+1) && Lp(jp) <= pp && pp < Lp(jp+1) }",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    ""
+                  ]
+    },
+    {
+      "Name" : "Forward solve for CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "5",
+      "Relation" : "{ [j] -> [jp,pp]: j = jp && j < jp && 0 <= j && j < n && 0 <= jp && jp < n && Lp(jp) <= pp && pp < Lp(jp+1) }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    ""
+                  ]
+    },
+    {
+      "Name" : "Forward solve for CSC",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "6",
+      "Relation" : "{ [j] -> [jp,pp]: j = jp && jp < j && 0 <= j && j < n && 0 <= jp && jp < n && Lp(jp) <= pp && pp < Lp(jp+1) }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    ""
+                  ]
+    }
+  ]
+]

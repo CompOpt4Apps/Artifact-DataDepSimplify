@@ -1,0 +1,107 @@
+[
+  [
+    {
+      "Name" : "CSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "1",
+      "Relation" : "{ [i] -> [ip,jp] : i < ip && i = colidx(jp) && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(ip) <= jp && jp < rowptr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz ) )",
+      "Expected" : "{ [i] -> [ip,jp] : i < ip && i = colidx(jp) && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(ip) <= jp && jp < rowptr(ip+1) }",
+
+      "UFS" :
+      [
+        { 
+           "Name" : "colidx",
+           "Domain" : "{[i]:0<=i &&i<nnz}",
+           "Range" : "{[j]:0<=j &&j<m}",
+           "Bijective" : "false",
+           "Monotonicity" : "iegenlib::Monotonic_NONE"
+        },
+        { 
+           "Name" : "rowptr",
+           "Domain" : "{[j]:0<=j &&j<m}",
+           "Range" : "{[i]:0<=i &&i<nnz}",
+           "Bijective" : "false",
+           "Monotonicity" : "iegenlib::Monotonic_Increasing"
+        }
+      ],
+      "User Defined" :
+      [
+
+      ],
+      "Do Not Project Out" :
+      [
+        "i", "ip"
+      ],
+      "Remove Constraints" : "0",
+      "Comment: Code" : [
+                  "Following is the Gauss-Seidel code. Dependence analysis of",
+                  "this code would identify 1 pair of read/write data accesses",
+                  "(in S1) that may produce data dependences. This pair produces",
+                  "two distinct conjunctions considering the ordering of accesses",
+                  "(Flow and Anti dependence). Overall, there are 2 distinct",
+                  "conjunctions for the complete dependence relation.",
+                  "  for (i=0; i < N; i++) {",
+                  "    double sum = b[i];",
+                  "    for (j=rowptr[i];j<rowptr[i + 1];j++) {",
+                  "S1:   sum -= values[j]*y[colidx[j]];",
+                  "    }",
+                  "S2: y[i] = sum*idiag[i];",
+                  "  }"
+                  ],
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (y[colidx[j]]);  a write in S2 (y[i]); "
+                  ]
+    },
+    {
+      "Name" : "CSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "2",
+      "Relation" : "{ [i] -> [ip,jp] : ip < i && i = colidx(jp) && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(ip) <= jp && jp < rowptr(ip+1) }",
+
+      "Efficient Inspector complexity:" : "O( nnz )",
+      "Efficient Inspector complexity after adding domain info:" : "stays O( nnz ) )",
+      "Expected" : "{ [i] -> [ip,jp] : ip < i && i = colidx(jp) && 0 <= i && i < m && 0 <= ip && ip < m && rowptr(ip) <= jp && jp < rowptr(ip+1) }",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a read in S1 (y[colidx[j]]);  a write in S1 (y[i]); "
+                  ]
+    },
+    {
+      "Name" : "CSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "3",
+      "Relation" : "{ [i] -> [ip] : i < ip && i = ip && 0 <= i && i < m && 0 <= ip && ip < m }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (y[i]);  a write in S2 (y[i]); "
+                  ]
+    },
+    {
+      "Name" : "CSR_Gauss-Seidel",
+      "Input Type" : "IEgenLIB Relation",
+      "Index" : "4",
+      "Relation" : "{ [i] -> [ip] : ip < i && i = ip && 0 <= i && i < m && 0 <= ip && ip < m }",
+
+      "Efficient Inspector complexity:" : "0",
+      "Efficient Inspector complexity after adding domain info:" : "0",
+      "Expected" : "Not Satisfiable",
+      "What helps to detect unsat 1:" : "Linear inconsistency",
+
+      "Comment: Source of data access in the code for this relation" : [
+                    " ",
+                    "a write in S2 (y[i]);  a write in S2 (y[i]); "
+                  ]
+    }
+  ]
+]
