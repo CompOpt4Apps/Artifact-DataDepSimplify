@@ -322,7 +322,7 @@ std::cout<<"\n\n-- Running wavefront parallel using H level set:\n";
   end = std::chrono::system_clock::now();
   elapsed_seconds = end-start;
   duration2=elapsed_seconds.count();
-std::cout << "\n       Inspector Duration = "<< (HD)<<"\n       Executor Duration = "<< (duration2)<<"\n       duration (executor+inspector) = "<<(duration2+duration3) <<"\n       Relative speed up = "<< (duration1/(HD+duration2)) << "\n";
+std::cout << "\n       Inspector Duration = "<< (HD)<<"\n       Executor Duration = "<< (duration2)<<"\n       duration (executor+inspector) = "<<(duration2+HD) <<"\n       Relative speed up = "<< (duration1/(HD+duration2)) << "\n";
  }
  cout<< nLevels <<";;";
 #endif

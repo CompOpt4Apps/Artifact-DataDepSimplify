@@ -24,6 +24,7 @@
 #include "../src/fs_csc_original.h"
 #include "../src/fs_csc_inspector.h"
 #include "../src/fs_csc_executor.h"
+#include "../src/inspection_DAG03.h"
 
 #define TRUE 1
 #undef DEBUG
@@ -126,6 +127,8 @@ int main(int argc, char *argv[]) {
       std::cout <<"\n>>>>>> Run #"<<r+1<<":\n";
       std::cout <<">>>>>> Execution time = "<<durationE[r] <<"\n";
       
+      if (!testTriangular(n, x)) std::cout << "\n\n>>> Serial Run Failed!\n\n";
+
       if(r < nRuns-1){
         delete serialCopyVal;
         delete serialCopyPtr;
@@ -163,11 +166,22 @@ int main(int argc, char *argv[]) {
 
       omp_set_num_threads(tc);
 
-      std::cout<<"\n-- Normal Level Set, running the algorithm with #"
+      std::cout<<"\n\n-- Normal Level Set, running the algorithm with #"
                <<tc<<" threads in parallel for #"<<nRuns<<" times:\n";
       for(int j=0;j<20;j++){
         durationID[j] = durationIL[j] = durationE[j] = durationTT[j] = 0.0f;
       }
+
+/*
+  std::cout<<"\n---- Orig:\n";
+for(int ct = 0; ct < n; ct++){
+  cout<<"\nCol "<< ct <<"\n";
+  for(int cj = reOrdMat->p[ct]; cj < reOrdMat->p[ct+1]; cj++){
+    cout<< reOrdMat->i[cj]<<"  ";
+  }
+}
+*/
+//  std::cout<<"\n\n\n";
 
       for(int r=0; r<nRuns; r++){
 
@@ -180,14 +194,31 @@ int main(int argc, char *argv[]) {
         // # Inspector:
         std::vector<std::vector<int>> DAG;
         DAG.resize(n);
-        for(int i = 0 ; i < n ; i++ ) DAG[i].push_back(i);
+        //for(int i = 0 ; i < n ; i++ ) DAG[i].push_back(i);
+        std::vector<std::set<int>> DAG_s;
+        DAG_s.resize(n);
         int *levelPtr, *levelSet, levels;
         startT = std::chrono::system_clock::now();
         // Creating the DAG with generated
-        fs_csc_inspector(n,parallelCopyPtr, parallelCopyIdx, DAG);
+        fs_csc_inspector(n,parallelCopyPtr, parallelCopyIdx, DAG_s);
         endT = std::chrono::system_clock::now();
         elapsed_secondsT = endT - startT;
         durationID[r] = elapsed_secondsT.count();
+        for(int ct = 0; ct < n; ct++){
+          std::set<int> tms = DAG_s[ct];
+          DAG[ct].push_back(ct);
+          for (std::set<int>::iterator it= tms.begin(); it!=tms.end(); ++it)
+            DAG[ct].push_back(*it);
+        }
+
+for(int ct = 0; ct < n; ct++){
+//  cout<<"\nCol "<< ct <<"\n";
+  for(int cj = 0, cr = reOrdMat->p[ct]; cj < DAG[ct].size(); cj++, cr++){
+//    cout<< DAG[ct][cj]<<"  ";
+if( DAG[ct][cj] != reOrdMat->i[cr] )     cout<< "\n Err at "<<ct<<" , "<<cj<<"  ";
+  }
+}
+
         // Building the level sets
         startT = std::chrono::system_clock::now();
 //        levels = buildLevelSet_DAG(n, DAG, levelPtr, levelSet);
@@ -211,7 +242,9 @@ int main(int argc, char *argv[]) {
         std::cout <<">>>>>> Inspector (Build Level Set) time = "<< durationIL[r] <<"\n";
         std::cout <<">>>>>> Executor time  = "<<durationE[r] <<"\n";
         std::cout <<">>>>>> Execution time (totally) = "<<durationTT[r] <<"\n";
-       
+        
+        if (!testTriangular(n, x)) std::cout << "\n\n>>> Parallel Run Failed!\n\n";
+
 /*
         // Testing paralle results for correctness
         if( !parallelCopyVal || !serialCopyVal){
@@ -292,6 +325,211 @@ int main(int argc, char *argv[]) {
 
 
     }
+
+
+
+
+
+
+//---------------------------------------------
+
+
+
+
+    // ------ H2 Wavefront Parallel Run
+    //for(int tc=2; tc <=maxTC; tc *=2){  // To get results with varying number of cores
+    for(int tc=maxTC; tc <=maxTC; tc *=2){
+
+      omp_set_num_threads(tc);
+
+      std::cout<<"\n\n-- H2 Level Set, running the algorithm with #"
+               <<tc<<" threads in parallel for #"<<nRuns<<" times:";
+      for(int j=0;j<20;j++){
+        durationID[j] = durationIL[j] = durationE[j] = durationTT[j] = 0.0f;
+      }
+
+/*
+  std::cout<<"\n---- Orig:\n";
+for(int ct = 0; ct < n; ct++){
+  cout<<"\nCol "<< ct <<"\n";
+  for(int cj = reOrdMat->p[ct]; cj < reOrdMat->p[ct+1]; cj++){
+    cout<< reOrdMat->i[cj]<<"  ";
+  }
+}
+*/
+//  std::cout<<"\n\n\n";
+
+      for(int r=0; r<nRuns; r++){
+
+        // Copying data since arrays get manipulated inplace in the computation
+        double* parallelCopyVal;
+        int *parallelCopyPtr, *parallelCopyIdx;
+        dataCopy(reOrdMat, parallelCopyVal, parallelCopyPtr, parallelCopyIdx, n);
+
+        rhsInit(n, serialCopyPtr, serialCopyIdx, serialCopyVal, x);
+        // # Inspector:
+        std::vector<std::vector<int>> DAG;
+        DAG.resize(n);
+        //for(int i = 0 ; i < n ; i++ ) DAG[i].push_back(i);
+        std::vector<std::set<int>> DAG_s;
+        DAG_s.resize(n);
+        startT = std::chrono::system_clock::now();
+        // Creating the DAG with generated
+        fs_csc_inspector(n,parallelCopyPtr, parallelCopyIdx, DAG_s);
+        endT = std::chrono::system_clock::now();
+        elapsed_secondsT = endT - startT;
+        durationID[r] = elapsed_secondsT.count();
+        for(int ct = 0; ct < n; ct++){
+          std::set<int> tms = DAG_s[ct];
+          DAG[ct].push_back(ct);
+          for (std::set<int>::iterator it= tms.begin(); it!=tms.end(); ++it)
+            DAG[ct].push_back(*it);
+        }
+/*
+for(int ct = 0; ct < n; ct++){
+//  cout<<"\nCol "<< ct <<"\n";
+  for(int cj = 0, cr = reOrdMat->p[ct]; cj < DAG[ct].size(); cj++, cr++){
+//    cout<< DAG[ct][cj]<<"  ";
+if( DAG[ct][cj] != reOrdMat->i[cr] )     cout<< "\n Err at "<<ct<<" , "<<cj<<"  ";
+  }
+}
+*/
+
+
+ int *HLevelPtr = NULL, *HLevelSet = NULL, *parPtr = NULL,
+   *partition =NULL;
+ int *levelPtr = NULL, *levelSet = NULL;
+ int nLevels=0, nPar=0, levels=0;
+        // Building the H2 level sets
+        startT = std::chrono::system_clock::now();
+ double *nodeCost;
+
+ //Computing node cost
+ nodeCost = new double[n];
+ int *xi = new int[2*n]();
+ for (int s = 0; s < n; ++s) {
+  //nodeCost[s]=A2->p[s+1]-A2->p[s];
+  nodeCost[s]=1;
+ }
+ delete []xi;
+ int avg = getCoarseLevelSet_DAG_CSC03(n, parallelCopyPtr, parallelCopyIdx,
+                                       nLevels, HLevelPtr,
+                                       HLevelSet, nPar,
+                                       parPtr, partition,
+                                       innerPart, levelParam, divRate, nodeCost);
+        endT = std::chrono::system_clock::now();
+        elapsed_secondsT = endT - startT;
+        durationIL[r] = elapsed_secondsT.count();
+        //std::cout <<"\n>>>>>>>>>>>> inspector Total Duration = "<< durationT <<"\n";
+         delete[]nodeCost;
+
+        int chunk = innerPart/tc + 1;
+
+        // # Executor:
+        startT = std::chrono::system_clock::now();
+        fs_csc_executor_H2(n,parallelCopyPtr,parallelCopyIdx, parallelCopyVal,x,nLevels,HLevelPtr,HLevelSet,
+              nPar,parPtr,partition, chunk);
+        endT = std::chrono::system_clock::now();
+        elapsed_secondsT = endT - startT;
+        durationE[r] = elapsed_secondsT.count();
+        //std::cout <<"\n>>>>>>>>>>>> Executor Duration = "<< durationE[i] <<"\n";
+
+        durationTT[r] = durationID[r] + durationIL[r] + durationE[r];
+        std::cout <<"\n>>>>>> Run #"<<r+1<<":\n";
+        std::cout <<">>>>>> Inspector (Dependence) time = "<< durationID[r] <<"\n";
+        std::cout <<">>>>>> Inspector (Build Level Set) time = "<< durationIL[r] <<"\n";
+        std::cout <<">>>>>> Executor time  = "<<durationE[r] <<"\n";
+        std::cout <<">>>>>> Execution time (totally) = "<<durationTT[r] <<"\n";
+        
+        if (!testTriangular(n, x)) std::cout << "\n\n>>> Parallel Run Failed!\n\n";
+
+/*
+        // Testing paralle results for correctness
+        if( !parallelCopyVal || !serialCopyVal){
+          std::cout<<"\n\nWrong early memory deallocation!!\n\n";
+          exit(1);
+        }
+        bool failed=false;
+        for (int i = 0; i < reOrdMat->nzmax; ++i) {
+          if(parallelCopyVal-serialCopyVal > .01){
+            failed=true;
+          }
+        }
+        if(failed){
+          std::cout<<"\n\nParallel run failed!!\n\n";
+          exit(1);
+        }
+*/
+        delete parallelCopyVal;
+        delete parallelCopyPtr;
+        delete parallelCopyIdx;
+      }
+
+      std::sort(durationID, durationID+nRuns);
+      std::sort(durationIL, durationIL+nRuns);
+      std::sort(durationE, durationE+nRuns);
+      std::sort(durationTT, durationTT+nRuns);
+      double medID, medIL, medE, medTT;
+      if(nRuns%2) {
+        medID = durationID[(int(nRuns/2))];
+        medIL = durationIL[(int(nRuns/2))];
+        medE = durationE[(int(nRuns/2))];
+        medTT = durationTT[(int(nRuns/2))];
+      } else {
+        medID = (durationID[(int(nRuns/2))]+durationID[(int(nRuns/2))-1])/2.0;
+        medIL = (durationIL[(int(nRuns/2))]+durationIL[(int(nRuns/2))-1])/2.0;
+        medE = (durationE[(int(nRuns/2))]+durationE[(int(nRuns/2))-1])/2.0;
+        medTT = (durationTT[(int(nRuns/2))]+durationTT[(int(nRuns/2))-1])/2.0;
+      }
+      double avgID=0.0,avgIL=0.0,avgE=0.0, avgTT=0.0;
+      for(int i=0; i<nRuns; i++){
+        avgID += durationID[i];
+        avgIL += durationIL[i];
+        avgE += durationE[i];
+        avgTT += durationTT[i];
+      }
+      avgID /= nRuns;
+      avgIL /= nRuns;
+      avgE /= nRuns;
+      avgTT /= nRuns;
+
+      std::cout <<"\n>>>>>>>>>>>> Median of Inspector Dependence times = "<<medID <<"\n";
+      std::cout <<">>> Normalized to Serial execution = "<< (serialMedE/medID) <<"\n";
+      std::cout <<">>>>>>>>>>>> Median of Inspector Build Level Set times = "<<medIL <<"\n";
+      std::cout <<">>> Normalized to Serial execution = "<< (serialMedE/medIL) <<"\n";
+      std::cout <<">>>>>>>>>>>> Median of Execution times (without inspector) = "<<medE <<"\n";
+      std::cout <<">>> Normalized to Serial execution = "<< (serialMedE/medE) <<"\n";
+      std::cout <<">>>>>>>>>>>> Median of Total Execution times = "<<medTT <<"\n";
+      std::cout <<">>> Normalized to Serial execution = "<< (serialMedE/medTT) <<"\n";
+
+      
+      // Making stacked histogram (inspector dependence + inspector Level set 
+      //                           + executor) speed up with max number of cores
+      double medT = medID + medIL + medE;
+      double inspD = (medID/medT)*(serialMedE/medT);
+      double inspL = (medIL/medT)*(serialMedE/medT);
+      double exec = (medE/medT)*(serialMedE/medT);
+      outPerFig<<"\n"<<getSMatName(inputMatrix)<<", "<<inspD
+               <<", "<<inspL<<", "<<exec;
+
+      // Making the table results 
+
+      //outPerTable<<"#Matricies, Serial, Inspector:Dependence, Inspector:LevelBuild, Executor";
+      outPerTable<<"\n"<<getSMatName(inputMatrix)<<", "<<serialMedE
+               <<", "<<medID<<", "<<medIL<<", "<<medE;
+
+      // Making Speed over number of cores plot
+      // Making (median) Inspector Vs one run of the code plot
+
+
+    }
+
+
+//-------------------------------------------
+
+
+
+
 
   }
 

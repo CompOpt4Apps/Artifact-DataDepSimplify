@@ -36,7 +36,7 @@ int fs_csc_executor_H2 (int n, int* Lp, int* Li, double* Lx, double *x,
  for (int i1 = 0; i1 < levels ; ++i1) {
 #pragma omp parallel //shared(lValues)//private(map, contribs)
   {
-#pragma omp  for schedule(auto)
+#pragma omp  for schedule(static)
    for (int j1 = levelPtr[i1]; j1 < levelPtr[i1 + 1]; ++j1) {
     for (int k1 = parPtr[j1]; k1 < parPtr[j1 + 1]; ++k1) {
      int j = partition[k1];
@@ -45,7 +45,7 @@ int fs_csc_executor_H2 (int n, int* Lp, int* Li, double* Lx, double *x,
      for (int p = Lp[j] + 1; p < Lp[j + 1]; p++) {
       double tmp = Lx[p] * x[j];
       int idx = Li[p];
-#pragma omp atomic
+      #pragma omp atomic
       x[idx] -= tmp ;
      }
     }

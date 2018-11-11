@@ -77,16 +77,17 @@ int main(int argc, char *argv[]) {
     //std::cout <<"\n>>>>>>>>>>>> Data Read Total Duration = "<< durationT <<"\n";
 
     //std::cout <<"\n\n---------- Serial: \n\n";
+//    for (int l = 0; l < 50; ++l) {
+      rhsInit(n, colA, rowA, valA, x);
     startT = std::chrono::system_clock::now();
-    for (int l = 0; l < 50; ++l) {
- //     rhsInit(n, colA, rowA, valA, x);
       lsolve(n, colA, rowA, valA, x);
- //     if (!testTriangular(n, x)) std::cout << "\n##serial = ";
-    }
     endT = std::chrono::system_clock::now();
+//    }
     elapsed_secondsT = endT - startT;
     durationE[i] = elapsed_secondsT.count();
     //std::cout <<"\n>>>>>>>>>>>> Serial Total Duration = "<< durationT <<"\n";
+
+      if (!testTriangular(n, x)) std::cout << "\n##serial = ";
 
     delete x;
     delete valA;
@@ -154,8 +155,6 @@ int main(int argc, char *argv[]) {
 
 
     //std::cout <<"\n\n---------- Parallel: \n\n";
-    startT = std::chrono::system_clock::now();
-
     std::vector<std::vector<int>> DAG;
     DAG.resize(n);
     int *levelPtr, *levelSet, levels;
@@ -165,15 +164,16 @@ int main(int argc, char *argv[]) {
     levels = buildLevelSet_DAG(n, DAG, levelPtr, levelSet);
 
 
-    for (int l = 0; l < iterNo; ++l) {
-//      rhsInit(n, colA, rowA, valA, x);
+//    for (int l = 0; l < iterNo; ++l) {
+      rhsInit(n, colA, rowA, valA, x);
 //      lsolve_parInner(n, colA, rowA, valA, x);
+    startT = std::chrono::system_clock::now();
       lsolvePar (n, colA, rowA, valA, x, levels, levelPtr, levelSet, 1 );
-//      if (!testTriangular(n, x)) std::cout << "\n##Parallel = ";
-    }
-
-
     endT = std::chrono::system_clock::now();
+      if (!testTriangular(n, x)) std::cout << "\n##Parallel = ";
+//    }
+
+
     elapsed_secondsT = endT - startT;
     durationE[i] = elapsed_secondsT.count();
     //std::cout <<"\n>>>>>>>>>>>> Parallel Total Duration = "<< durationT <<"\n";
