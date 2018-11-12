@@ -180,3 +180,26 @@ target_link_libraries(ic0_csc_performance
 
 
 
+
+
+project(fs_csc_performance101)
+
+include_directories(${MKL_INC} src/)
+link_directories(${MKL_LIB} ${MMM} )
+set(SOURCE_FILES test/fs_csc_performance101.cpp)
+add_executable(fs_csc_performance101 ${SOURCE_FILES})
+target_link_libraries(fs_csc_performance101
+        iomp5
+        #gomp
+        #mkl_sequential
+        mkl_intel_lp64
+        mkl_core
+        #mkl_gnu_thread
+        mkl_intel_thread
+        pthread
+        m
+        dl
+        metis
+        )
+
+
