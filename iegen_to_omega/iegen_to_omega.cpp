@@ -50,6 +50,8 @@ string toOmega(const string& iegenstr) {
 string codegen(const string& omcode, const string& omcalc) {
     const int bufflen = 1024;
     char buffer[bufflen];
+    const string ompragma = "#pragma omp parallel for schedule(auto)";
+    int niters = 0;
     string data;
 
     FILE *out = fopen(".out", "w");
@@ -61,11 +63,25 @@ string codegen(const string& omcode, const string& omcalc) {
     if (proc) {
         while (!feof(proc)) {
             if (fgets(buffer, bufflen, proc) && !strstr(buffer, ">>>")) {
+                if (strstr(buffer, "for(t")) {
+                    niters++;
+                }
                 data.append(buffer);
             }
         }
         pclose(proc);
     }
+
+    string vardecl = "int ";
+    for (int i = 1; i <= niters; i++) {
+        vardecl += "t" + to_string(i);
+        if (i < niters) {
+            vardecl += ",";
+        }
+    }
+    vardecl += ";";
+
+    data = vardecl + "\n" + ompragma + "\n" + data;
 
     return data;
 }
