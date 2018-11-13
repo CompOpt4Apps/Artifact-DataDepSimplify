@@ -64,10 +64,10 @@ int main(int argc, char *argv[]) {
   double serialMedTT = 0.0, serialMedE = 0.0, serialAvgTT = 0.0, serialAvgE = 0.0;
 
 
-  ofstream outPerFig("results/ic0_insp_exec_per.csv", std::ofstream::out);
-  outPerFig<<"#Matricies, Inspector:Dependence, Inspector:LevelBuild, Executor";
-  ofstream outPerTable("results/ic0_per_table.csv", std::ofstream::out);
-  outPerTable<<"#Matricies, Serial, Inspector:Dependence, Inspector:LevelBuild, Executor";
+  ofstream outInsp("results/insp.csv", std::ofstream::out | std::ofstream::app);
+  ofstream outExec("results/exec.csv", std::ofstream::out | std::ofstream::app);
+  outInsp<<"I. Cholesky CSC";
+  outExec<<"I. Cholesky CSC";
 
 
   int maxTC=1;
@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
     endT = std::chrono::system_clock::now();
     elapsed_secondsT = endT - startT;
     durationDR = elapsed_secondsT.count();
-    std::cout <<"\n>>>>>>>>>>>> Data Read Total Duration = "<< durationDR <<"\n";
+   // std::cout <<"\n>>>>>>>>>>>> Data Read Total Duration = "<< durationDR <<"\n";
 
     // Reordering the matrix
     CSC *reOrdMat;
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 
 
     // ------ Sequentially Run
-    std::cout <<"-- Running the algorithm sequentially for #"<<nRuns<<" times:\n";
+    std::cout <<"\n-- Running the algorithm sequentially for #"<<nRuns<<" times:\n";
     double* serialCopyVal;
     int *serialCopyPtr, *serialCopyIdx;
     mkl_set_num_threads(1);
@@ -117,10 +117,8 @@ int main(int argc, char *argv[]) {
       elapsed_secondsT = endT - startT;
       durationE[r] = elapsed_secondsT.count();
       //std::cout <<"\n>>>>>>>>>>>> Serial Total Duration = "<< durationT <<"\n";
-
-      std::cout <<"\n>>>>>> Run #"<<r+1<<":\n";
-      std::cout <<">>>>>> Execution time = "<<durationE[r] <<"\n";
-      
+//      std::cout <<"\n>>>>>> Run #"<<r+1<<":\n";
+//      std::cout <<">>>>>> Execution time = "<<durationE[r] <<"\n";
       if(r < nRuns-1){
         delete serialCopyVal;
         delete serialCopyPtr;
@@ -136,18 +134,9 @@ int main(int argc, char *argv[]) {
     } else {
       medE = (durationE[(int(nRuns/2))]+durationE[(int(nRuns/2))-1])/2.0;
     }
-    double avgE=0.0, avgTT=0.0;
-    for(int i=0; i<nRuns; i++){
-      avgE += durationE[i];
-      avgTT += durationTT[i];
-    }
-    avgE /= nRuns;
-    avgTT /= nRuns;
 
     serialMedE = medE;
-    serialAvgE = avgE;
     std::cout <<"\n>>>>>>>>>>>> Median of Execution times = "<<medE <<"\n";
-    std::cout <<">>>>>>>>>>>> Averaged Execution time = "<<avgE <<"\n";
 
 
 
@@ -158,7 +147,7 @@ int main(int argc, char *argv[]) {
 
       omp_set_num_threads(tc);
 
-      std::cout<<"\n-- Normal Level Set, running the algorithm with #"
+      std::cout<<"\n-- Running the algorithm with #"
                <<tc<<" threads in parallel for #"<<nRuns<<" times:\n";
       for(int j=0;j<20;j++){
         durationID[j] = durationIL[j] = durationE[j] = durationTT[j] = 0.0f;
@@ -172,24 +161,37 @@ int main(int argc, char *argv[]) {
         dataCopy(reOrdMat, parallelCopyVal, parallelCopyPtr, parallelCopyIdx, n);
 
         // # Inspector:
-        std::vector<std::vector<int>> DAG;
-        DAG.resize(n);
-        for(int i = 0 ; i < n ; i++ ) DAG[i].push_back(i);
+        std::vector<std::set<int>> DAG_s;
+        DAG_s.resize(n);
         int *levelPtr, *levelSet, levels;
         startT = std::chrono::system_clock::now();
         // Creating the DAG with generated
-        ic0_csc_inspector(n,parallelCopyPtr, parallelCopyIdx, DAG);
+        ic0_csc_inspector(n,parallelCopyPtr, parallelCopyIdx, DAG_s);
+        int *v, *edg;
+        v = new int[n+1]();
+        edg = new int[nnzA]();
+        int ct=0, edges=0;
+        for(ct = 0, edges = 0; ct < n; ct++){
+          v[ct] = edges;
+          std::set<int> tms = DAG_s[ct];
+          edg[edges++] = ct; 
+          for (std::set<int>::iterator it= tms.begin(); it!=tms.end(); ++it)
+            edg[edges++] = *it;
+        }
+        v[ct] = edges;
         endT = std::chrono::system_clock::now();
         elapsed_secondsT = endT - startT;
         durationID[r] = elapsed_secondsT.count();
         // Building the level sets
         startT = std::chrono::system_clock::now();
-        levels = buildLevelSet_DAG(n, DAG, levelPtr, levelSet);
+//        levels = buildLevelSet_DAG(n, DAG, levelPtr, levelSet);
+        levels = buildLevelSet_CSC(n, nnzA, v, edg,
+                                  levelPtr, levelSet);
         endT = std::chrono::system_clock::now();
         elapsed_secondsT = endT - startT;
         durationIL[r] = elapsed_secondsT.count();
         //std::cout <<"\n>>>>>>>>>>>> inspector Total Duration = "<< durationT <<"\n";
-        
+    
 
         // # Executor:
         startT = std::chrono::system_clock::now();
@@ -207,7 +209,7 @@ int main(int argc, char *argv[]) {
         std::cout <<">>>>>> Execution time (totally) = "<<durationTT[r] <<"\n";
        
 
-        // Testing paralle results for correctness
+        // Testing parallel results for correctness
         if( !parallelCopyVal || !serialCopyVal){
           std::cout<<"\n\nWrong early memory deallocation!!\n\n";
           exit(1);
@@ -244,54 +246,25 @@ int main(int argc, char *argv[]) {
         medE = (durationE[(int(nRuns/2))]+durationE[(int(nRuns/2))-1])/2.0;
         medTT = (durationTT[(int(nRuns/2))]+durationTT[(int(nRuns/2))-1])/2.0;
       }
-      double avgID=0.0,avgIL=0.0,avgE=0.0, avgTT=0.0;
-      for(int i=0; i<nRuns; i++){
-        avgID += durationID[i];
-        avgIL += durationIL[i];
-        avgE += durationE[i];
-        avgTT += durationTT[i];
-      }
-      avgID /= nRuns;
-      avgIL /= nRuns;
-      avgE /= nRuns;
-      avgTT /= nRuns;
 
       std::cout <<"\n>>>>>>>>>>>> Median of Inspector Dependence times = "<<medID <<"\n";
-      std::cout <<">>> Normalized to Serial execution = "<< (serialMedE/medID) <<"\n";
       std::cout <<">>>>>>>>>>>> Median of Inspector Build Level Set times = "<<medIL <<"\n";
-      std::cout <<">>> Normalized to Serial execution = "<< (serialMedE/medIL) <<"\n";
       std::cout <<">>>>>>>>>>>> Median of Execution times (without inspector) = "<<medE <<"\n";
-      std::cout <<">>> Normalized to Serial execution = "<< (serialMedE/medE) <<"\n";
-      std::cout <<">>>>>>>>>>>> Median of Total Execution times = "<<medTT <<"\n";
-      std::cout <<">>> Normalized to Serial execution = "<< (serialMedE/medTT) <<"\n";
+      std::cout <<"\n>>>>>>> Exec run break point = "<< (medID+medIL)/(serialMedE-medE) <<"\n";
+      std::cout <<">>>>>>> Executor Speed up = "<< (serialMedE/medE) <<"\n";
 
-      
-      // Making stacked histogram (inspector dependence + inspector Level set 
-      //                           + executor) speed up with max number of cores
-      double medT = medID + medIL + medE;
-      double inspD = (medID/medT)*(serialMedE/medT);
-      double inspL = (medIL/medT)*(serialMedE/medT);
-      double exec = (medE/medT)*(serialMedE/medT);
-      outPerFig<<"\n"<<getSMatName(inputMatrix)<<", "<<inspD
-               <<", "<<inspL<<", "<<exec;
+      // Making Figures
+      // Making stacked histogram number of executor run needed to make executor worth it
+      outInsp<<", "<<(medID+medIL)/(serialMedE-medE);
+      // Making stacked histogram for executor speed up
+      outExec<<", "<<(serialMedE/medE);
+    } // End tc loop
 
-      // Making the table results 
-
-      //outPerTable<<"#Matricies, Serial, Inspector:Dependence, Inspector:LevelBuild, Executor";
-      outPerTable<<"\n"<<getSMatName(inputMatrix)<<", "<<serialMedE
-               <<", "<<medID<<", "<<medIL<<", "<<medE;
-
-      // Making Speed over number of cores plot
-      // Making (median) Inspector Vs one run of the code plot
+  }   // End of reading input matrix loop
 
 
-    }
-
-  }
-
-
-  outPerFig.close();
-  outPerTable.close();
+  outInsp.close();
+  outExec.close();
 
   return 0;
 }

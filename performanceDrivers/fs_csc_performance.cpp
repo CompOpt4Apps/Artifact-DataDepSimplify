@@ -35,48 +35,71 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
- if(argc < 2){
-  cout<<"Input missing arguments, you need to specify input list file\n";
- }
+  if(argc != 2){
+    cout<<"\n\nMust be invoked like:"
+          "\n  ./fs_csc_per matList&Params.txt"
+          "\n  matlist.txt's first line must contain NThreads and NRuns (separated with comma),"
+          "\n  the subsequent line should be the list of input matricies."
+          "\n  NThreads being maximum number of threads to be used,"
+          "\n  NRuns being number of runs to be averged\n\n";
+    return 1;
+  }
 
- std::string f1 = argv[1];
- int *colA;
- int *rowA;
- double *valA;
- size_t n, nnzA, ncol;
+  ofstream outInsp("results/insp.csv", std::ofstream::out | std::ofstream::app);
+  ofstream outExec("results/exec.csv", std::ofstream::out | std::ofstream::app);
+  outInsp<<"F. Solve CSC";
+  outExec<<"F. Solve CSC";
 
- std::chrono::time_point<std::chrono::system_clock> start, end;
- std::chrono::duration<double> elapsed_seconds;
-  std::chrono::duration<double> elapsed_secondsT;
-  double durationID[20] = {0.0}, durationIL[20] = {0.0}, durationE[20] = {0.0}, durationTT[20] = {0.0}, inspTT;
-  double serialMedTT = 0.0, serialMedE = 0.0, serialAvgTT = 0.0, serialAvgE = 0.0;
+  std::string inputMatrix;
+  int numThread=8;
+  int nRuns=1;
+  string parameters;
+  ifstream inF(argv[1]);
+  getline( inF, parameters );
+  sscanf(parameters.c_str(), "%d, %d",&numThread,&nRuns);
 
- double durationSym = 0, duration3 = 0, duration2 = 0, duration1 = 0;
+//  int numThread = atoi(argv[2]);
+  int innerPart = 16;// = atoi(argv[3]);//Inner parts
+  int divRate = 5; //atoi(argv[4]);
+  int chunk = innerPart/numThread + 1;
+  int levelParam = 5;// level distance
+  int blasThreads = 1;
 
+  // Looping over input matricies
+  for( ; getline( inF, inputMatrix ); ){ 
 
+    if(inputMatrix=="") break;
 
- if (!readMatrix(f1, n, nnzA, colA, rowA, valA))
-  return -1;
+    int *colA;
+    int *rowA;
+    double *valA;
+    size_t n, nnzA, ncol;
 
- int numThread = atoi(argv[2]);
- int innerPart = atoi(argv[3]);//Inner parts
- int divRate = atoi(argv[4]);
- int chunk = innerPart/numThread + 1;
- int levelParam = 5;// level distance
- int blasThreads = 1;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    std::chrono::duration<double> elapsed_seconds;
+    std::chrono::duration<double> elapsed_secondsT;
+    double durationID[20] = {0.0}, durationIL[20] = {0.0}, durationE[20] = {0.0}, durationTT[20] = {0.0}, inspTT;
+    double serialMedTT = 0.0, serialMedE = 0.0, serialAvgTT = 0.0, serialAvgE = 0.0;
+    double durationSym = 0, duration3 = 0, duration2 = 0, duration1 = 0;
 
- cout<<f1<<","<<numThread<<","<<innerPart<<","<<divRate<<";\n\n";
+    std::cout <<"\n\n---------- Started Reading Matrix: "<< inputMatrix;
+    if (!readMatrix(inputMatrix, n, nnzA, colA, rowA, valA)){
+      return 1;
+    }
+ 
+    //cout<<f1<<","<<numThread<<","<<innerPart<<","<<divRate<<";\n\n";
  /*
   * Calling Cholesky to generate blocked triangular matrix
   */
 
- omp_set_num_threads(numThread);
- mkl_set_num_threads(numThread);
+    omp_set_num_threads(numThread);
+    mkl_set_num_threads(numThread);
 
- // MKL_Set_Num_Threads(1);
- MKL_Domain_Set_Num_Threads(blasThreads, MKL_DOMAIN_BLAS);
+    // MKL_Set_Num_Threads(1);
+    MKL_Domain_Set_Num_Threads(blasThreads, MKL_DOMAIN_BLAS);
 
 
+//------------------------------  Ordering
  int *Perm = new int[n]();
 
  double *timingChol = new double[4 + numThread]();//for time measurement
@@ -220,7 +243,7 @@ int main(int argc, char *argv[]) {
  allocateAC(Amat, 0, 0, 0, FALSE);
  allocateAC(A1, 0, 0, 0, FALSE);
 /*
- * ********************* Triangular Solve
+ * ********************* 
  */
 
 
@@ -231,7 +254,7 @@ int main(int argc, char *argv[]) {
  double *x = new double[n]();
 
 #ifdef FLOPCNT
- //***************Serial
+ //***************
  int *ia = new int[n + 1];
  int *ja = new int[L->xsize];
  double *a = new double[L->xsize];
@@ -244,9 +267,13 @@ int main(int argc, char *argv[]) {
  delete []ja;
  delete []a;
 #endif
-//Running LBC here
+//------------------------------ End of ordering
 
- int *HLevelPtr = NULL, *HLevelSet = NULL, *parPtr = NULL,
+
+
+//  Running Inspector 
+
+    int *HLevelPtr = NULL, *HLevelSet = NULL, *parPtr = NULL,
    *partition =NULL;
  int *levelPtr = NULL, *levelSet = NULL;
  int nLevels=0, nPar=0, levels=0;
@@ -273,8 +300,6 @@ int main(int argc, char *argv[]) {
         start = std::chrono::system_clock::now();
         // Creating the DAG with generated
         fs_csc_inspector(n,A2->p, A2->i, DAG_s);
-        end = std::chrono::system_clock::now();
-        elapsed_secondsT = end - start;
 
         int *v, *edg;
         v = new int[n+1]();
@@ -288,6 +313,8 @@ int main(int argc, char *argv[]) {
             edg[edges++] = *it;
         }
         v[ct] = edges;
+        end = std::chrono::system_clock::now();
+        elapsed_secondsT = end - start;
         inspTT = elapsed_secondsT.count();
 
  start = std::chrono::system_clock::now();
@@ -304,17 +331,17 @@ int main(int argc, char *argv[]) {
 /////////////////////////////////////////
 
 
- // ------ Sequentially Run
- std::cout <<"-- Running the algorithm sequentially for #"<<nRuns<<" times:\n";
- //***************Serial
- for (int l = 0; l < nRuns; ++l) {
-  rhsInit(n, A2->p, A2->i, A2->x, x);
-  start = std::chrono::system_clock::now();
-  fs_csc_original(n, A2->p, A2->i, A2->x, x);
-  end = std::chrono::system_clock::now();
-  elapsed_secondsT = end - start;
-  durationE[l] = elapsed_secondsT.count();
- }
+    // ------ Sequentially Run
+    std::cout <<"-- Running the algorithm sequentially for #"<<nRuns<<" times:\n";
+    //***************Serial
+    for (int l = 0; l < nRuns; ++l) {
+      rhsInit(n, A2->p, A2->i, A2->x, x);
+      start = std::chrono::system_clock::now();
+      fs_csc_original(n, A2->p, A2->i, A2->x, x);
+      end = std::chrono::system_clock::now();
+      elapsed_secondsT = end - start;
+      durationE[l] = elapsed_secondsT.count();
+    }
     // Calculating Median and Average of execution times for plotting
     std::sort(durationE, durationE+nRuns);
     double medE;
@@ -329,19 +356,19 @@ int main(int argc, char *argv[]) {
 
 
 
- std::cout<<"\n\n-- H2 Level Set, running the algorithm with #"
+    std::cout<<"\n\n--Running the algorithm with #"
           <<numThread<<" threads in parallel for #"<<nRuns<<" times:";
- //****************Parallel H2 CSC
- for (int l = 0; l < nRuns; ++l) {
-  rhsInit(n,A2->p,A2->i,A2->x,x);
+    //****************Parallel H2 CSC
+    for (int l = 0; l < nRuns; ++l) {
+      rhsInit(n,A2->p,A2->i,A2->x,x);
 
-  start = std::chrono::system_clock::now();
-  fs_csc_executor_H2(n,A2->p,A2->i,A2->x,x,nLevels,HLevelPtr,HLevelSet,
+      start = std::chrono::system_clock::now();
+      fs_csc_executor_H2(n,A2->p,A2->i,A2->x,x,nLevels,HLevelPtr,HLevelSet,
               nPar,parPtr,partition, chunk);
-  end = std::chrono::system_clock::now();
-  elapsed_secondsT = end-start;
+      end = std::chrono::system_clock::now();
+      elapsed_secondsT = end-start;
         durationE[l] = elapsed_secondsT.count();
- }
+    }
     // Calculating Median and Average of execution times for plotting
     std::sort(durationE, durationE+nRuns);
     if(nRuns%2) {
@@ -354,25 +381,34 @@ int main(int argc, char *argv[]) {
     std::cout <<">>>>>>>>>>>> Median of Inspector Build Level Set times = "<<HD <<"\n";
     std::cout <<">>>>>>>>>>>> Median of Execution times = "<<medE <<"\n";
     std::cout <<"\n>>>>>>> Exec run break point = "<< (HD+inspTT)/(serialMedE-medE) <<"\n";
-    std::cout <<">>>>>>> Speed up = "<< (serialMedE/medE) <<"\n";
+    std::cout <<">>>>>>> Executor Speed up = "<< (serialMedE/medE) <<"\n";
 
 
+    // Making Figures
+    // Making stacked histogram number of executor run needed to make executor worth it
+    outInsp<<", "<<(HD+inspTT)/(serialMedE-medE);
+    // Making stacked histogram for executor speed up
+    outExec<<", "<<(serialMedE/medE);
 
- if (HLevelPtr != NULL)
-  delete[]HLevelPtr;
- if (HLevelPtr != NULL)
-  delete[]HLevelSet;
- if (parPtr != NULL)
-  delete[]parPtr;
- if (partition != NULL)
-  delete[]partition;
+
+    if (HLevelPtr != NULL) delete[]HLevelPtr;
+    if (HLevelPtr != NULL) delete[]HLevelSet;
+    if (parPtr != NULL)    delete[]parPtr;
+    if (partition != NULL) delete[]partition;
  //delete []contribs;
  //delete []map;
 // delete[]valL;
  //delete []colL;
  //delete []li_ptr;
- delete[]timingChol;
- allocateAC(A2, 0, 0, 0, FALSE);
+    delete[]timingChol;
+    allocateAC(A2, 0, 0, 0, FALSE);
+
+  }
+
+
+  outInsp.close();
+  outExec.close();
+
  return 0;
 
 }
