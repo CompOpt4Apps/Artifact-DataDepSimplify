@@ -108,6 +108,8 @@ def to_omega(relation, res_id='D'):
         omcode += ' given %s' % given
     omcode += ';'
 
+    write_macros(ufuncs)
+
     return omcode
 
 def isknown(cond, iters, exists, keywords):
@@ -128,3 +130,15 @@ def isknown(cond, iters, exists, keywords):
             if not isknown:
                 break
     return isknown
+
+def write_macros(ufuncs):
+    out = open('.macros', 'w')
+    for ufunc in ufuncs.values():
+        arrname = ufunc['name']
+        if len(ufunc['oldname']) > 0:
+            arrname = ufunc['oldname']
+        line = "#define %s(%s) %s[(%s)]\n" % (ufunc['name'],
+                ','.join(ufunc['args']), arrname, '),('.join(ufunc['oldargs']))
+        out.write(line)
+    out.close()
+
