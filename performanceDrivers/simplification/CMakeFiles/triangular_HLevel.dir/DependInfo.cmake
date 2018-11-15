@@ -4,14 +4,17 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/kingmahdi/workstation/simplification/test/triangular_ordered.cpp" "/home/kingmahdi/workstation/simplification/CMakeFiles/triangular_HLevel.dir/test/triangular_ordered.cpp.o"
+  "/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/test/triangular_ordered.cpp" "/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/CMakeFiles/triangular_HLevel.dir/test/triangular_ordered.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/opt/intel/mkl/include"
+  "/home/kazem/programs/intel/compilers_and_libraries_2017.4.196/linux/mkl/include"
   "src"
+  "/home/kazem/programs/metis-5.1.0/include"
+  "../cholesky"
+  "../common"
   )
 
 # Targets to which this target links.

@@ -14,11 +14,16 @@ if(UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 endif()
 #comment following line if you have defined MKLROOT variable otherwise set it to right address
-set(MKLROOT "/opt/intel/mkl/")
+#set(MKLROOT "/opt/intel/mkl/")
+set(MKLROOT "/home/kazem/programs/intel/compilers_and_libraries_2017.4.196/linux/mkl/")
 message(STATUS "${MKLROOT}")
 set(MKL_INC "${MKLROOT}/include")
 set(MKL_LIB "${MKLROOT}/lib/intel64")
 
+
+set(METISROOT "/home/kazem/programs/metis-5.1.0/")
+set(METIS_INC "${METISROOT}/include")
+set(METIS_LIB "${METISROOT}/build/Linux-x86_64/libmetis")
 #set(SUITEROT "/home/kazem/programs/SuiteSparse/")
 #set(SUITE_INC "${SUITEROOT}/include")
 #set(SUITE_LIB "${SUITEROOT}/lib/intel64")
@@ -179,10 +184,76 @@ target_link_libraries(ic0_csc_performance
         )
 
 
+project(serialcholeskyTest01)
+
+set(SOURCE_FILES test/serialCholeskyTest01.cpp)
+
+include_directories(${MKL_INC}  ${METIS_INC}
+        "../cholesky/" "../common/")
+link_directories(${MKL_LIB} ${MKL_LIB2} ${METIS_LIB})
+add_executable(serialcholeskyTest01 ${SOURCE_FILES} test/serialCholeskyTest01.cpp)
+target_link_libraries(serialcholeskyTest01
+        #gomp
+        iomp5
+        #mkl_sequential
+        mkl_intel_lp64
+        mkl_core
+        #mkl_gnu_thread
+        mkl_intel_thread
+        pthread
+        m
+        dl
+        metis
+        )
 
 
+project(simpCholeskyWF)
 
-project(fs_csc_performance101)
+set(SOURCE_FILES test/simplCholeskyWavefront.cpp)
+
+include_directories(${MKL_INC} ${METIS_INC}
+        "../cholesky/" "../common/")
+link_directories(${MKL_LIB} ${MKL_LIB2} ${METIS_LIB})
+add_executable(simpCholeskyWF ${SOURCE_FILES} test/simplCholeskyWavefront.cpp)
+target_link_libraries(simpCholeskyWF
+        #gomp
+        iomp5
+        #mkl_sequential
+        mkl_intel_lp64
+        mkl_core
+        #mkl_gnu_thread
+        mkl_intel_thread
+        pthread
+        m
+        dl
+        metis
+        )
+
+
+project(simpCholeskyHLevel)
+
+set(SOURCE_FILES test/HLevel_simplicial_cholesky.cpp)
+
+include_directories(${MKL_INC}  ${METIS_INC}
+        "../cholesky/" "../common/")
+link_directories(${MKL_LIB} ${MKL_LIB2} ${SUITE_LIB} ${METIS_LIB})
+add_executable(simpCholeskyHLevel ${SOURCE_FILES} test/HLevel_simplicial_cholesky.cpp)
+target_link_libraries(simpCholeskyHLevel
+        #gomp
+        iomp5
+        #mkl_sequential
+        mkl_intel_lp64
+        mkl_core
+        #mkl_gnu_thread
+        mkl_intel_thread
+        pthread
+        m
+        dl
+        metis
+        )
+
+
+#[[project(fs_csc_performance101)
 
 include_directories(${MKL_INC} src/)
 link_directories(${MKL_LIB} ${MMM} )
@@ -200,6 +271,6 @@ target_link_libraries(fs_csc_performance101
         m
         dl
         metis
-        )
+        )]]
 
 

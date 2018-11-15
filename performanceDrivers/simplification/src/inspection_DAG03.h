@@ -5,6 +5,7 @@
 #ifndef ICHOL_WAVEFRONT_INSPECTION_DAG03_H
 #define ICHOL_WAVEFRONT_INSPECTION_DAG03_H
 
+#include <algorithm>
 #include "levelSet.h"
 #include "BFS.h"
 #include "sparse_utils.h"
