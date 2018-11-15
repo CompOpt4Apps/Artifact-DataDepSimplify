@@ -14,16 +14,16 @@ if(UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 endif()
 #comment following line if you have defined MKLROOT variable otherwise set it to right address
-#set(MKLROOT "/opt/intel/mkl/")
-set(MKLROOT "/home/kazem/programs/intel/compilers_and_libraries_2017.4.196/linux/mkl/")
+set(MKLROOT "/opt/intel/mkl/")
+#set(MKLROOT "/home/kazem/programs/intel/compilers_and_libraries_2017.4.196/linux/mkl/")
 message(STATUS "${MKLROOT}")
 set(MKL_INC "${MKLROOT}/include")
 set(MKL_LIB "${MKLROOT}/lib/intel64")
 
 
-set(METISROOT "/home/kazem/programs/metis-5.1.0/")
-set(METIS_INC "${METISROOT}/include")
-set(METIS_LIB "${METISROOT}/build/Linux-x86_64/libmetis")
+#set(METISROOT "/home/kazem/programs/metis-5.1.0/")
+#set(METIS_INC "${METISROOT}/include")
+#set(METIS_LIB "${METISROOT}/build/Linux-x86_64/libmetis")
 #set(SUITEROT "/home/kazem/programs/SuiteSparse/")
 #set(SUITE_INC "${SUITEROOT}/include")
 #set(SUITE_LIB "${SUITEROOT}/lib/intel64")
@@ -272,5 +272,49 @@ target_link_libraries(fs_csc_performance101
         dl
         metis
         )]]
+
+
+
+project(fs_csr_performance)
+
+include_directories(${MKL_INC} src/)
+link_directories(${MKL_LIB} ${MMM} )
+set(SOURCE_FILES test/fs_csr_performance.cpp)
+add_executable(fs_csr_performance ${SOURCE_FILES})
+target_link_libraries(fs_csr_performance
+        iomp5
+        #gomp
+        #mkl_sequential
+        mkl_intel_lp64
+        mkl_core
+        #mkl_gnu_thread
+        mkl_intel_thread
+        pthread
+        m
+        dl
+        metis
+        )
+
+
+project(gs_csr_performance)
+
+include_directories(${MKL_INC} src/)
+link_directories(${MKL_LIB} ${MMM} )
+set(SOURCE_FILES test/gs_csr_performance.cpp)
+add_executable(gs_csr_performance ${SOURCE_FILES})
+target_link_libraries(gs_csr_performance
+        iomp5
+        #gomp
+        #mkl_sequential
+        mkl_intel_lp64
+        mkl_core
+        #mkl_gnu_thread
+        mkl_intel_thread
+        pthread
+        m
+        dl
+        metis
+        )
+
 
 

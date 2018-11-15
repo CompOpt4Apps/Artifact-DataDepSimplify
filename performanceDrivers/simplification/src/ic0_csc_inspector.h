@@ -206,3 +206,91 @@ void ic0_csc_inspector(int n, int *colPtr, int *rowIdx, std::vector<std::set<int
   }
 
 }
+
+
+
+
+
+
+
+
+
+/*
+ * Computes the DAG of dependency after simplification
+*/
+void ic0_csc_inspector_omega(int n, int *colPtr, int *rowIdx, std::vector<std::vector<int>>& DAG){
+
+
+#define colPtr(In_2) colPtr[In_2]
+#define colPtr_(In_2) colPtr[In_2 + 1]
+#define colPtr__(In_2, In_4, In_8, Out_2) colPtr[Out_2]
+#define colPtr___(In_2, In_4) colPtr[rowIdx[In_4]]
+#define colPtr____(In_2, In_4) colPtr[rowIdx[In_4] + 1]
+#define rowIdx(In_2, In_4) rowIdx[In_4]
+#define rowIdx_(In_2, In_4, In_8, Out_2,In_6) rowIdx[In_6]
+#define rowIdx__(In_2, In_4, In_8) rowIdx[In_8]
+#define rowIdx___(In_2, In_4, In_8) rowIdx[In_8 + 1]
+
+// Omega generated Code Generated for r3
+#pragma omp parallel for schedule(auto)
+for(int t1 = 0; t1 <= n-1; t1++) {
+  for(int t2 = colPtr(t1)+1; t2 <= colPtr_(t1)-1; t2++) {
+    if (colPtr____(t1,t2) >= colPtr___(t1,t2)+1 && n >= rowIdx(t1,t2)+2 && rowIdx(t1,t2) >= t1+1) {
+      for(int t3 = t2; t3 <= colPtr_(t1)-1; t3++) {
+        if (rowIdx__(t1,t2,t3) >= rowIdx___(t1,t2,t3)) {
+          int t4=rowIdx(t1,t2);
+          for(int t5 = colPtr___(t1,t2); t5 <= colPtr____(t1,t2)-1; t5++) {
+            if (t5 == colPtr__(t1,t2,t3,t4) && rowIdx_(t1,t2,t3,t4,t5) == rowIdx__(t1,t2,t3)) {
+              DAG[t1].push_back(t4);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#undef colPtr
+#undef colPtr_
+#undef colPtr__
+#undef colPtr___
+#undef colPtr____
+#undef rowIdx
+#undef rowIdx_
+#undef rowIdx__
+#undef rowIdx___
+
+
+// Omega generated Code Generated for r22 
+#define rowIdx(i1,i2) rowIdx[i1]
+#define rowIdx_(i1,i2,i3) rowIdx[i3]
+#define rowIdx__(i1,i2,i3,i4) rowIdx[i4]
+#define rowIdx___(i1,i2,i3,i4) rowIdx[i4 + 1]
+#define colPtr(i1) colPtr[i1]
+#define colPtr_(i1) colPtr[i1 + 1]
+#define colPtr__(i,m,k,l,ip) colPtr[ip]
+#define colPtr___(i1,i2,i3,i4,o1) colPtr[o1 + 1]
+#define colPtr____(i1,i2) colPtr[rowIdx[i2]]
+#define colPtr_____(i1,i2) colPtr[rowIdx[i2] + 1]
+
+#pragma omp parallel for schedule(auto)
+for(int t1 = 0; t1 <= n-1; t1++) {
+  for(int t2 = colPtr(t1)+1; t2 <= colPtr_(t1)-1; t2++) {
+    if (rowIdx(t1,t2) >= t1+1 && n >= rowIdx(t1,t2)+2) {
+      for(int t3 = colPtr____(t1,t2); t3 <= colPtr_____(t1,t2)-1; t3++) {
+        for(int t4 = t2; t4 <= colPtr_(t1)-1; t4++) {
+          if (rowIdx__(t1,t2,t3,t4) == rowIdx_(t1,t2,t3) && rowIdx__(t1,t2,t3,t4) >= rowIdx___(t1,t2,t3,t4)) {
+            int t5=rowIdx(t1,t2);
+            if (colPtr___(t1,t2,t3,t4,t5) >= t3+1 && t3 >= colPtr__(t1,t2,t3,t4,t5)+1) {
+              DAG[t1].push_back(t5);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+}
+

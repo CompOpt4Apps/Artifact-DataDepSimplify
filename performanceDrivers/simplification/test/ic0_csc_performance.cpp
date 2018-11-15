@@ -66,8 +66,8 @@ int main(int argc, char *argv[]) {
 
   ofstream outInsp("results/insp.csv", std::ofstream::out | std::ofstream::app);
   ofstream outExec("results/exec.csv", std::ofstream::out | std::ofstream::app);
-  outInsp<<"I. Cholesky CSC";
-  outExec<<"I. Cholesky CSC";
+  outInsp<<"\nI. Cholesky CSC";
+  outExec<<"\nI. Cholesky CSC";
 
 
   int maxTC=1;
@@ -161,12 +161,14 @@ int main(int argc, char *argv[]) {
         dataCopy(reOrdMat, parallelCopyVal, parallelCopyPtr, parallelCopyIdx, n);
 
         // # Inspector:
-        std::vector<std::set<int>> DAG_s;
-        DAG_s.resize(n);
+//        std::vector<std::set<int>> DAG_s;
+//        DAG_s.resize(n);
+        std::vector<std::vector<int>> DAG;
+        DAG.resize(n);
         int *levelPtr, *levelSet, levels;
         startT = std::chrono::system_clock::now();
         // Creating the DAG with generated
-        ic0_csc_inspector(n,parallelCopyPtr, parallelCopyIdx, DAG_s);
+/*        ic0_csc_inspector(n,parallelCopyPtr, parallelCopyIdx, DAG_s);
         int *v, *edg;
         v = new int[n+1]();
         edg = new int[nnzA]();
@@ -179,6 +181,20 @@ int main(int argc, char *argv[]) {
             edg[edges++] = *it;
         }
         v[ct] = edges;
+*/
+        ic0_csc_inspector_omega(n,parallelCopyPtr, parallelCopyIdx, DAG);
+        int *v, *edg;
+        v = new int[n+1]();
+        edg = new int[nnzA]();
+        int cti,edges=0;
+        for(cti = 0, edges = 0; cti < n; cti++){
+          v[cti] = edges;
+          edg[edges++] = cti; 
+          for (int ctj = 0; ctj < DAG[cti].size(); ctj++)
+            edg[edges++] = DAG[cti][ctj];
+        }
+        v[cti] = edges;
+
         endT = std::chrono::system_clock::now();
         elapsed_secondsT = endT - startT;
         durationID[r] = elapsed_secondsT.count();

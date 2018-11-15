@@ -47,8 +47,8 @@ int main(int argc, char *argv[]) {
 
   ofstream outInsp("results/insp.csv", std::ofstream::out | std::ofstream::app);
   ofstream outExec("results/exec.csv", std::ofstream::out | std::ofstream::app);
-  outInsp<<"F. Solve CSC";
-  outExec<<"F. Solve CSC";
+  outInsp<<"\nF. Solve CSC";
+  outExec<<"\nF. Solve CSC";
 
   std::string inputMatrix;
   int numThread=8;
@@ -299,7 +299,7 @@ int main(int argc, char *argv[]) {
         DAG_s.resize(n);
         start = std::chrono::system_clock::now();
         // Creating the DAG with generated
-        fs_csc_inspector(n,A2->p, A2->i, DAG_s);
+        /*fs_csc_inspector(n,A2->p, A2->i, DAG_s);
 
         int *v, *edg;
         v = new int[n+1]();
@@ -311,8 +311,20 @@ int main(int argc, char *argv[]) {
           edg[edges++] = ct; 
           for (std::set<int>::iterator it= tms.begin(); it!=tms.end(); ++it)
             edg[edges++] = *it;
+        }*/
+        fs_csc_inspector(n,A2->p, A2->i, DAG);
+
+        int *v, *edg;
+        v = new int[n+1]();
+        edg = new int[nnzA]();
+        int cti,edges=0;
+        for(cti = 0, edges = 0; cti < n; cti++){
+          v[cti] = edges;
+          edg[edges++] = cti; 
+          for (int ctj = 0; ctj < DAG[cti].size(); ctj++)
+            edg[edges++] = DAG[cti][ctj];
         }
-        v[ct] = edges;
+        v[cti] = edges;
         end = std::chrono::system_clock::now();
         elapsed_secondsT = end - start;
         inspTT = elapsed_secondsT.count();

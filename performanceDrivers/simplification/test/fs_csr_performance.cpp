@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
 
   ofstream outInsp("results/insp.csv", std::ofstream::out | std::ofstream::app);
   ofstream outExec("results/exec.csv", std::ofstream::out | std::ofstream::app);
-  outInsp<<"F. Solve CSC";
-  outExec<<"F. Solve CSC";
+  outInsp<<"\nF. Solve CSR";
+  outExec<<"\nF. Solve CSR";
 
   std::string inputMatrix;
   int numThread=8;
