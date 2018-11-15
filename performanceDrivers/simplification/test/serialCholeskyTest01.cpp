@@ -45,11 +45,11 @@ int main(int argc, char *argv[]) {
 /* if(wasteFile.fail())
   return -1;*/
  int numThread = atoi(argv[2]);
- int chunk = atoi(argv[3]);
- int costParam = atoi(argv[4]);//Inner parts
- int levelParam = atoi(argv[5]);// level distance
- int blasThreads = atoi(argv[6]);
- int finalSeqNode = atoi(argv[7]);
+ int innerParts = atoi(argv[4]);//Inner parts
+ int divRate = atoi(argv[3]);// level distance
+ int chunk = innerParts/numThread + 1;
+ int blasThreads = 1;
+ int levelParam = 5;
 
  /*
   * Calling Cholesky to generate blocked triangular matrix
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
                       n, prunePtr, pruneSet,
                       nLevels, levelPtr, levelSet,
                       nPar, parPtr, partition,
-                      costParam, levelParam, finalSeqNode,
+                           innerParts, divRate, levelParam,
                       status, maxSupWid, maxCol, orderingTime);
 
  valL_nonblock = new double[L->xsize]();
