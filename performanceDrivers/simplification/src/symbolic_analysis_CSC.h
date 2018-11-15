@@ -9,9 +9,7 @@
 #include "PostOrder.h"
 #include "Etree.h"
 #include "ColumnCount.h"
-#ifdef SCOTCH
-#include "scotch.h"
-#endif
+
 
 //From CHOLMOD
 #include "metis.h"
@@ -472,95 +470,8 @@ BCSC* analyze_DAG_CSC
     320  	Common->method [i].aggressive = TRUE ;	*//* aggressive absorption *//*
     321  	Common->method [i].order_for_lu = FALSE ;*//* order for Cholesky not LU */
  start = std::chrono::system_clock::now();
-#ifdef GIVEN
- //pastix_data_t **pastix_data;
- L->ordering = CHOLMOD_METIS;
- for (int l = 0; l < A->nrow; ++l) {
-  Lperm[l] = inPerm[l];
- }
 
-#elif SCOTCH
- L->ordering = CHOLMOD_METIS;
- CSC *ATrans;
- unsigned long nnzFull = A->nzmax*2;//Symmetric case
- ATrans = ptranspose(A, 0, NULL, NULL, 0, status) ;
-
- SCOTCH_Num baseVal=0;
- SCOTCH_Num          vertnbr;                    /* Number of vertices */
- SCOTCH_Graph        grafdat;                    /* Source graph       */
- SCOTCH_Ordering     ordedat;                    /* Graph ordering     */
- SCOTCH_Strat        stradat;                    /* Ordering strategy  */
- SCOTCH_Num          straval;
- //Making the graph for passing it to metis, it should have
- //both upper and lower parts
- //allocateAC(AFull,ncol,nnzFull,0,TRUE);
- SCOTCH_Num *permtab = new SCOTCH_Num[ncol]();                    /* Permutation array  */
- SCOTCH_Num *AFullp = new SCOTCH_Num[ncol+1]();
- SCOTCH_Num *AFulli = new SCOTCH_Num[nnzFull]();
- SCOTCH_Num ncolIDXT = ncol;
-
- AFullp[0]=0;
- for (int i = 0; i < ncol; ++i) {
-  int nnzOfCurCol = ATrans->p[i+1]-ATrans->p[i]-1;
-  nnzOfCurCol += A->p[i+1]-A->p[i]-1;
-  AFullp[i+1] =(long int) AFullp[i]+nnzOfCurCol;
-  //copying Upper part, ignoring diagonal since it is in L already
-  int base=AFullp[i];
-  for (int j = ATrans->p[i],k=0; j < ATrans->p[i+1]-1; ++j,++k) {
-   AFulli[base+k] =(long int) ATrans->i[j];
-  }
-  //copying L part
-  base+=ATrans->p[i+1]-ATrans->p[i]-1;
-  for (int j = A->p[i]+1,k=0; j < A->p[i+1]; ++j, ++k) {
-   AFulli[base+k] =(long int) A->i[j];
-  }
- }
- if(SCOTCH_stratInit (&stradat))
-  return NULL;
- char straStr[550];
- sprintf(straStr, SCOTCH_STRAT_DIRECT);
- if(SCOTCH_stratGraphOrder(&stradat,straStr))
-  return NULL;
- nnzFull=AFullp[ncol];
- if(SCOTCH_graphBuild (&grafdat,baseVal,ncol,AFullp,NULL,NULL,NULL,
-                   nnzFull,AFulli,NULL))
-  return NULL;
- if(SCOTCH_graphCheck(&grafdat))
-  return NULL;
- /*if(SCOTCH_graphOrderList(&grafdat, ncol, NULL, &stradat,
-                          permtab, NULL, NULL, NULL, NULL)) { *//* Create ordering *//*
-  return NULL;
- }*/
- /*if(SCOTCH_graphOrderInit    (&grafdat, &ordedat, permtab, NULL, NULL, NULL, NULL)) {  Create ordering
-  return NULL;
- }
- if(SCOTCH_graphOrderCompute (&grafdat, &ordedat, &stradat)) {  Perform ordering
-  return NULL;
- }*/
-
- if(SCOTCH_graphOrderInit    (&grafdat, &ordedat, permtab, NULL, NULL, NULL, NULL)) {  // Create ordering
-  return NULL;
- }
- if(SCOTCH_graphOrderCompute (&grafdat, &ordedat, &stradat)) { // Perform ordering
-  return NULL;
- }
-
- if (SCOTCH_graphOrderCheck (&grafdat, &ordedat) != 0)
-  return NULL;
- for (int i = 0; i < ncol; ++i) {
-  Lperm[i]=permtab[i];
-  //std::cout<<Lperm[i];
- }
- SCOTCH_graphOrderExit (&grafdat, &ordedat);
- SCOTCH_stratExit      (&stradat);
- SCOTCH_graphExit      (&grafdat);
-
- allocateAC(ATrans,ATrans->nrow,ATrans->nzmax,ATrans->stype,false);
- delete [] AFullp;
- delete [] AFulli;
- delete [] permtab;
-
-#elif METIS
+#if 1
  L->ordering = CHOLMOD_METIS;
  CSC *ATrans;
  unsigned long nnzFull = A->nzmax*2;//Symmetric case
