@@ -72,6 +72,17 @@ string codegen(const string& omcode, const string& omcalc) {
         pclose(proc);
     }
 
+    string macros = "";
+    FILE *in = fopen(".macros", "r");
+    if (in) {
+        while (!feof(in)) {
+            if (fgets(buffer, bufflen, in)) {
+                macros.append(buffer);
+            }
+        }
+        fclose(in);
+    }
+
     string vardecl = "int ";
     for (int i = 1; i <= niters; i++) {
         vardecl += "t" + to_string(i);
@@ -81,11 +92,16 @@ string codegen(const string& omcode, const string& omcalc) {
     }
     vardecl += ";";
 
-    data = vardecl + "\n" + ompragma + "\n" + data;
+    data = macros + "\n" + vardecl + "\n" + ompragma + "\n" + data;
 
     return data;
 }
 
 int main(int argc, char *argv[]) {
-    cout << codegen(toOmega(string(argv[1])), string(argv[2])) << endl;
+    string iegenstr = string(argv[1]);
+    string omcalc = "/usr/local/bin/omegacalc";
+    if (argc > 2) {
+        omcalc = string(argv[2]);
+    }
+    cout << codegen(toOmega(iegenstr), omcalc) << endl;
 }
