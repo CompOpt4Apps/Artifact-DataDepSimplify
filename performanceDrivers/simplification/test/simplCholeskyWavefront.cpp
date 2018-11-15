@@ -103,9 +103,10 @@ int main(int argc, char *argv[]) {
 
 // build level set
  //HACK to avoid conversion
- int *LP = new int[n];
+ //HACK to avoid conversion
+ int *LP = new int[n+1];
  for (int m = 0; m <= n; ++m) {
-  LP[m] = L->p[m];
+  LP[m] = static_cast<int>(L->p[m]);
  }
  nLevels = buildLevelSet_CSC(n,L->xsize,LP,L->i,levelPtr,levelSet);
  delete []LP;

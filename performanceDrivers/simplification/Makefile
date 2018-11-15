@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named fs_csr_performance
+
+# Build rule for target.
+fs_csr_performance: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 fs_csr_performance
+.PHONY : fs_csr_performance
+
+# fast build rule for target.
+fs_csr_performance/fast:
+	$(MAKE) -f CMakeFiles/fs_csr_performance.dir/build.make CMakeFiles/fs_csr_performance.dir/build
+.PHONY : fs_csr_performance/fast
+
+#=============================================================================
 # Target rules for targets named simpCholeskyHLevel
 
 # Build rule for target.
@@ -213,6 +226,19 @@ serialcholeskyTest01: cmake_check_build_system
 serialcholeskyTest01/fast:
 	$(MAKE) -f CMakeFiles/serialcholeskyTest01.dir/build.make CMakeFiles/serialcholeskyTest01.dir/build
 .PHONY : serialcholeskyTest01/fast
+
+#=============================================================================
+# Target rules for targets named gs_csr_performance
+
+# Build rule for target.
+gs_csr_performance: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gs_csr_performance
+.PHONY : gs_csr_performance
+
+# fast build rule for target.
+gs_csr_performance/fast:
+	$(MAKE) -f CMakeFiles/gs_csr_performance.dir/build.make CMakeFiles/gs_csr_performance.dir/build
+.PHONY : gs_csr_performance/fast
 
 #=============================================================================
 # Target rules for targets named fs_csc_performance
@@ -333,6 +359,60 @@ test/fs_csc_performance.s: test/fs_csc_performance.cpp.s
 test/fs_csc_performance.cpp.s:
 	$(MAKE) -f CMakeFiles/fs_csc_performance.dir/build.make CMakeFiles/fs_csc_performance.dir/test/fs_csc_performance.cpp.s
 .PHONY : test/fs_csc_performance.cpp.s
+
+test/fs_csr_performance.o: test/fs_csr_performance.cpp.o
+
+.PHONY : test/fs_csr_performance.o
+
+# target to build an object file
+test/fs_csr_performance.cpp.o:
+	$(MAKE) -f CMakeFiles/fs_csr_performance.dir/build.make CMakeFiles/fs_csr_performance.dir/test/fs_csr_performance.cpp.o
+.PHONY : test/fs_csr_performance.cpp.o
+
+test/fs_csr_performance.i: test/fs_csr_performance.cpp.i
+
+.PHONY : test/fs_csr_performance.i
+
+# target to preprocess a source file
+test/fs_csr_performance.cpp.i:
+	$(MAKE) -f CMakeFiles/fs_csr_performance.dir/build.make CMakeFiles/fs_csr_performance.dir/test/fs_csr_performance.cpp.i
+.PHONY : test/fs_csr_performance.cpp.i
+
+test/fs_csr_performance.s: test/fs_csr_performance.cpp.s
+
+.PHONY : test/fs_csr_performance.s
+
+# target to generate assembly for a file
+test/fs_csr_performance.cpp.s:
+	$(MAKE) -f CMakeFiles/fs_csr_performance.dir/build.make CMakeFiles/fs_csr_performance.dir/test/fs_csr_performance.cpp.s
+.PHONY : test/fs_csr_performance.cpp.s
+
+test/gs_csr_performance.o: test/gs_csr_performance.cpp.o
+
+.PHONY : test/gs_csr_performance.o
+
+# target to build an object file
+test/gs_csr_performance.cpp.o:
+	$(MAKE) -f CMakeFiles/gs_csr_performance.dir/build.make CMakeFiles/gs_csr_performance.dir/test/gs_csr_performance.cpp.o
+.PHONY : test/gs_csr_performance.cpp.o
+
+test/gs_csr_performance.i: test/gs_csr_performance.cpp.i
+
+.PHONY : test/gs_csr_performance.i
+
+# target to preprocess a source file
+test/gs_csr_performance.cpp.i:
+	$(MAKE) -f CMakeFiles/gs_csr_performance.dir/build.make CMakeFiles/gs_csr_performance.dir/test/gs_csr_performance.cpp.i
+.PHONY : test/gs_csr_performance.cpp.i
+
+test/gs_csr_performance.s: test/gs_csr_performance.cpp.s
+
+.PHONY : test/gs_csr_performance.s
+
+# target to generate assembly for a file
+test/gs_csr_performance.cpp.s:
+	$(MAKE) -f CMakeFiles/gs_csr_performance.dir/build.make CMakeFiles/gs_csr_performance.dir/test/gs_csr_performance.cpp.s
+.PHONY : test/gs_csr_performance.cpp.s
 
 test/ic0.o: test/ic0.cpp.o
 
@@ -557,6 +637,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... fs_csr_performance"
 	@echo "... simpCholeskyHLevel"
 	@echo "... simplification"
 	@echo "... triangular"
@@ -566,6 +647,7 @@ help:
 	@echo "... ichol_wavefront"
 	@echo "... ichol_HLevel"
 	@echo "... serialcholeskyTest01"
+	@echo "... gs_csr_performance"
 	@echo "... fs_csc_performance"
 	@echo "... ic0_csc_performance"
 	@echo "... simpCholeskyWF"
@@ -578,6 +660,12 @@ help:
 	@echo "... test/fs_csc_performance.o"
 	@echo "... test/fs_csc_performance.i"
 	@echo "... test/fs_csc_performance.s"
+	@echo "... test/fs_csr_performance.o"
+	@echo "... test/fs_csr_performance.i"
+	@echo "... test/fs_csr_performance.s"
+	@echo "... test/gs_csr_performance.o"
+	@echo "... test/gs_csr_performance.i"
+	@echo "... test/gs_csr_performance.s"
 	@echo "... test/ic0.o"
 	@echo "... test/ic0.i"
 	@echo "... test/ic0.s"

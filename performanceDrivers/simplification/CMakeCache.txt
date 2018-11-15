@@ -131,7 +131,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=simpCholeskyHLevel
+CMAKE_PROJECT_NAME:STATIC=gs_csr_performance
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -199,6 +199,18 @@ fs_csc_performance_BINARY_DIR:STATIC=/home/kazem/development/Artifact-DataDepSim
 
 //Value Computed by CMake
 fs_csc_performance_SOURCE_DIR:STATIC=/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification
+
+//Value Computed by CMake
+fs_csr_performance_BINARY_DIR:STATIC=/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification
+
+//Value Computed by CMake
+fs_csr_performance_SOURCE_DIR:STATIC=/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification
+
+//Value Computed by CMake
+gs_csr_performance_BINARY_DIR:STATIC=/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification
+
+//Value Computed by CMake
+gs_csr_performance_SOURCE_DIR:STATIC=/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification
 
 //Value Computed by CMake
 ic0_csc_performance_BINARY_DIR:STATIC=/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification

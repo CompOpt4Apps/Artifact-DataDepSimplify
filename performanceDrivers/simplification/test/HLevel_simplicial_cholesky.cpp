@@ -101,9 +101,9 @@ int main(int argc, char *argv[]) {
  }
  delete[]L->ColCount;
  //HACK to avoid conversion
- int *LP = new int[n];
+ int *LP = new int[n+1];
  for (int m = 0; m <= n; ++m) {
-  LP[m] = L->p[m];
+  LP[m] = static_cast<int>(L->p[m]);
  }
  nLevels = getCoarseLevelSet_DAG_CSC03(n,LP,L->i,nLevels, levelPtr, levelSet,
                              nPar, parPtr, partition,
