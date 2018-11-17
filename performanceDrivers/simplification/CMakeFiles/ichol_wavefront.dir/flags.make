@@ -6,5 +6,5 @@ CXX_FLAGS =    -m64 -DVERIFY -DMETIS -fopenmp   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/kazem/programs/intel/compilers_and_libraries_2017.4.196/linux/mkl/include -I/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/src -I/home/kazem/programs/metis-5.1.0/include -I/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/../cholesky -I/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/../common 
+CXX_INCLUDES = -I/home/kazem/programs/intel/compilers_and_libraries_2017.4.196/linux/mkl/include -I/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/src -I/home/kazem/programs/metis-5.1.0/include -I/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/../cholesky -I/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/../common -I/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/../src 
 

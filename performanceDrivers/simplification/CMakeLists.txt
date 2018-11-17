@@ -318,3 +318,25 @@ target_link_libraries(gs_csr_performance
 
 
 
+project(gaussSeidel)
+
+set(SOURCE_FILES test/gsTest.cpp)
+
+include_directories(${MKL_INC} ${METIS_INC}
+        "../src/" )
+link_directories(${MKL_LIB} ${MMM} ${METIS_LIB})
+add_executable(gaussSeidel ${SOURCE_FILES} test/gsTest.cpp)
+target_link_libraries(gaussSeidel
+        #gomp
+        iomp5
+        #mkl_sequential
+        mkl_intel_lp64
+        mkl_core
+        #mkl_gnu_thread
+        mkl_intel_thread
+        pthread
+        m
+        dl
+
+        metis
+        )

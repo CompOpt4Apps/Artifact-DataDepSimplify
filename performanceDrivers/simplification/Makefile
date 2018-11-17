@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named gaussSeidel
+
+# Build rule for target.
+gaussSeidel: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gaussSeidel
+.PHONY : gaussSeidel
+
+# fast build rule for target.
+gaussSeidel/fast:
+	$(MAKE) -f CMakeFiles/gaussSeidel.dir/build.make CMakeFiles/gaussSeidel.dir/build
+.PHONY : gaussSeidel/fast
+
+#=============================================================================
 # Target rules for targets named fs_csr_performance
 
 # Build rule for target.
@@ -387,6 +400,33 @@ test/fs_csr_performance.cpp.s:
 	$(MAKE) -f CMakeFiles/fs_csr_performance.dir/build.make CMakeFiles/fs_csr_performance.dir/test/fs_csr_performance.cpp.s
 .PHONY : test/fs_csr_performance.cpp.s
 
+test/gsTest.o: test/gsTest.cpp.o
+
+.PHONY : test/gsTest.o
+
+# target to build an object file
+test/gsTest.cpp.o:
+	$(MAKE) -f CMakeFiles/gaussSeidel.dir/build.make CMakeFiles/gaussSeidel.dir/test/gsTest.cpp.o
+.PHONY : test/gsTest.cpp.o
+
+test/gsTest.i: test/gsTest.cpp.i
+
+.PHONY : test/gsTest.i
+
+# target to preprocess a source file
+test/gsTest.cpp.i:
+	$(MAKE) -f CMakeFiles/gaussSeidel.dir/build.make CMakeFiles/gaussSeidel.dir/test/gsTest.cpp.i
+.PHONY : test/gsTest.cpp.i
+
+test/gsTest.s: test/gsTest.cpp.s
+
+.PHONY : test/gsTest.s
+
+# target to generate assembly for a file
+test/gsTest.cpp.s:
+	$(MAKE) -f CMakeFiles/gaussSeidel.dir/build.make CMakeFiles/gaussSeidel.dir/test/gsTest.cpp.s
+.PHONY : test/gsTest.cpp.s
+
 test/gs_csr_performance.o: test/gs_csr_performance.cpp.o
 
 .PHONY : test/gs_csr_performance.o
@@ -637,6 +677,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... gaussSeidel"
 	@echo "... fs_csr_performance"
 	@echo "... simpCholeskyHLevel"
 	@echo "... simplification"
@@ -663,6 +704,9 @@ help:
 	@echo "... test/fs_csr_performance.o"
 	@echo "... test/fs_csr_performance.i"
 	@echo "... test/fs_csr_performance.s"
+	@echo "... test/gsTest.o"
+	@echo "... test/gsTest.i"
+	@echo "... test/gsTest.s"
 	@echo "... test/gs_csr_performance.o"
 	@echo "... test/gs_csr_performance.i"
 	@echo "... test/gs_csr_performance.s"

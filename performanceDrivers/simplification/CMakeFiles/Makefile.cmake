@@ -45,6 +45,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/gaussSeidel.dir/DependInfo.cmake"
   "CMakeFiles/fs_csr_performance.dir/DependInfo.cmake"
   "CMakeFiles/simpCholeskyHLevel.dir/DependInfo.cmake"
   "CMakeFiles/simplification.dir/DependInfo.cmake"

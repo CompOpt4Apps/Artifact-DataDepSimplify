@@ -15,6 +15,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/kazem/programs/metis-5.1.0/include"
   "../cholesky"
   "../common"
+  "../src"
   )
 
 # Targets to which this target links.

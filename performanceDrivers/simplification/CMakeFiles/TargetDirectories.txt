@@ -1,4 +1,5 @@
 /home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/CMakeFiles/rebuild_cache.dir
+/home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/CMakeFiles/gaussSeidel.dir
 /home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/CMakeFiles/fs_csr_performance.dir
 /home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/CMakeFiles/simpCholeskyHLevel.dir
 /home/kazem/development/Artifact-DataDepSimplify/performanceDrivers/simplification/CMakeFiles/simplification.dir
