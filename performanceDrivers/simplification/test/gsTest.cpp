@@ -6,24 +6,25 @@
 #include <fstream>
 #include <chrono>
 #include <algorithm>
-#include <cholmod.h>
-#include <cholmod_function.h>
+//#include <cholmod.h>
+//#include <cholmod_function.h>
 #include <omp.h>
 
 #include <Transpose.h>
 #include <metis.h>
-#include <gs_csr.h>
+//#include <gs_csr.h>
 #include <gs_bcsr.h>
 #include <set>
 #include <util.h>
 #include <inspection_DAG03.h>
+#include "../src/gs_csr_inspector.h"
 
 
 #include "mkl.h"
 
 #include "MKL_Utils.h"
 
-#define CPUTIME (SuiteSparse_time ( ))
+//#define CPUTIME (SuiteSparse_time ( ))
 #define CSC_TRNG
 #undef DEBUG
 //#define FLOPCNT
@@ -43,9 +44,12 @@ int main(int argc, char *argv[]) {
  int maxSupWid, maxCol;
  size_t n, nnzA, ncol;
 
- std::chrono::time_point<std::chrono::system_clock> start, end;
- std::chrono::duration<double> elapsed_seconds;
- double durationSym = 0, duration3 = 0, duration2 = 0, duration1 = 0;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    std::chrono::duration<double> elapsed_seconds;
+    std::chrono::duration<double> elapsed_secondsT;
+    double durationID[20] = {0.0}, durationIL[20] = {0.0}, durationE[20] = {0.0}, durationTT[20] = {0.0}, inspTT;
+    double serialMedTT = 0.0, serialMedE = 0.0, serialAvgTT = 0.0, serialAvgE = 0.0;
+    double durationSym = 0, duration3 = 0, duration2 = 0, duration1 = 0;
  long totalIntraContribNNZs = 0, totalInterCotribNNZs = 0, numOfEdgeCuts = 0;
  int numberOfIntraCore = 0, numberOfInterCore = 0;
 
@@ -368,7 +372,7 @@ int main(int argc, char *argv[]) {
   }
  }*/
 
-
+/*
  start = std::chrono::system_clock::now();
  int avg = getCoarseLevelSet_DAG_CSC03(n, A2->p, A2->i,
                                        nLevels, HLevelPtr,
@@ -378,10 +382,65 @@ int main(int argc, char *argv[]) {
                                        nodeCost);
  end = std::chrono::system_clock::now();
  elapsed_seconds = end - start;
- duration1 = elapsed_seconds.count();
- std::cout <<avg<<"," <<duration1 << ",";
+ double HD = elapsed_seconds.count();
+// std::cout <<avg<<"," <<duration1 << ",";
+ delete[]nodeCost;
+/////////////////////////////////////////
  delete[]nodeCost;
  sparse_matrix_t *csrA;
+*/
+
+
+       // # Inspector:
+        std::vector<std::vector<int>> DAG;
+        DAG.resize(n);
+        //for(int i = 0 ; i < n ; i++ ) DAG[i].push_back(i);
+        std::vector<std::set<int>> DAG_s;
+        DAG_s.resize(n);
+        start = std::chrono::system_clock::now();
+        // Creating the DAG with generated
+        /*gs_csr_inspector(n,A2->p, A2->i, DAG_s);
+
+        int *v, *edg;
+        v = new int[n+1]();
+        edg = new int[nnzA]();
+        int ct=0, edges=0;
+        for(ct = 0, edges = 0; ct < n; ct++){
+          v[ct] = edges;
+          std::set<int> tms = DAG_s[ct];
+          edg[edges++] = ct; 
+          for (std::set<int>::iterator it= tms.begin(); it!=tms.end(); ++it)
+            edg[edges++] = *it;
+        }*/
+        gs_csr_inspector(n,bcrL.ia, bcrL.ja, DAG);
+
+        int *v, *edg;
+        v = new int[n+1]();
+        edg = new int[nnzA]();
+        int cti,edges=0;
+        for(cti = 0, edges = 0; cti < n; cti++){
+          v[cti] = edges;
+          edg[edges++] = cti; 
+          for (int ctj = 0; ctj < DAG[cti].size(); ctj++)
+            edg[edges++] = DAG[cti][ctj];
+        }
+        v[cti] = edges;
+        end = std::chrono::system_clock::now();
+        elapsed_secondsT  = end - start;
+        inspTT = elapsed_secondsT.count();
+
+ start = std::chrono::system_clock::now();
+ int avg = getCoarseLevelSet_DAG_CSC03(n, v, edg,
+                                       nLevels, HLevelPtr,
+                                       HLevelSet, nPar,
+                                       parPtr, partition,
+                                       innerParts, levelParam, divRate, nodeCost);
+ end = std::chrono::system_clock::now();
+ elapsed_seconds = end - start;
+ double HD = elapsed_seconds.count();
+// std::cout <<avg<<"," <<duration1 << ",";
+ delete[]nodeCost;
+/////////////////////////////////////////
 
 
 
@@ -404,8 +463,8 @@ int main(int argc, char *argv[]) {
   y_s[j] = 1.0;
  }
 
- guass_seidel_csr(n, csrRowPtr, csrColInd, idiag,
-                  csrVal, x_s, y_s);
+// guass_seidel_csr(n, csrRowPtr, csrColInd, idiag,
+ //                 csrVal, x_s, y_s);
 
 
  //converting to bcsr for blocked GS
@@ -471,8 +530,72 @@ int main(int argc, char *argv[]) {
   }
  }
 
+
+   int nRuns = 1;
+    // ------ Sequentially Run
+    std::cout <<"-- Running the algorithm sequentially for #"<<nRuns<<" times:\n";
+    //***************Serial
+    for (int l = 0; l < nRuns; ++l) {
+
+      start = std::chrono::system_clock::now();
  guass_seidel_bcsr_(bcrL.nbBlockRows, bsr_val, x_b,
  y_b, idiag_blk, bcrL.ia, bcrL.ja);
+      end = std::chrono::system_clock::now();
+      elapsed_secondsT = end - start;
+      durationE[l] = elapsed_secondsT.count();
+    }
+    // Calculating Median and Average of execution times for plotting
+    std::sort(durationE, durationE+nRuns);
+    double medE;
+    if(nRuns%2) {
+      medE = durationE[(int(nRuns/2))];
+    } else {
+      medE = (durationE[(int(nRuns/2))]+durationE[(int(nRuns/2))-1])/2.0;
+    }
+
+    serialMedE = medE;
+    std::cout <<"\n>>>>>>>>>>>> Median of Execution times = "<<medE <<"\n";
+
+
+
+
+
+
+
+
+
+
+
+
+
+    std::cout<<"\n\n--Running the algorithm with #"
+          <<numThread<<" threads in parallel for #"<<nRuns<<" times:";
+    //****************Parallel H2 CSC
+    for (int l = 0; l < nRuns; ++l) {
+
+      start = std::chrono::system_clock::now();
+ guass_seidel_bcsr_H2(bcrL.nbBlockRows, bsr_val, x_b,
+ y_b, idiag_blk, bcrL.ia, bcrL.ja,nLevels,HLevelPtr,HLevelSet,
+              nPar,parPtr,partition, chunk);
+      end = std::chrono::system_clock::now();
+      elapsed_secondsT = end-start;
+        durationE[l] = elapsed_secondsT.count();
+    }
+    // Calculating Median and Average of execution times for plotting
+    std::sort(durationE, durationE+nRuns);
+    if(nRuns%2) {
+      medE = durationE[(int(nRuns/2))];
+    } else {
+      medE = (durationE[(int(nRuns/2))]+durationE[(int(nRuns/2))-1])/2.0;
+    }
+
+    std::cout <<"\n>>>>>>>>>>>> Median of Inspector Dependence times = "<<inspTT <<"\n";
+    std::cout <<">>>>>>>>>>>> Median of Inspector Build Level Set times = "<<HD <<"\n";
+    std::cout <<">>>>>>>>>>>> Median of Execution times = "<<medE <<"\n";
+    std::cout <<"\n>>>>>>> Exec run break point = "<< (HD+inspTT)/(serialMedE-medE) <<"\n";
+    std::cout <<">>>>>>> Executor Speed up = "<< (serialMedE/medE) <<"\n";
+
+
 
 /* for (int k1 = 0; k1 < bcrL.nbBlocks*BS*BS; ++k1) {
   std::cout<<bcrL.a[k1]<<";";
