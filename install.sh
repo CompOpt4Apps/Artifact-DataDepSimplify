@@ -50,6 +50,6 @@ cd ../..
 
 
 # Step 5: Building the artifact driver:
-g++ -O3 -o simplifyDriver simplification.cc -I IEGenLib/src IEGenLib/build/src/libiegenlib.a -lisl -std=c++11
+g++ -O3 -o simplification simplification.cc -I IEGenLib/src IEGenLib/build/src/libiegenlib.a -lisl -std=c++11
 
 

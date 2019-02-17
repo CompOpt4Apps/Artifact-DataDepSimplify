@@ -7,9 +7,9 @@
  * All rights reserved. <br>
  * See ./LICENSE for details. <br>
  *
- * This file is a driver for reproducing the result for the paper titled:
+ * This file is one of the drivers for reproducing the result for the paper titled:
    "Sparse Matrix Code Dependence Analysis Simplification at Compile Time"
-   that has been submitted to arXiv.
+   .
  *
 
  ** For building the dependencies see README.md
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 }
 
 
-// The driver that gathers the results for arXiv submission
+// The main driver function
 void driver(string list)
 {
   map<string,int> currentCodeOrigComplexities, origComplexities, blComplexities,
@@ -106,13 +106,6 @@ void driver(string list)
 
   string inputFileName="";
 
-  // Open files for putting in Table 3&4
-  ofstream outTab3("results/Table3.csv", std::ofstream::out);
-  outTab3<<"Kernel name , Remaining satisfiables , Equality Impact , Superset Impact";
-  outTab3<<"\n            ,   <= kernel  ,  Total   , <= kernel, Total , <= kernel, Total";
-  ofstream outTab4("results/Table4.csv", std::ofstream::out);
-  outTab4<<"Kernel name , Inspector complexity , Simplified inspector , Kernel complexity";
-
   // Read name of json files from input list
   ifstream inL(list);
 
@@ -121,7 +114,7 @@ void driver(string list)
 
   initComplexities(currentCodeOrigComplexities); 
   int totalDeps = 0, unSatFound = 0, maySatFound = 0, simplyUnSat = 0, i = 0, 
-      ct, nUniqueRels, origCompLess=0, withEqLess=0;
+      ct, nUniqueRels=0, origCompLess=0, maysatCompLess=0, withEqLess=0;
   string origComplexity = "", simpComplexity="";
   string line="";
   std::pair<std::set<Relation>::iterator,bool> uniqRel;
@@ -153,6 +146,16 @@ void driver(string list)
   // Generating the CHILL script
   json analysisInfo = data[0][0]["CHILL analysis info"];
   genChillScript(analysisInfo);
+
+
+  // Open file for outputting current kernel's results, using same name as the chill output file
+  string kernelResOutputName = string((analysisInfo[0]["Output file"].as<string>()).c_str());
+  kernelResOutputName.replace(kernelResOutputName.end()-4,kernelResOutputName.end(),".csv");
+  size_t pathEnd = kernelResOutputName.find_last_of("/");
+  kernelResOutputName = string("results/") + kernelResOutputName.substr(pathEnd+1);
+  ofstream kernelResOutput(kernelResOutputName.c_str(), std::ofstream::out);
+  kernelResOutput<<"#Stage, Less Complex vs. Kernel, More Complex vs. Kernel";
+
 
   // Extracting dependence relations with CHILL
   string chillCommand = "./chill/build/chill " + analysisInfo[0]["Script file"].as<string>() + " 2> /dev/null"; 
@@ -201,13 +204,14 @@ void driver(string list)
   nUniqueRels = i;
 
   int nBL=0;
-  for( i=0; i < nUniqueRels; i++){    //Loop over all unique relations
+  for( i=0; i < nUniqueRels; i++){    //Loop over all unique relations for outter loop of one computation
 
     if( ! dependences[i].bl ) continue;
     nBL++;
 
-    for(int r_it = 0 ; r_it < TheOthers ; r_it++ ){  // Use different form of domain information
-
+//    for(int r_it = 0 ; r_it < TheOthers ; r_it++ ){  // Use different index array properties; 
+                                                       // Disabled here, since we are just using all available properties
+      int r_it = FuncConsistency;
       bool* useRule = new bool[ TheOthers ];
       if( r_it != FuncConsistency){ // FuncConsistency signals we want to use all the rules
         for(int j = 0 ; j < TheOthers ; j++ ) useRule[j] = 0;
@@ -250,7 +254,7 @@ void driver(string list)
 //      if(rel) delete rel;
 //      if(result) delete result;
       delete useRule;
-    }
+//    }   // End of loop: Use different index array properties
   }
 
   // Generate analysis result for a code.
@@ -285,21 +289,12 @@ void driver(string list)
       outRes<<"\nSimplified Dependence: "<<(dependences[i].simpRel)->getString()<<"\n";
     }
 
-    // Gathering data for Table 4
-    currentCodeOrigComplexities[dependences[i].origComplexity]++;
-    // Gathering data for figure9
-    origComplexities[dependences[i].origComplexity]++;
+    // Gathering data for Table 3
+    if(compCompare(dependences[i].origComplexity, kernelComplexity) < 1) origCompLess++;
     if(dependences[i].bl){
-      blComplexities[dependences[i].origComplexity]++;
-      if(!dependences[i].mono)    monoComplexities[dependences[i].origComplexity]++;
-      if(!dependences[i].coMono)  coMonoComplexities[dependences[i].origComplexity]++;
-      if(!dependences[i].tri)     triComplexities[dependences[i].origComplexity]++;
       if(!dependences[i].combo){
-                                  comboComplexities[dependences[i].origComplexity]++;
-        // Gathering data for Table 3
-        if(compCompare(dependences[i].origComplexity, kernelComplexity) < 1)origCompLess++;
-        if(compCompare(dependences[i].simpComplexity, kernelComplexity) < 1)withEqLess++;
-
+        if(compCompare(dependences[i].origComplexity, kernelComplexity) < 1) maysatCompLess++;
+        if(compCompare(dependences[i].simpComplexity, kernelComplexity) < 1) withEqLess++;
 
         // Find supbet of relations that are superset of all the relations
         bool notSubSet=true;
@@ -320,67 +315,26 @@ void driver(string list)
     }
   }
 
-  // -- Generate data for Table 3
+  // -- Generate inspector complexity results for current kernel
   // Determine number of dependences in set of supersets that have less than algorithm complexity
   int withSupSetLess=0;
-  for(int i=0; i < superSets.size() ; i++ )
-    if(compCompare(dependences[i].simpComplexity, kernelComplexity) < 1)withSupSetLess++;
-
-  outTab3<<"\n"<<data[0][0]["Name"].as<string>()<<" , "<<origCompLess<<" , "<<maySatFound<<" , "<<withEqLess<<" , "<<maySatFound<<" , "<<maySatFound<<" , "<<withSupSetLess;
-
-  // -- Generate data for Table 4
-  string origInspComplexity="";
-  for (map<string,int>::iterator it=currentCodeOrigComplexities.begin(); 
-       it!=currentCodeOrigComplexities.end(); it++){
-    if(it->second > 0){
-      if(origInspComplexity!="") origInspComplexity += " + ";
-      origInspComplexity += int2str(it->second) + trimO(getPrettyComplexity(it->first));
-    }
-  }
-  string finalInspComplexity="";
-  for (map<string,int>::iterator it=currentCodeFinalComplexities.begin(); 
-       it!=currentCodeFinalComplexities.end(); it++){
-    if(it->second > 0){
-      if(finalInspComplexity!="") finalInspComplexity += " + ";
-      finalInspComplexity += int2str(it->second) + trimO(getPrettyComplexity(it->first));
-    }
+  for(int i=0; i < superSets.size() ; i++ ){
+    if(compCompare(dependences[i].simpComplexity, kernelComplexity) < 1) withSupSetLess++;
   }
 
-  outTab4<<"\n"<<data[0][0]["Name"].as<string>()<<" , "<<origInspComplexity
-         <<" , "<<finalInspComplexity<<" , "<<"K"
-         <<trimO(getPrettyComplexity(kernelComplexity));
+  kernelResOutput<<"\nExtracted, "<<origCompLess<<", "<<(nUniqueRels-origCompLess);
+  kernelResOutput<<"\nSatisfiable, "<<maysatCompLess<<", "<<(maySatFound-maysatCompLess);
+  kernelResOutput<<"\nAfter Equality, "<<withEqLess<<", "<<(maySatFound-withEqLess);
+  kernelResOutput<<"\nAfter Subset, "<<withSupSetLess<<", "<<(superSets.size()-withSupSetLess);
 
+  kernelResOutput.close();
 
  } // End of input json file list loop
 
-  outTab3.close();
-  outTab4.close();
+   int cmdErr = system ("cd results");
+   cmdErr = system ("gnuplot gnpUnSatSimp.gnu");
+   cmdErr = system ("cd ..");
 
-  cout<<"\n\nFigure 9 data are written to results/figure9.csv, and "
-        "a pdf version is generated which can be found at results/figure9.pdf\n\n";
-
-  cout<<"\n\nTable 3 is written to results/Table3.csv\n"
-        "Table 4 is written to results/Table4.csv\n\n"
-        "The superset results can be reproduced by hand looking at "
-        "individual detailed result output for each kernel, "
-        "e.g results/staticleftChol_csc.out, and following instructions "
-        "in section 5 of the paper\n\n";
-
-  // Generate figure 9
-  ofstream outFig9("results/figure9.csv", std::ofstream::out);
-  outFig9<<"Complexity Classes, Baseline , Monotonicity , Correlated Monotonicity ,"
-           " Triangular Matrix , Combination";
-  for(int i=0; i < blComplexities.size(); i++){
-    string comp = giveCompWithOrd(i);
-    if( blComplexities[comp] == 0) continue;
-    outFig9<<"\n"<<getPrettyComplexity(comp)<< ", " <<blComplexities[comp]<<" , "
-           <<monoComplexities[comp]<<" , "<<coMonoComplexities[comp]
-           <<" , "<<triComplexities[comp]<<" , "<<comboComplexities[comp];
-  }
-  outFig9.close();
-
-  int gnErr = system ("gnuplot data/gnpFig9.gnu");
-//  gnErr = system ("evince results/figure9.pdf");
 }
 // ----------- End of driver function --------------------------------------
 
