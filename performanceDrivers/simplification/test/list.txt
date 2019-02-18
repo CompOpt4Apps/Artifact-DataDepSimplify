@@ -1,2 +1,0 @@
-6, 1, 1
-/home/kazem/UFDB/LFAT5/LFAT5.mtx

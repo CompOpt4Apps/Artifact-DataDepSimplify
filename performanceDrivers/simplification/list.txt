@@ -1,6 +1,0 @@
-8, 1, 1
-data/G3_circuit.mtx
-data/af_shell3.mtx
-data/bcsstm08.mtx
-data/bmwcra_1.mtx
-data/nd24k.mtx
