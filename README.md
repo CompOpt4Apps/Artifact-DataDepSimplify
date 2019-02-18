@@ -1,10 +1,16 @@
 This is the artifact that uses CHiLL for data dependence analysis, IEGenLib 
-for simplification, and produces results for paper submitted to arXiv in July 2018.
+for simplification, and produces results for teh following aper accepted in PLDI 2019:.
+
+"Sparse Computation Data Dependence Simplification for Efficient Compiler-Generated Inspectors"
+
+There are two parts to results: (1) Data dependency simplification analysis evaluation, presnted as  figure 6 in the paper. (2) Performance evaluation results presented in figure 7, and 8 in the paper. 
+
+# (1) Reproducing data dependency simplification analysis results
 
 After building the driver and its dependencies (see below) run the following:
 
 ```
-  ./simplifyDriver list.txt
+  ./simplification list.txt
 ```
 
 The output will be the results of doing data dependence analysis on all of the
@@ -12,6 +18,8 @@ C kernels specified in the list.txt file.  The list.text file includes names of 
 Each JSON file contains the relative path of an input kernel that we want to extract its 
 dependences and analyze them for partial parallelisim.  The JSON files also contain index 
 array properties and analysis information like which loops we want to analyze.
+
+The driver will produce figure 6 using gnuplot. Please note however that the reproduced figure is not as polished aesthetically as the one in the paper, nonetheless it is the same figure in terms of data. The figure in paper has been generated using number of scripts, we have refrained from having them in the artifact to avoid complications.
 
 # Specifying index array properties
 The index array properties are specified inside JSON files for each kernel. 

@@ -8,7 +8,7 @@
  * See ./LICENSE for details. <br>
  *
  * This file is one of the drivers for reproducing the result for the paper titled:
-   "Sparse Matrix Code Dependence Analysis Simplification at Compile Time"
+   "Sparse Computation Data Dependence Simplification for Efficient Compiler-Generated Inspectors"
    .
  *
 
