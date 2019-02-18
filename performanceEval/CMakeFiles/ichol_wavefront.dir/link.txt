@@ -1,0 +1,1 @@
+/usr/bin/g++      -m64 -DVERIFY -DMETIS -fopenmp   CMakeFiles/ichol_wavefront.dir/test/ic0.cpp.o  -o ichol_wavefront  -L/opt/intel/mkl/lib/intel64 -lgomp -lm -ldl -Wl,-rpath,/opt/intel/mkl/lib/intel64 

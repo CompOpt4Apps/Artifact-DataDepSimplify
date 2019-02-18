@@ -1,0 +1,1 @@
+/usr/bin/g++      -m64 -DVERIFY -DMETIS -fopenmp   CMakeFiles/ic0_csc_performance.dir/test/ic0_csc_performance.cpp.o  -o ic0_csc_performance -liomp5 -lpthread -lm -ldl -lmetis 

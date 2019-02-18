@@ -1,0 +1,6 @@
+matList.txt
+fs_csc_performance
+fs_csr_performance
+gs_csr_performance
+ic0_csc_performance
+lchol_csc_performance

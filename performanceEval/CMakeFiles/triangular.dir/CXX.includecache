@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kingmahdi/workstation/simplification_kazem/src/triangularSolve.h
+
+/home/kingmahdi/workstation/simplification_kazem/src/util.h
+iostream
+-
+sstream
+-
+fstream
+-
+
+/home/kingmahdi/workstation/simplification_kazem/test/triangular.cpp
+iostream
+-
+fstream
+-
+chrono
+-
+algorithm
+-
+omp.h
+-
+../src/triangularSolve.h
+/home/kingmahdi/workstation/simplification_kazem/src/triangularSolve.h
+../src/util.h
+/home/kingmahdi/workstation/simplification_kazem/src/util.h
+

@@ -1,0 +1,1 @@
+/usr/bin/g++      -m64 -DVERIFY -DMETIS -fopenmp   CMakeFiles/gs_csr_performance.dir/test/gs_csr_performance.cpp.o  -o gs_csr_performance -liomp5 -lpthread -lm -ldl -lmetis 
