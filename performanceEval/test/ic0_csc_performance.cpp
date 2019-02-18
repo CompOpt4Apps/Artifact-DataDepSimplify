@@ -63,8 +63,10 @@ int main(int argc, char *argv[]) {
   double serialMedTT = 0.0, serialMedE = 0.0, serialAvgTT = 0.0, serialAvgE = 0.0;
 
 
-  ofstream outInsp("results/insp.csv", std::ofstream::out | std::ofstream::app);
-  ofstream outExec("results/exec.csv", std::ofstream::out | std::ofstream::app);
+  ofstream outSerT("results/table4.csv", std::ofstream::out | std::ofstream::app);
+  ofstream outInsp("results/fig8.csv", std::ofstream::out | std::ofstream::app);
+  ofstream outExec("results/fig7.csv", std::ofstream::out | std::ofstream::app);
+  outSerT<<"\nI. Cholesky CSC";
   outInsp<<"\nI. Cholesky CSC";
   outExec<<"\nI. Cholesky CSC";
 
@@ -266,6 +268,8 @@ int main(int argc, char *argv[]) {
       std::cout <<"\n>>>>>>> Exec run break point = "<< (medID+medIL)/(serialMedE-medE) <<"\n";
       std::cout <<">>>>>>> Executor Speed up = "<< (serialMedE/medE) <<"\n";
 
+      // Outputing serial execution times (table 4)
+      outSerT<<", "<<serialMedE;
       // Making Figures
       // Making stacked histogram number of executor run needed to make executor worth it
       outInsp<<", "<<(medID+medIL)/(serialMedE-medE);
@@ -276,6 +280,7 @@ int main(int argc, char *argv[]) {
   }   // End of reading input matrix loop
 
 
+  outSerT.close();
   outInsp.close();
   outExec.close();
 

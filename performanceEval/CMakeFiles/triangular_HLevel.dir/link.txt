@@ -1,1 +1,0 @@
-/usr/bin/g++      -m64 -DVERIFY -DMETIS -fopenmp   CMakeFiles/triangular_HLevel.dir/test/triangular_ordered.cpp.o  -o triangular_HLevel  -L/opt/intel/mkl/lib/intel64 -liomp5 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lm -ldl -lmetis -Wl,-rpath,/opt/intel/mkl/lib/intel64 

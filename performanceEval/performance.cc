@@ -43,11 +43,10 @@ int main(int argc, char **argv)
           "\n./performance.cpp execlist.txt\n\n";
   }
 
-
-
-
-  ofstream outInsp("results/insp.csv", std::ofstream::out);
-  ofstream outExec("results/exec.csv", std::ofstream::out);
+  ofstream outSerT("results/table4.csv", std::ofstream::out);
+  ofstream outInsp("results/fig8.csv", std::ofstream::out);
+  ofstream outExec("results/fig7.csv", std::ofstream::out);
+  outSerT<<"Benchmark";
   outInsp<<"Benchmark";
   outExec<<"Benchmark";
 
@@ -63,9 +62,11 @@ int main(int argc, char **argv)
   ifstream matL(inputMatrixList);
   getline( matL, inputMatrix ); // Discard run parameters
   for(; getline( matL, inputMatrix );){ 
+    outSerT<<", "<<getSMatName(inputMatrix);
     outInsp<<", "<<getSMatName(inputMatrix);
     outExec<<", "<<getSMatName(inputMatrix);
   }
+  outSerT.close();
   outInsp.close();
   outExec.close();
 
@@ -76,7 +77,7 @@ int main(int argc, char **argv)
   }
 //    std::cout<<"\n---- Processing "<<inputFileName<<"\n";
 
-
+  outSerT.close();
   outInsp.close();
   outExec.close();
 

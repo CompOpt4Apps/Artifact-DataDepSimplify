@@ -1,1 +1,0 @@
-/usr/bin/g++      -m64 -DVERIFY -DMETIS -fopenmp   CMakeFiles/fs_csc_performance.dir/test/fs_csc_performance.cpp.o  -o fs_csc_performance -liomp5 -lpthread -lm -ldl -lmetis 

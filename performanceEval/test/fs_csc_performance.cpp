@@ -43,8 +43,10 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  ofstream outInsp("results/insp.csv", std::ofstream::out | std::ofstream::app);
-  ofstream outExec("results/exec.csv", std::ofstream::out | std::ofstream::app);
+  ofstream outSerT("results/table4.csv", std::ofstream::out | std::ofstream::app);
+  ofstream outInsp("results/fig8.csv", std::ofstream::out | std::ofstream::app);
+  ofstream outExec("results/fig7.csv", std::ofstream::out | std::ofstream::app);
+  outSerT<<"\nF. Solve CSC";
   outInsp<<"\nF. Solve CSC";
   outExec<<"\nF. Solve CSC";
 
@@ -389,10 +391,12 @@ int main(int argc, char *argv[]) {
     std::cout <<">>>>>>> Executor Speed up = "<< (serialMedE/medE) <<"\n";
 
 
+    // Outputing serial execution times (table 4)
+    outSerT<<", "<<serialMedE;
     // Making Figures
-    // Making stacked histogram number of executor run needed to make executor worth it
+    // Making stacked histogram number of executor run needed to make executor worth it (fig8)
     outInsp<<", "<<(HD+inspTT)/(serialMedE-medE);
-    // Making stacked histogram for executor speed up
+    // Making stacked histogram for executor speed up (fig7)
     outExec<<", "<<(serialMedE/medE);
 
 
@@ -410,7 +414,7 @@ int main(int argc, char *argv[]) {
 
   }
 
-
+  outSerT.close();
   outInsp.close();
   outExec.close();
 
