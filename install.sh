@@ -49,7 +49,7 @@ make -j6
 cd ../..
 
 
-# Step 5: Building the artifact driver:
+# Step 5: Building the artifact drivers:
 g++ -O3 -o simplification simplification.cc -I IEGenLib/src IEGenLib/build/src/libiegenlib.a -lisl -std=c++11
 
-
+g++ -O3 -o codegen codegen.cc -I IEGenLib/src IEGenLib/build/src/libiegenlib.a -lisl -std=c++11

@@ -1,25 +1,47 @@
-This is the artifact that uses CHiLL for data dependence analysis, IEGenLib 
-for simplification, and produces results for teh following aper accepted in PLDI 2019:.
+This artifact reproduces the evaluation results for the following paper accepted in PLDI 2019:
 
 "Sparse Computation Data Dependence Simplification for Efficient Compiler-Generated Inspectors"
 
-There are two parts to results: (1) Data dependency simplification analysis evaluation, presnted as  figure 6 in the paper. (2) Performance evaluation results presented in figure 7, and 8 in the paper. 
+The artifact uses CHiLL compiler framewrok for data dependence extraction, IEGenLib and ISL libraries
+for dependence simplification, and Omega+ library for runtimw inspector code generation. 
+
+There are two parts to the results: 
+(1) Data dependency simplification analysis evaluation, presnted as figure 6 in the paper. 
+(2) Performance evaluation results presented in figure 7, and 8 in the paper. 
 
 # (1) Reproducing data dependency simplification analysis results
-
-After building the driver and its dependencies (see below) run the following:
+After building the driver and its dependencies (by running install.sh, see below) 
+run the following:
 
 ```
   ./simplification list.txt
 ```
 
+The Figure 6 is generated and stored in the results directory at the end.
 The output will be the results of doing data dependence analysis on all of the
-C kernels specified in the list.txt file.  The list.text file includes names of some JSON files. 
+C kernels specified in the list.txt file. The shell output summarises some results 
+and points to output files with more detailed results.
+The list.txt file includes names of some JSON files. 
 Each JSON file contains the relative path of an input kernel that we want to extract its 
 dependences and analyze them for partial parallelisim.  The JSON files also contain index 
 array properties and analysis information like which loops we want to analyze.
 
-The driver will produce figure 6 using gnuplot. Please note however that the reproduced figure is not as polished aesthetically as the one in the paper, nonetheless it is the same figure in terms of data. The figure in paper has been generated using number of scripts, we have refrained from having them in the artifact to avoid complications.
+The driver will produce figure 6 using gnuplot. Please note however that the reproduced figure 
+is not as polished aesthetically as the one in the paper, nonetheless it is the same 
+figure in terms of data. The figure in paper has been generated using number of scripts, 
+we have refrained from having them in the artifact to avoid complications.
+
+# (2) Performance evaluation results presented in figure 7, and 8 in the paper. 
+After building the driver and its dependencies (by running install.sh, see below) 
+run the following in the main directory:
+
+
+```
+  ./codegen list.txt
+```
+
+Then, go to performanceEval directory and follow the directions inthe README file in that directory. 
+
 
 # Specifying index array properties
 The index array properties are specified inside JSON files for each kernel. 
