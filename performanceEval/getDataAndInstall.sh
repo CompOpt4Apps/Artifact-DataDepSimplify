@@ -2,11 +2,15 @@
 # Installing metis
 wget http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-5.1.0.tar.gz
 tar -xvzf metis-5.1.0.tar.gz
-cd metis-5.1.0
-make config
-cd build/Linux-x86_64/
+cd metis-5.1.0/build
+MH=`pwd`
+cd ..
+make config prefix=$MH
+make install
+cd build/
 export METISROOT=`pwd`
 cd ../../../
+
 
 
 # Getting input matricies 
