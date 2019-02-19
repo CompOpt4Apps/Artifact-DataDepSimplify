@@ -51,3 +51,7 @@ cd ..
 g++ -O3 -o performance performance.cc -std=c++11
 cmake .
 make
+
+
+#running the driver
+./performance execList.txt
