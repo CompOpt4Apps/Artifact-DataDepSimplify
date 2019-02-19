@@ -7,9 +7,8 @@ MH=`pwd`
 cd ..
 make config prefix=$MH
 make install
-cd build/
-export METISROOT=`pwd`
-cd ../../../
+export METISROOT=$MH
+cd ../
 
 
 
