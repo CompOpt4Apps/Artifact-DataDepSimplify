@@ -6,13 +6,12 @@
 #include <util/Strings.hh>
 
 using std::cout;
-using std::endl;
 using std::string;
 using std::vector;
 
 int main(int argc, char *argv[]) {
-    if (argc < 1) {
-        cout << "usage: iegen_to_omega <iegen_set_str> <statement|dag_tuple>" << endl;
+    if (argc < 2) {
+        cout << "usage: iegen_to_omega <iegen_set_str> <statement|dag_tuple>\n";
     } else {
         string setstr = string(argv[1]);
         string statement;
@@ -28,6 +27,6 @@ int main(int argc, char *argv[]) {
 
         PolyLib poly;
         poly.add(setstr, "Iset");
-        cout << poly.codegen("Iset", "int", "auto", true, {statement}) << endl;
+        cout << poly.codegen("Iset", "int", "auto", true, {statement});
     }
 }

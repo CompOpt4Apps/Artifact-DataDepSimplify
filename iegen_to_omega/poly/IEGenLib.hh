@@ -52,11 +52,12 @@
 #include <map>
 #include <sstream>
 #include <iegenlib.h>
-#include <util/Strings.hpp>
+#include <util/Strings.hh>
 
 //using iegenlib::Set;
 //using iegenlib::Relation;
 using std::cerr;
+using std::map;
 using std::string;
 
 //#define THROW_EXCEPTIONS 1

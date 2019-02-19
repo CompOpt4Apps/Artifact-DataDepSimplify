@@ -8,9 +8,8 @@
 #include <sstream>
 #include <string>
 
-#include <util/Lists.hpp>
-#include <util/Strings.hpp>
-//#include <PolyLib.hpp>
+#include <util/Lists.hh>
+#include <util/Strings.hh>
 
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
@@ -289,8 +288,7 @@ public:
         oss << ";\n";
 
         _ufuncs = ufuncs;
-
-        cerr << oss.str();
+        //cerr << oss.str();
 
         return parse(oss.str());
     }
