@@ -5,8 +5,8 @@ set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}   -m64 -DVERIFY -DMETIS")
 
-set(METIS_INC "ENV{METISROOT}/include")
-set(METIS_LIB "ENV{METISROOT}/lib")
+set(METIS_INC "metis-5.1.0/build/include")
+set(METIS_LIB "metis-5.1.0/build/lib")
 
 if(APPLE)
 
