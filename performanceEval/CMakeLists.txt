@@ -2,11 +2,12 @@ cmake_minimum_required(VERSION 3.5.1)
 set(CMAKE_C_COMPILER "/usr/bin/gcc")
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}   -m64 -DVERIFY -DMETIS")
+set(METIS_INC "metis-5.1.0/build/include")
+set(METIS_LIB "metis-5.1.0/build/lib")
 
-set(METIS_INC "ENV{METISROOT}/include")
-set(METIS_LIB "ENV{METISROOT}/lib")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -DVERIFY -DMETIS")
+
 
 if(APPLE)
 
@@ -27,11 +28,11 @@ endif ()
 
 
 project(fs_csc_performance)
-include_directories(src/)
+include_directories(src/ ${METIS_INC})
+link_directories(${METIS_LIB})
 set(SOURCE_FILES test/fs_csc_performance.cpp)
 add_executable(fs_csc_performance ${SOURCE_FILES})
 target_link_libraries(fs_csc_performance
-        iomp5
         pthread
         m
         dl
@@ -40,11 +41,11 @@ target_link_libraries(fs_csc_performance
 
 
 project(ic0_csc_performance)
-include_directories(src/)
+include_directories(src/ ${METIS_INC})
+link_directories(${METIS_LIB})
 set(SOURCE_FILES test/ic0_csc_performance.cpp)
 add_executable(ic0_csc_performance ${SOURCE_FILES})
 target_link_libraries(ic0_csc_performance
-        iomp5
         pthread
         m
         dl
@@ -53,11 +54,11 @@ target_link_libraries(ic0_csc_performance
 
 
 project(fs_csr_performance)
-include_directories(src/)
+include_directories(src/ ${METIS_INC})
+link_directories(${METIS_LIB})
 set(SOURCE_FILES test/fs_csr_performance.cpp)
 add_executable(fs_csr_performance ${SOURCE_FILES})
 target_link_libraries(fs_csr_performance
-        iomp5
         pthread
         m
         dl
@@ -66,11 +67,11 @@ target_link_libraries(fs_csr_performance
 
 
 project(gs_csr_performance)
-include_directories(src/)
+include_directories(src/ ${METIS_INC})
+link_directories(${METIS_LIB})
 set(SOURCE_FILES test/gs_csr_performance.cpp)
 add_executable(gs_csr_performance ${SOURCE_FILES})
 target_link_libraries(gs_csr_performance
-        iomp5
         pthread
         m
         dl
@@ -79,11 +80,11 @@ target_link_libraries(gs_csr_performance
 
 
 project(lchol_csc_performance)
-include_directories(src/)
+include_directories(src/ ${METIS_INC})
+link_directories(${METIS_LIB})
 set(SOURCE_FILES test/lchol_csc_performance.cpp)
 add_executable(lchol_csc_performance ${SOURCE_FILES})
 target_link_libraries(lchol_csc_performance
-        iomp5
         pthread
         m
         dl
