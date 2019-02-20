@@ -1,38 +1,54 @@
+# Overview 
+
 This artifact reproduces the evaluation results for the following paper accepted in PLDI 2019:
 
 "Sparse Computation Data Dependence Simplification for Efficient Compiler-Generated Inspectors"
 
-The artifact uses CHiLL compiler framewrok for data dependence extraction, IEGenLib and ISL libraries
-for dependence simplification, and Omega+ library for runtimw inspector code generation. 
+The artifact uses the CHiLL compiler framework for data dependence extraction, IEGenLib and ISL libraries
+for dependence simplification, and Omega+ library for runtime inspector code generation. 
 
-There are two parts to the results: 
-(1) Data dependency simplification analysis evaluation, presnted as figure 6 in the paper. 
-(2) Performance evaluation results presented in figure 7, and 8 in the paper. 
+There are two parts to the results with details for each below: 
+(1) Data dependency simplification analysis evaluation, presented as Figure 6 in the paper. 
+(2) Performance evaluation results presented in Figures 7 and 8 in the paper.
 
-# (1) Reproducing data dependency simplification analysis results
-After building the driver and its dependencies (by running install.sh, see below) 
+# QuickStart
+
+The build has only been tested on Ubuntu 16.04 and 18.04 machines.  Due to the need for
+Boost and ROSE for the CHiLL compiler, building all of the software on other platforms
+could be excessively challenging.
+
+To download and build all of the software needed execute the following command.
+The last section in this README provides more details about installation if you run
+into difficulties.
+```
+sudo ./install.sh
+```
+
+The following provides details on how to reproduce the results in the paper.
+
+## (1) Reproducing data dependency simplification analysis results
+After building the driver and its dependencies (by running install.sh) 
 run the following:
 
 ```
   ./simplification list.txt
 ```
 
-The Figure 6 is generated and stored in the results directory at the end.
+Figure 6 is generated and stored in the results directory at the end.
 The output will be the results of doing data dependence analysis on all of the
 C kernels specified in the list.txt file. The shell output summarises some results 
 and points to output files with more detailed results.
 The list.txt file includes names of some JSON files. 
 Each JSON file contains the relative path of an input kernel that we want to extract its 
-dependences and analyze them for partial parallelisim.  The JSON files also contain index 
-array properties and analysis information like which loops we want to analyze.
+dependences and analyze them for partial parallelism.  The JSON files also contain index 
+array properties and analysis information such as which loops we want to analyze.
 
-The driver will produce figure 6 using gnuplot. Please note however that the reproduced figure 
+The driver will produce Figure 6 using gnuplot. Please note however that the reproduced figure 
 is not as polished aesthetically as the one in the paper, nonetheless it is the same 
-figure in terms of data. The figure in paper has been generated using number of scripts, 
-we have refrained from having them in the artifact to avoid complications.
+figure in terms of data.
 
-# (2) Performance evaluation results presented in figure 7, and 8 in the paper. 
-After building the driver and its dependencies (by running install.sh, see below) 
+## (2) Performance evaluation results presented in Figures 7 and 8 in the paper
+After building the driver and its dependencies (by running install.sh) 
 run the following in the main directory:
 
 
@@ -40,7 +56,7 @@ run the following in the main directory:
   ./codegen list.txt
 ```
 
-Then, go to performanceEval directory and follow the directions inthe README file in that directory. 
+Then, go to performanceEval directory and follow the directions in the README file in that directory. 
 
 
 # Specifying index array properties
@@ -60,10 +76,10 @@ Incomplete Cholesky code (data/ic0_csc.c), you can see the following:
 ```
 Here we define four properties for colPtr index array: 
 (1) Domain, which would be the range of 
-the numbers that can be used to index colPtr itself. 
+    the numbers that can be used to index colPtr itself. 
 (2) Range, which is the range values stored in coPtr. 
-(3) Whether the unineterpreted function (UF) representing colPtr 
-can be considered bijective.
+(3) Whether the uninterpreted function (UF) representing colPtr 
+    can be considered bijective.
 (4) Whether UF can be considered monotonic and in what manner.
 
 2. More general index array properties such as a relationship between two or more 
@@ -89,18 +105,10 @@ In this syntax, we are trying to define
 `p` defines the left hand side of the inference, e.g the `colPtr(e1) < e2` part;
 `q` defines the left hand side of the inference, e.g the `e1 < rowIdx(e2)` part.
 
-Right now, we are using the name of the property for our evaluation purposes. 
-Nonetheles, users can specify other assertions by giving it one of 
-the already defined names like Triangularity or CoMonotonicity. 
-This way the assertion would be considered when we are checking for 
-unsatisfiability or simplifying the dependences. However,  for the purpose of 
-gathering results, the arbitrary property's results gets counted with 
-other results for the propery which name was given while defining it. 
-
 Index array properties defined in the JSON files get stored in the IEGenLib library's
 environment as universially quantified assertions. Then, whenever they are needed 
 for instance for detecting unsatisfiable relations, they are instantiated as 
-described in Section 3.4 of the arXiv submission. 
+described in Section 3.2 of the paper. 
 
 **In IEGenLib, the universially quantified assertions are stored as objects of
 UniQuantRule class** that is defined inside IEGenLib/src/set_relation/environment.h.
@@ -124,7 +132,7 @@ We have tested the artifact build and execution on the following platform:
 + OS:  Ubuntu 16.04
 + GCC: gcc 5.4.0 (Default on the OS)
 
-** There is a installation script, install.sh, is in the same directory as this README
+** There is a installation script, install.sh, in the same directory as this README
 that can build all the dependencies and the driver for the artifact including 
 Rose compiler and boost library. Nonetheless, it is only tested in the above platform.
 Please note that the installation script must be executed with sudo access:**
@@ -213,8 +221,8 @@ The following is a quick installation guide:
 
 `${ROSE_SRC}/configure --prefix=$ROSEHOME --enable-languages=c,c++ --with-boost=${BOOSTHOME} --without-java`
 
-+ You can remove -j6 if yopu do not wish to build with multi-threading 
-activated, or at least decrease the number of threads by decrease=ing 
++ You can remove -j6 if yop do not wish to build with multi-threading 
+activated, or at least decrease the number of threads by decreaseing 
 the j6 to jX (with X being desired number of threads)
 
 `make -j6 install-rose-library FRONTEND_CXX_VENDOR_AND_VERSION2=gnu-5.3`
@@ -225,9 +233,9 @@ the j6 to jX (with X being desired number of threads)
 
 ## Step 3: Installing the IEGenLib library:
 
-Consdering that the artifact already have the appropriate IEGenLib version, 
-you do not need to get this library from its github repository.
-(https://github.com/CompOpt4Apps/IEGenLib)
+Considering that the artifact already has a copy of the appropriate 
+IEGenLib version, you do not need to get this library from its github 
+repository.  (https://github.com/CompOpt4Apps/IEGenLib)
 
 `export IEGENHOME=$(pwd)/IEGenLib/iegen`
 
@@ -246,10 +254,10 @@ you do not need to get this library from its github repository.
 ## Step 4: Installing the CHILL compiler:
 
 Considering that the artifact already has the appropriate CHILL version, 
-you do not need to get this library from internet. Please note that 
+you do not need to download this library. Please note that 
 although CHILL is made publicly available as tar balls that are relased 
 every once in a while, it does not have a public github repository. 
-Use following commands to build the CHILL version that is already available 
+Use the following commands to build the CHILL version that is already available 
 in the artifacts root directory:
 
 `cd chill`
