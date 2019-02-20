@@ -1,10 +1,13 @@
+The script will install the Metis library (requirement), get the input matrices
+(listed in Table 3 of the paper), and compile and run the performance drivers.
+
+FIXME: put in how to download input files.
+
 Run following to reproduce the performance evaluation results:
 
 ```bash
 ./performance execList.txt
 ```
-The script will install metis library (requirement), get the input matricies
-(listed in table 3 of the paper), and compile and run the performance drivers.
-After run finishes, the results, table 4, and figure 7, and 8 of teh paper,
+After the run finishes, the results, Table 4, and Figure 7 and 8 of the paper,
 will be in the results directory (performanceEval/results).
 
