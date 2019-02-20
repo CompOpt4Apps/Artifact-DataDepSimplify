@@ -79,3 +79,20 @@ void notProjectIters(Relation* rel, std::set<int> &parallelTvs, json &np){
     parallelTvs.insert( tvN );
   }
 }
+
+// Reads iterators that we should not project from a json sructure
+void notProjectIters(Set* s, std::set<int> &parallelTvs, json &np){
+
+  iegenlib::TupleDecl td = s->getTupleDecl();
+  for (size_t j = 0; j < np.size(); ++j){
+    string tvS = np[j].as<string>();
+    int tvN = -1;
+    for (unsigned int c = 0 ; c < td.getSize() ; c++){
+      if( tvS == td.elemToString(c) ){
+        tvN = c;
+        break;
+      }
+    }
+    parallelTvs.insert( tvN );
+  }
+}

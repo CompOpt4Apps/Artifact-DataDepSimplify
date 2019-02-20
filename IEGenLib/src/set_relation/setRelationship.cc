@@ -179,7 +179,7 @@ std::cout<<"   AfS = "<<bExpS[j].toString()<<"\n";
   }
 
   if(isSupSet){
-    std::cout<<"\n\n>>>The complicated case!!\n\n";
+//    std::cout<<"\n\n>>>The complicated case!!\n\n";
     if(lConstC <= rConstC) return SuperSetEqual;
     else                   return SubSetEqual;
   }

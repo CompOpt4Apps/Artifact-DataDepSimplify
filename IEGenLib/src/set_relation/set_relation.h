@@ -456,8 +456,6 @@ public:
     std::vector<std::string> getZ3form(std::set<std::string> &UFSyms, 
                   std::set<std::string> &VarSyms, bool termDef = true);
     
-
-
 // FIXME: what methods should we have to iterate over conjunctions so
 // this can go back to protected?
 // protected:
@@ -624,6 +622,11 @@ public:
 
     // 
     SetRelationshipType setRelationship(Set* rightSide);
+
+    // 
+    void reOrdTV_OmegaCodeGen(std::set<int> parallelTvs);
+    //
+    void removeUPs();
 
 private:
     int mArity;

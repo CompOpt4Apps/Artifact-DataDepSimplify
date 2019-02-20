@@ -3074,7 +3074,7 @@ Set* Set::projectOut(int tvar)
     // Geting a map of UFCalls 
     iegenlib::UFCallMap *ufcmap = new UFCallMap();;
     // Getting the super affine set of constraints with no UFCallTerms
-    Set* sup_s = this->superAffineSet(ufcmap);
+    Set* sup_s = this->superAffineSet(ufcmap, false);
 
     // Projecting out tvar using ISL library
     VisitorProjectOut* pv = new VisitorProjectOut(tvar, 0);
@@ -3114,7 +3114,7 @@ Relation* Relation::projectOut(int tvar)
     // Geting a map of UFCalls 
     iegenlib::UFCallMap *ufcmap = new UFCallMap();
     // Getting the super affine set of constraints with no UFCallTerms
-    Relation* sup_r = this->superAffineRelation(ufcmap);
+    Relation* sup_r = this->superAffineRelation(ufcmap, false);
 
     // Projecting out tvar using ISL library
     VisitorProjectOut* pv = new VisitorProjectOut(tvar, sup_r->inArity());
@@ -3333,7 +3333,7 @@ Set* Set::simplifyForPartialParallel(std::set<int> parallelTvs )
 //    result = copySet->addConstraintsDueToMonotonicity();
 //    delete copySet;
 
-    result->normalize();
+//    result->normalize();
 
     // Projecting out any tuple variable that are not argument to a UFCall 
     // starting from inner most loops. We also do not project out indecies

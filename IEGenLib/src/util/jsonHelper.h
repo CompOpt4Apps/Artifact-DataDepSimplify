@@ -35,5 +35,6 @@ void addUniQuantRules(json &uqCons);
 
 // Reads iterators that we should not project from a json sructure
 void notProjectIters(Relation* rel, std::set<int> &parallelTvs, json &np);
+void notProjectIters(Set* s, std::set<int> &parallelTvs, json &np);
 
 #endif
