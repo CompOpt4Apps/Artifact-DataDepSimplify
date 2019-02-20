@@ -13,20 +13,24 @@ int main(int argc, char *argv[]) {
     if (argc < 2) {
         cout << "usage: iegen_to_omega <iegen_set_str> <statement|dag_tuple>\n";
     } else {
-        string setstr = string(argv[1]);
-        string statement;
-        if (argc > 2) {
-            statement = string(argv[2]);
-        }
-
-        if (statement[0] == '(') {
-            string tuple = Strings::rtrim(Strings::ltrim(statement, '('), ')');
-            vector<string> elems = Strings::split(tuple, ',');
-            statement = "DAG[#" + elems[0] + "].push_back(#" + elems[1] + ")";
-        }
-
         PolyLib poly;
-        poly.add(setstr, "Iset");
-        cout << poly.codegen("Iset", "int", "auto", true, {statement});
+        string itype = "int";
+        string result;
+
+        unsigned i, j = 0;
+        for (i = 1; i < argc; i += 2) {
+            string expr = argv[i];
+            string tuple = argv[i+1];
+            string id = "Is" + to_string(++j);
+
+            tuple = Strings::rtrim(Strings::ltrim(tuple, '('), ')');
+            vector<string> elems = Strings::split(tuple, ',');
+            string statement = "DAG[#" + elems[0] + "].push_back(#" + elems[1] + ")";
+
+            result = poly.add(expr, id);
+            result = poly.codegen(id, itype, "auto", (j < 2), {statement});
+            cout << result << endl;
+            itype = "";
+        }
     }
 }

@@ -6,4 +6,4 @@ g++ iegen_to_omega.cc ./parser/parser.tab.cc \
     ${OMEGAHOME}/omega_lib/libomega_lib.a ${OMEGAHOME}/code_gen/libcodegen.a \
     -I. -I${IEGENHOME}/src -I$CHILLHOME -I${OMEGAHOME}/basic/include \
     -I${OMEGAHOME}/omega_lib/include -I${OMEGAHOME}/code_gen/include \
-    -o iegen_to_omega -std=c++11
+    -O3 -o iegen_to_omega -std=c++11
