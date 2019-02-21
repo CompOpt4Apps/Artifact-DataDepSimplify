@@ -54,5 +54,7 @@ g++ -O3 -o simplification simplification.cc -I IEGenLib/src IEGenLib/build/src/l
 g++ -O3 -o codegen codegen.cc -I IEGenLib/src IEGenLib/build/src/libiegenlib.a -lisl -std=c++11
 
 # Step 6: Building the iegen_to_omega translator:
-source ./iegen_to_omega/build.sh
+cd ./iegen_to_omega
+source ./build.sh
+cd ..
 
