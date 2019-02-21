@@ -298,7 +298,6 @@ public:
         oss << ";\n";
 
         _ufuncs = ufuncs;
-        //cerr << oss.str();
 
         return parse(oss.str());
     }
