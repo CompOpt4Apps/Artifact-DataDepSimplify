@@ -13,7 +13,6 @@
 
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
-//#include <omega_calc/AST.h>
 #include <omega/parser/AST.hh>
 #include <omega/hull.h>
 #include <omega/closure.h>
@@ -288,7 +287,7 @@ public:
         oss << ";\n";
 
         _ufuncs = ufuncs;
-        //cerr << oss.str();
+        cerr << oss.str();
 
         return parse(oss.str());
     }

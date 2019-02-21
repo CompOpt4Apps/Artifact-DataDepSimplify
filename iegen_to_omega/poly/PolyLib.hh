@@ -2,8 +2,8 @@
 #define POLYLIB_HH
 
 #include <string>
-#include <poly/IEGenLib.hh>
-#include <poly/OmegaLib.hh>
+#include <poly/iegenlib/IEGenLib.hh>
+#include <poly/omega/OmegaLib.hh>
 
 using std::string;
 
