@@ -1,7 +1,0 @@
-/home/kingmahdi/workstation/simplification_kazem/CMakeFiles/rebuild_cache.dir
-/home/kingmahdi/workstation/simplification_kazem/CMakeFiles/lchol_csc_performance.dir
-/home/kingmahdi/workstation/simplification_kazem/CMakeFiles/fs_csc_performance.dir
-/home/kingmahdi/workstation/simplification_kazem/CMakeFiles/fs_csr_performance.dir
-/home/kingmahdi/workstation/simplification_kazem/CMakeFiles/edit_cache.dir
-/home/kingmahdi/workstation/simplification_kazem/CMakeFiles/ic0_csc_performance.dir
-/home/kingmahdi/workstation/simplification_kazem/CMakeFiles/gs_csr_performance.dir
