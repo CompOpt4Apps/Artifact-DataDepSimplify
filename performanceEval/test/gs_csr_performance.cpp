@@ -271,7 +271,6 @@ int main(int argc, char *argv[]) {
  int *levelPtr = NULL, *levelSet = NULL;
  int nLevels=0, nPar=0, levels=0;
  double *nodeCost;
- int nRuns=10;
 
  //Computing node cost
  nodeCost = new double[n];
@@ -365,6 +364,8 @@ int main(int argc, char *argv[]) {
       end = std::chrono::system_clock::now();
       elapsed_secondsT = end - start;
       durationE[l] = elapsed_secondsT.count();
+      if (!testTriangular(n, x))
+        std::cout << "\n\n##Sequential run produced incorrect results\n\n";
     }
     // Calculating Median and Average of execution times for plotting
     std::sort(durationE, durationE+nRuns);
@@ -392,6 +393,8 @@ int main(int argc, char *argv[]) {
       end = std::chrono::system_clock::now();
       elapsed_secondsT = end-start;
         durationE[l] = elapsed_secondsT.count();
+      if (!testTriangular(n, x))
+        std::cout << "\n\n##Parallel run produced incorrect results\n\n";
     }
     // Calculating Median and Average of execution times for plotting
     std::sort(durationE, durationE+nRuns);
