@@ -4,7 +4,7 @@ export BOOSTHOME=../boost
 export IEGENHOME=../IEGenLib/iegen
 export OMEGAHOME=../chill/omega
 g++ iegen_to_omega.cc ./poly/iegenlib/gen_parser.cc \
-    ./poly/iegenlib/gen_parser.cc ./poly/iegenlib/parser.cc \
+    ./poly/iegenlib/gen_scanner.cc ./poly/iegenlib/parser.cc \
     ../IEGenLib/src/set_relation/set_relation.cc \
     ../IEGenLib/src/set_relation/UFCallMap.cc \
     ../IEGenLib/src/set_relation/expression.cc \
@@ -25,3 +25,4 @@ g++ iegen_to_omega.cc ./poly/iegenlib/gen_parser.cc \
     -I${OMEGAHOME}/omega_calc/include -I${OMEGAHOME}/basic/include \
     -I${OMEGAHOME}/omega_lib/include -I${OMEGAHOME}/code_gen/include \
     -g -O3 -o iegen_to_omega -std=c++11
+
