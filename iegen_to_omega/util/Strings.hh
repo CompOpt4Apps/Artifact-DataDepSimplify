@@ -6,11 +6,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-
-using std::string;
-using std::vector;
-using std::istringstream;
-using std::ostringstream;
+using namespace std;
 
 class Strings {
 public:
@@ -158,6 +154,10 @@ public:
 	    return (ch >= '0' && ch <= '9');
 	}
 
+    static inline bool isOperator(const char ch) {
+	    return (ch >= '"' && ch <= '0') || (ch >= '<' && ch <= '@') || (ch == '^');
+	}
+
 	static inline vector<string> words(const string& in) {
         string word;
 	    vector<string> words;
@@ -209,4 +209,4 @@ public:
     }
 };
 
-#endif /* STRINGS_HPP */
+#endif /* STRINGS_HH */

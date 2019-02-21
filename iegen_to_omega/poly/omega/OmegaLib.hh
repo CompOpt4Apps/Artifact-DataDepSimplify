@@ -1,6 +1,7 @@
 #ifndef OMEGALIB_HH
 #define OMEGALIB_HH
 
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <locale>
@@ -13,6 +14,7 @@
 
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
+
 #include <omega/parser/AST.hh>
 #include <omega/hull.h>
 #include <omega/closure.h>
@@ -126,7 +128,6 @@ private:
     }
 
 public:
-    //string codegen(const string& code) override {
     string codegen(const string& relation, const string& id = "I") {
         string relId, relStr;
         map<string, UninterpFunc> ufuncs;
@@ -202,13 +203,23 @@ public:
         for (auto ufpair : ufuncs) {
             string ufname = ufpair.first;
             UninterpFunc ufunc = ufpair.second;
+
+            vector<string> arglists;
             size_t fpos = result.find(ufname);
             while (fpos >= 0 && fpos != string::npos) {
                 fpos += LEN(ufname);
                 size_t lpos = result.find('(', fpos);
                 size_t rpos = result.find(')', lpos + 1);
                 string sub = result.substr(lpos + 1, rpos - lpos - 1);
-                vector<string> args = Strings::split(sub, ',');
+                if (Lists::index<string>(arglists, sub) < 0) {
+                    arglists.push_back(sub);
+                }
+                fpos = result.find(ufname, rpos + 1);
+            }
+
+            std::sort(arglists.begin(), arglists.end());
+            for (const string& arglist : arglists) {
+                vector<string> args = Strings::split(arglist, ',');
                 ufunc.arity = LEN(args);
                 for (unsigned i = 0; i < ufunc.arity; i++) {
                     string arg = args[i];
@@ -225,15 +236,15 @@ public:
                         newfuncs[newfunc.name] = newfunc;
                     }
                 }
-                fpos = result.find(ufname, rpos + 1);
             }
+
             newfuncs[ufname] = ufunc;
         }
 
         ufuncs = newfuncs;
         newfuncs.clear();
 
-        // 2nd Pass: To prevent prefix errors, need to ensure leading arg includes first iters...
+        // 2nd Pass: To prevent prefix errors, need to ensure leading arg includes preceding iterators...
         for (auto ufpair : ufuncs) {
             UninterpFunc ufunc = ufpair.second;
             if (ufunc.arity > 0) {
@@ -287,7 +298,7 @@ public:
         oss << ";\n";
 
         _ufuncs = ufuncs;
-        cerr << oss.str();
+        //cerr << oss.str();
 
         return parse(oss.str());
     }
