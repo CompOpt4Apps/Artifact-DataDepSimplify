@@ -243,13 +243,58 @@ void driver(string list)
                           rel_sim->prettyPrintString(),
                           rel_sim->inArity(), rel_sim->outArity()) );
 
+//    std::cout<<"\n Simplifid and trimed dep set (BEFORE) = "<<eqSet->getString()<<"\n";
+
+    // Figure out location of iterators we want to parallelize
+    int srcSinkITsLoc[2] = {-1};
+    std::string srcSinkITsName[2] = {""};
+    iegenlib::TupleDecl td = eqSet->getTupleDecl();
+    for (size_t j = 0; j < npJ.size(); ++j){
+      string tvS = npJ[j].as<string>();
+      int tvN = -1;
+      for (unsigned int c = 0 ; c < td.getSize() ; c++){
+        if( tvS == td.elemToString(c) ){
+          srcSinkITsLoc[j] = c;
+          break;
+        }
+      }
+    }
+    if(srcSinkITsLoc[0] > srcSinkITsLoc[1]){
+      int tmp = srcSinkITsLoc[0];
+      srcSinkITsLoc[0] = srcSinkITsLoc[1];
+      srcSinkITsLoc[1] = tmp;
+    }
+    srcSinkITsName[0] = td.elemToString(srcSinkITsLoc[0]);
+    srcSinkITsName[1] = td.elemToString(srcSinkITsLoc[1]);
+       
+    eqSet->reOrdTV_OmegaCodeGen(parallelTvs);
+
+    // Figure out location of iterators we want to parallelize (continues ...)
+    td = eqSet->getTupleDecl();
+    for (size_t j = 0; j < 2; j++){
+      int tvN = -1;
+      for (unsigned int c = 0 ; c < td.getSize() ; c++){
+        if( srcSinkITsName[j] == td.elemToString(c) ){
+          srcSinkITsLoc[j] = c;
+          break;
+        }
+      }
+    }
+
+    eqSet->removeUPs();
+
+
     string iegenSetString = eqSet->getString();
-    std::cout<<"\n Simplifies and trimed dep set = "<<iegenSetString<<"\n";
+    std::cout<<"\n Simplifid and trimed dep set = "<<iegenSetString<<"   ("<<to_string(srcSinkITsLoc[0]+1)<<","<<to_string(srcSinkITsLoc[1]+1)<<")\n";
 
 
     // Get the Omega set and Use omega to generate inspector code
-  
+    std::string input = "\"" + iegenSetString + "\" " +  " \"" + "(" + to_string(srcSinkITsLoc[0]+1) + "," + to_string(srcSinkITsLoc[1]+1) + ")" + "\"";
+    std::string codeGen = "./iegen_to_omega/iegen_to_omega " + input; 
 
+std::cout<<"\n\n"<<codeGen.c_str()<<"\n\n";
+
+    std::system(codeGen.c_str());
 
     // Post process the output of omega calculator
     // Turn the generated inspectors for a code into a library call 
