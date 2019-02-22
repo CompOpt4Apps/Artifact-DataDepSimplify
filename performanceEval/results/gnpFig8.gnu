@@ -1,5 +1,5 @@
-set terminal pdf size 2.8,1.8
-set output "fig8.pdf"
+set terminal pdf size 8,6
+set output "results/fig8.pdf"
 set title "Inspector Overhead Break Point For Executor Speed Up"
 set datafile separator ","
 set boxwidth 0.8 relative
@@ -20,4 +20,4 @@ set style data histograms
 set style histogram cluster gap 2
 set style fill solid 1.0 border lt -1
 
-plot 'fig8.csv' using 2:xtic(1) title columnheader(2), for [i=3:4] '' using i title columnheader(i)
+plot 'results/fig8.csv' using 2:xtic(1) title columnheader(2), for [i=3:6] '' using i title columnheader(i)

@@ -42,6 +42,7 @@ int main(int argc, char **argv)
     cout<<"\n\nYou need to specify the input file. The input file should contain name of input matrix list and executables for experiments"
           "\n./performance.cpp execlist.txt\n\n";
   }
+  int cmdErr;
 
   ofstream outSerT("results/table4.csv", std::ofstream::out);
   ofstream outInsp("results/fig8.csv", std::ofstream::out);
@@ -73,13 +74,16 @@ int main(int argc, char **argv)
   for(; getline( inF, execName );){
     std::cout<<"\n---- Processing "<<execName<<"\n";
     string comd = "./"+execName+" "+inputMatrixList;
-    system(comd.c_str());
+    cmdErr = system(comd.c_str());
   }
 //    std::cout<<"\n---- Processing "<<inputFileName<<"\n";
 
   outSerT.close();
   outInsp.close();
   outExec.close();
+
+  cmdErr = system("gnuplot results/gnpFig7.gnu");
+  cmdErr = system("gnuplot results/gnpFig8.gnu");
 
   return 0;
 }

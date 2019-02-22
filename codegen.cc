@@ -14,7 +14,7 @@
 
  ** For building the dependencies see README.md
 
->> After build all the dependenciues you can build the driver (in root directory run):
+>> After build all the dependencies you can build the driver (in root directory run):
 
 g++ -O3 -o codegen codegen.cc -I IEGenLib/src IEGenLib/build/src/libiegenlib.a -lisl -std=c++11
 
@@ -140,7 +140,7 @@ void driver(string list)
 
   // Extracting dependence relations with CHILL
   string chillCommand = "./chill/build/chill " + analysisInfo[0]["Script file"].as<string>() + " 2> /dev/null"; 
-  int chillErr = system (chillCommand.c_str());
+  int syserr = system (chillCommand.c_str());
 
   ifstream depf((analysisInfo[0]["Output file"].as<string>()).c_str());
 
@@ -227,7 +227,7 @@ void driver(string list)
 
 
   // Turn the iegenlib::relations into a iegenlib::set's and project out extra iterators
-
+  std::string input="";
   for(int i=0; i < superSets.size(); i++){
 
     Relation *relP = dependences[superSets[i]].simpRel;
@@ -243,7 +243,7 @@ void driver(string list)
                           rel_sim->prettyPrintString(),
                           rel_sim->inArity(), rel_sim->outArity()) );
 
-//    std::cout<<"\n Simplifid and trimed dep set (BEFORE) = "<<eqSet->getString()<<"\n";
+    std::cout<<"\n>>>>>>>>>>>>>> Simplifid and trimed dep set (BEFORE) = "<<eqSet->getString()<<"\n";
 
     // Figure out location of iterators we want to parallelize
     int srcSinkITsLoc[2] = {-1};
@@ -280,80 +280,42 @@ void driver(string list)
         }
       }
     }
-
     eqSet->removeUPs();
 
 
-    string iegenSetString = eqSet->getString();
-    std::cout<<"\n Simplifid and trimed dep set = "<<iegenSetString<<"   ("<<to_string(srcSinkITsLoc[0]+1)<<","<<to_string(srcSinkITsLoc[1]+1)<<")\n";
+string iegenSetString = eqSet->getString();
+std::cout<<"\n Simplifid and trimed dep set = "<<iegenSetString<<"   ("<<to_string(srcSinkITsLoc[0]+1)<<","<<to_string(srcSinkITsLoc[1]+1)<<")\n";
 
 
-    // Get the Omega set and Use omega to generate inspector code
-    std::string input = "\"" + iegenSetString + "\" " +  " \"" + "(" + to_string(srcSinkITsLoc[0]+1) + "," + to_string(srcSinkITsLoc[1]+1) + ")" + "\"";
-    std::string codeGen = "./iegen_to_omega/iegen_to_omega " + input; 
+    // Gather all the maybe satisfiable dependences for the current code 
+    input += "  \"" + iegenSetString + "\" " +  " \"" + "(" + to_string(srcSinkITsLoc[0]+1) + "," + to_string(srcSinkITsLoc[1]+1) + ")" + "\"";
 
+  }
+  
+
+    // Generate the name of the output inspector library
+    std::string kernelName = analysisInfo[0]["Source"].as<string>();
+    kernelName.erase (0,5);
+    kernelName.erase (kernelName.end()-2, kernelName.end());
+    std::string libName = "performanceEval/src/" + kernelName + "_inspector.hh";
+    std::string baseName = "data/inspector_header/" + kernelName + "_base.txt";
+    std::string endName = "data/inspector_header/end.txt";
+
+    // codegen cannot handle Incomplete Cholesky kernel yet
+    if(kernelName != std::string("ic0_csc") ) { 
+      // Generate the library function structure
+      std::string cmdStr = "cat " + baseName + " > " + libName;
+      syserr = std::system(cmdStr.c_str());
+
+      // Get the Omega set and Use omega to generate inspector code
+      std::string codeGen = "./iegen_to_omega/iegen_to_omega " + input + "  >> " + libName; 
 std::cout<<"\n\n"<<codeGen.c_str()<<"\n\n";
+      syserr = std::system(codeGen.c_str()); 
 
-    std::system(codeGen.c_str());
-
-    // Post process the output of omega calculator
-    // Turn the generated inspectors for a code into a library call 
-    // with correct function name that driver is going to use
-    // ...
-  
-
-  }
-  
-
- 
-/*
-
-------------------- Using omega calculator
-
-// Dependence from Forward Solve CSC (iegenlib::Set)
-D = { [In_2, In_4, Out_2] : Li(In_4) = Out_2 && 0 <= In_2 && 0 <= In_4 && 0 <= Li(In_4) && 0 <= Lp(In_2) && 0 <= Lp(In_2 + 1) && In_2 + 1 < n && In_2 < Li(In_4) && In_4 < nnz && In_4 < Lp(In_2 + 1) && Lp(In_2) < In_4 && Li(In_4) < n && Lp(In_2) < nnz && Lp(In_2 + 1) < nnz }
-
-==> Converted to omega set
-S := { [In_2, In_4, Out_2] : Li(In_2, In_4) = Out_2 && 0 <= In_2 && 0 <= In_4 && 0 <= Li(In_2, In_4) && 0 <= Lp(In_2) && 0 <=  Lp_(In_2) && In_2 + 1 < n && In_2 < Li(In_2, In_4) && In_4 < nnz && In_4 <  Lp_(In_2) && Lp(In_2) < In_4 && Li(In_2, In_4) < n && Lp(In_2) < nnz &&  Lp_(In_2) < nnz };
-
-
-******** Macroes that must be generated and stored while converting the inegenlib::Set to omega::Setneeded so they can be later used for inspector code:
-#define Li(In_2, In_4) Li[In_4]
-#define Lp(In_2) Lp[In_2]
-#define Lp_(In_2) Lp[In_2+1]
-
-
-// Input to omega_calc
-
->>> symbolic n;
->>> symbolic nnz;
->>> symbolic Li(2);
->>> symbolic Lp(1);
->>> symbolic Lp_(1);
->>> 
->>> S := { [In_2, In_4, Out_2] : Li(In_2, In_4) = Out_2 && 0 <= In_2 && 0 <= In_4 && 0 <= Li(In_2, In_4) && 0 <= Lp(In_2) && 0 <=  Lp_(In_2) && In_2 + 1 < n && In_2 < Li(In_2, In_4) && In_4 < nnz && In_4 <  Lp_(In_2) && Lp(In_2) < In_4 && Li(In_2, In_4) < n && Lp(In_2) < nnz &&  Lp_(In_2) < nnz };
->>> 
->>> codegen S;
-
-// Omega output code:
-
-if (nnz >= 3) {
-  for(t1 = 0; t1 <= n-2; t1++) {
-    if (nnz >= Lp_(t1)+1 && Lp(t1) >= 0) {
-      for(t2 = Lp(t1)+1; t2 <= Lp_(t1)-1; t2++) {
-        if (Li(t1,t2) >= t1+1 && n >= Li(t1,t2)+1) {
-          t3=Li(t1,t2);
-          s0(t1,t2,t3);
-        }
-      }
+      // finish the inspector library code construction
+      cmdStr = "cat " + endName + " >> " + libName;
+      syserr = std::system(cmdStr.c_str());
     }
-  }
-}
-
->>> 
-*/
-
-
 
  } // End of input json file list loop
 
