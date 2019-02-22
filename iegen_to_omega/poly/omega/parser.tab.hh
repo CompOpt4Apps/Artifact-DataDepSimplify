@@ -42,7 +42,7 @@ extern int yydebug;
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#define YYTOKENTYPE
   enum yytokentype
   {
     VAR = 258,
@@ -61,7 +61,7 @@ extern int yydebug;
     IS_ASSIGNED = 271,
     FORALL = 272,
     EXISTS = 351,
-    DOMAIN = 274,
+    DOMAIN_ = 274,
     RANGE = 275,
     DIFFERENCE = 276,
     DIFFERENCE_TO_RELATION = 277,

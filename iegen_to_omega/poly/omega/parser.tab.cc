@@ -188,9 +188,9 @@ void flushScanBuffer();
 extern int yydebug;
 #endif
 
-/* Token type.  */
+/* Token type.
 #ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#define YYTOKENTYPE
   enum yytokentype
   {
     VAR = 258,
@@ -288,6 +288,7 @@ extern int yydebug;
     p10 = 350
   };
 #endif
+ */
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

@@ -2444,7 +2444,7 @@ YY_RULE_SETUP
 case 48:
 YY_RULE_SETUP
 #line 147 "parser.ll"
-{ BUFFER;  return DOMAIN; }
+{ BUFFER;  return DOMAIN_; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
