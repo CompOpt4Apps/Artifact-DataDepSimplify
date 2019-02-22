@@ -1,7 +1,13 @@
+To install performance evaluation specific requirements, and download the input
+matricies used in the evaluations run:
+
+```bash
+./getDataAndInstall.sh
+```
+
 The script will install the Metis library (requirement), get the input matrices
 (listed in Table 3 of the paper), and compile and run the performance drivers.
 
-FIXME: put in how to download input files.
 
 Run following to reproduce the performance evaluation results:
 
