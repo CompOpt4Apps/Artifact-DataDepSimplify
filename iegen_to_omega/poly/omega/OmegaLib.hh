@@ -15,12 +15,12 @@
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
 
-#include <omega/parser/AST.hh>
 #include <omega/hull.h>
 #include <omega/closure.h>
 #include <omega/reach.h>
 #include <codegen.h>
-#include <omega/parser/parser.tab.hh>
+#include <poly/omega/AST.hh>
+#include <poly/omega/parser.tab.hh>
 
 using namespace omega;
 

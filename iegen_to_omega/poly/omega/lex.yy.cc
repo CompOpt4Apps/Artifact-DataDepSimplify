@@ -1937,8 +1937,7 @@ static const flex_int32_t yy_rule_can_match_eol[148] =
 #include <sstream>
 #include <iostream>
 #include <fstream>
-//#include <omega_calc/AST.h>
-#include <omega/parser/AST.hh>
+#include <poly/omega/AST.hh>
 #include <basic/Dynamic_Array.h>
 #include "parser.tab.hh"
 #include <FlexLexer.h>
