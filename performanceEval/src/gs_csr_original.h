@@ -4,7 +4,7 @@
  ****** Serial implementation
  */
 
-void gs_csr_original(int n, int *rowptr, int *colidx,int *idiag, double *values, double *y, const double *b)
+void gs_csr_original(int n, int *rowptr, int *colidx,double *idiag, double *values, double *y, const double *b)
 {
   int i,j;
   double sum; 

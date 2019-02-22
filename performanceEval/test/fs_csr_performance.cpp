@@ -23,7 +23,7 @@
 
 #define TRUE 1
 #undef DEBUG
-
+#define METIS 1
 using namespace std;
 
 
@@ -122,6 +122,7 @@ int main(int argc, char *argv[]) {
  }
 
 #elif METIS
+ printf("\nUsing Metis \n");
  CSC *ATrans;
  unsigned long nnzFull = Amat->nzmax * 2;//Symmetric case
  ATrans = ptranspose(Amat, 0, NULL, NULL, 0, status);
@@ -224,6 +225,7 @@ int main(int argc, char *argv[]) {
 
  CSC *A1 = ptranspose(Amat, 2, Perm, NULL, 0, status);
  CSC *A2 = ptranspose(A1, 2, NULL, NULL, 0, status);
+ CSC *A3 = ptranspose(A2, 2, NULL, NULL, 0, status);
 #if 0
  for (int i = 0; i < n; ++i) {
   for (int j = A2->p[i]; j < A2->p[i+1]; ++j) {
@@ -234,7 +236,7 @@ int main(int argc, char *argv[]) {
 #endif
 
  allocateAC(Amat, 0, 0, 0, FALSE);
- allocateAC(A1, 0, 0, 0, FALSE);
+
 /*
  * ********************* 
  */
@@ -245,6 +247,7 @@ int main(int argc, char *argv[]) {
  double duration4 = 0 ,duration3 = 0, duration2=0, duration1=0;*/
 
  double *x = new double[n]();
+   double *b = new double[n]();
 
 #ifdef FLOPCNT
  //***************
@@ -334,14 +337,14 @@ int main(int argc, char *argv[]) {
  delete[]nodeCost;
 /////////////////////////////////////////
 
-
     // ------ Sequentially Run
     std::cout <<"-- Running the algorithm sequentially for #"<<nRuns<<" times:\n";
     //***************Serial
     for (int l = 0; l < nRuns; ++l) {
-      rhsInit(n, A2->p, A2->i, A2->x, x);
+      rhsInit_csr(n, A3->p, A3->i, A3->x, b);
+     for (int i = 0; i < n; ++i) x[i] = 0;
       start = std::chrono::system_clock::now();
-      fs_csr_original(n, A2->p, A2->i, A2->x, x, x);
+      fs_csr_original(n, A3->p, A3->i, A3->x, b, x);
       end = std::chrono::system_clock::now();
       elapsed_secondsT = end - start;
       durationE[l] = elapsed_secondsT.count();
@@ -366,10 +369,10 @@ int main(int argc, char *argv[]) {
           <<numThread<<" threads in parallel for #"<<nRuns<<" times:";
     //****************Parallel H2 CSC
     for (int l = 0; l < nRuns; ++l) {
-      rhsInit(n,A2->p,A2->i,A2->x,x);
-
+     rhsInit_csr(n,A3->p,A3->i,A3->x,b);
+     for (int i = 0; i < n; ++i) x[i] = 0;
       start = std::chrono::system_clock::now();
-      fs_csr_executor_H2(n,A2->p,A2->i,A2->x,x, x,nLevels,HLevelPtr,HLevelSet,
+      fs_csr_executor_H2(n,A3->p,A3->i,A3->x,b, x,nLevels,HLevelPtr,HLevelSet,
               nPar,parPtr,partition, chunk);
       end = std::chrono::system_clock::now();
       elapsed_secondsT = end-start;
@@ -410,15 +413,18 @@ int main(int argc, char *argv[]) {
  //delete []colL;
  //delete []li_ptr;
     delete[]timingChol;
+   delete []x;
+   delete []b;
     allocateAC(A2, 0, 0, 0, FALSE);
 
+    allocateAC(A1, 0, 0, 0, FALSE);
+   allocateAC(A3, 0, 0, 0, FALSE);
   }
 
 
   outSerT.close();
   outInsp.close();
   outExec.close();
-
  return 0;
 
 }

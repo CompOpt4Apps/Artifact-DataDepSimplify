@@ -45,7 +45,7 @@ void fs_csr_executor_H2 (int n, int* rowPtr, int* colIdx, double* val, double *b
 }
 
 
-void gs_csr_executor_H2(int n, int *rowptr, int *colidx,int *idiag, double *values, double *y, const double *b,
+void gs_csr_executor_H2(int n, int *rowptr, int *colidx,double *idiag, double *values, double *y, const double *b,
                  int levels, int *levelPtr, int *levelSet,
                  int parts,  int *parPtr, int *partition,
                  int chunk){

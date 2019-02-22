@@ -27,6 +27,7 @@
 #define TRUE 1
 #undef DEBUG
 
+#define METIS 1
 using namespace std;
 
 
@@ -124,6 +125,7 @@ int main(int argc, char *argv[]) {
  }
 
 #elif METIS
+ printf("\nUsing Metis \n");
  CSC *ATrans;
  unsigned long nnzFull = Amat->nzmax * 2;//Symmetric case
  ATrans = ptranspose(Amat, 0, NULL, NULL, 0, status);

@@ -5,7 +5,8 @@
  */
 void fs_csr_original(int n, int* rowPtr, int* colIdx, double* val, double *b, double *x)
 {
-  int i,j,tmp;
+  int i,j;
+  double tmp;
 
   for(i=0;i<n;i++) {
     tmp = b[i];
