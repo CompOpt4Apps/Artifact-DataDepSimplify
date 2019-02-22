@@ -60,7 +60,7 @@ extern int yydebug;
     APPROX = 270,
     IS_ASSIGNED = 271,
     FORALL = 272,
-    EXISTS = 273,
+    EXISTS = 351,
     DOMAIN = 274,
     RANGE = 275,
     DIFFERENCE = 276,
