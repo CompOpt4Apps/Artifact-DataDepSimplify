@@ -1,6 +1,4 @@
 #!/bin/bash
-export ROSEHOME=../rose_build
-export BOOSTHOME=../boost
 export IEGENHOME=../IEGenLib/iegen
 export OMEGAHOME=../chill/omega
 g++ iegen_to_omega.cc ./poly/iegenlib/gen_parser.cc \
@@ -21,7 +19,7 @@ g++ iegen_to_omega.cc ./poly/iegenlib/gen_parser.cc \
     ../chill/build/omega/basic/libomega_basic.a \
     ../chill/build/omega/omega_lib/libomega_lib.a \
     ../chill/build/omega/code_gen/libcodegen.a \
-    -I. -I$./poly/iegenlib -I${IEGENHOME}/include/iegenlib -I$CHILLHOME \
+    -I. -I$./poly/iegenlib -I${IEGENHOME}/include/iegenlib -I../chill \
     -I${OMEGAHOME}/omega_calc/include -I${OMEGAHOME}/basic/include \
     -I${OMEGAHOME}/omega_lib/include -I${OMEGAHOME}/code_gen/include \
     -g -O3 -o iegen_to_omega -std=c++11 \

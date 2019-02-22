@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Step 0: Installation prerequisites:
-sudo apt-get install git wget tar unzip make autoconf automake cmake libtool default-jdk default-jre flex bison python-dev texinfo gnuplot-x11 evince
+#sudo apt-get install git wget tar unzip make autoconf automake cmake libtool default-jdk default-jre flex bison python-dev texinfo gnuplot-x11 evince
 
 
 # Step 1: Installing boost:
