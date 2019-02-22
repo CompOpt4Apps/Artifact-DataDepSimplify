@@ -23,6 +23,7 @@
 
 #define TRUE 1
 #undef DEBUG
+#define METIS 1
 
 using namespace std;
 
@@ -224,6 +225,7 @@ int main(int argc, char *argv[]) {
 
  CSC *A1 = ptranspose(Amat, 2, Perm, NULL, 0, status);
  CSC *A2 = ptranspose(A1, 2, NULL, NULL, 0, status);
+   CSC *A3 = ptranspose(A2, 2, NULL, NULL, 0, status);
 #if 0
  for (int i = 0; i < n; ++i) {
   for (int j = A2->p[i]; j < A2->p[i+1]; ++j) {
@@ -245,6 +247,7 @@ int main(int argc, char *argv[]) {
  double duration4 = 0 ,duration3 = 0, duration2=0, duration1=0;*/
 
  double *x = new double[n]();
+   double *b = new double[n]();
 
 #ifdef FLOPCNT
  //***************
@@ -348,24 +351,24 @@ int main(int argc, char *argv[]) {
       copyPtr[i] = A2->p[i]-1;
     }  
 */
-    int *idiag = new int [n+1];
-    for (int i = 0; i < n; i++) {
-      idiag[i] = int(A2->x[A2->p[i]]);
-    }  
+    double *idiag = new double [n+1];
+   for (int l = 0; l < n; ++l) {
+    idiag[l] = A2->x[A2->p[l]];
+   }
 
 
     // ------ Sequentially Run
     std::cout <<"-- Running the algorithm sequentially for #"<<nRuns<<" times:\n";
     //***************Serial
     for (int l = 0; l < nRuns; ++l) {
-      rhsInit(n, A2->p, A2->i, A2->x, x);
+      rhsInit_csr(n, A3->p, A3->i, A3->x, b);
+     for (int i = 0; i < n; ++i) x[i] = 0;
       start = std::chrono::system_clock::now();
-      gs_csr_original(n, A2->p, A2->i, idiag, A2->x, x, x);
+      gs_csr_original(n, A3->p, A3->i, idiag, A3->x, x, b);
       end = std::chrono::system_clock::now();
       elapsed_secondsT = end - start;
       durationE[l] = elapsed_secondsT.count();
-      if (!testTriangular(n, x))
-        std::cout << "\n\n##Sequential run produced incorrect results\n\n";
+
     }
     // Calculating Median and Average of execution times for plotting
     std::sort(durationE, durationE+nRuns);
@@ -385,16 +388,15 @@ int main(int argc, char *argv[]) {
           <<numThread<<" threads in parallel for #"<<nRuns<<" times:";
     //****************Parallel H2 CSC
     for (int l = 0; l < nRuns; ++l) {
-      rhsInit(n,A2->p,A2->i,A2->x,x);
-
+      rhsInit_csr(n,A3->p,A3->i,A3->x,b);
+     for (int i = 0; i < n; ++i) x[i] = 0;
       start = std::chrono::system_clock::now();
-      gs_csr_executor_H2(n,A2->p,A2->i, idiag, A2->x,x, x,nLevels,HLevelPtr,HLevelSet,
+      gs_csr_executor_H2(n,A3->p,A3->i, idiag, A3->x,x, b,nLevels,HLevelPtr,HLevelSet,
               nPar,parPtr,partition, chunk);
       end = std::chrono::system_clock::now();
       elapsed_secondsT = end-start;
         durationE[l] = elapsed_secondsT.count();
-      if (!testTriangular(n, x))
-        std::cout << "\n\n##Parallel run produced incorrect results\n\n";
+
     }
     // Calculating Median and Average of execution times for plotting
     std::sort(durationE, durationE+nRuns);
@@ -429,7 +431,10 @@ int main(int argc, char *argv[]) {
  //delete []colL;
  //delete []li_ptr;
     delete[]timingChol;
+   delete []x;
+   delete []b;
     allocateAC(A2, 0, 0, 0, FALSE);
+   allocateAC(A3, 0, 0, 0, FALSE);
 
   }
 

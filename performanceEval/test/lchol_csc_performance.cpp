@@ -24,6 +24,7 @@ typedef int  INT;
 #include "../src/lchol_csc_executor.h"
 
 #include "util.h"
+#define METIS 1
 
 using namespace std;
 

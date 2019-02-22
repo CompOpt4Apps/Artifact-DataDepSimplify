@@ -134,6 +134,17 @@ void rhsInit(int n, int *Ap, int *Ai, double *Ax, double *b){
  }
 }
 
+void rhsInit_csr(int n, int *Ap, int *Ai, double *Ax, double *b){
+ /*generating a rhs that produces a result of all 1 vector*/
+ for (int j = 0; j < n; ++j) {
+  b[j]=0;
+ }
+ for (int c = 0; c < n ; ++c) {
+  for (int cc = Ap[c]; cc < Ap[c + 1]; ++cc) {
+   b[c]+=Ax[cc];
+  }
+ }
+}
 /*
  * Testing lower triangular solve to make sure all x elements are ONE.
  */
@@ -141,10 +152,10 @@ void rhsInit(int n, int *Ap, int *Ai, double *Ax, double *b){
 int testTriangular(size_t n, const double *x) {//Testing
  int test=0;
  for (int i = 0; i < n; ++i) {
-  if(1-x[i]<0.001)
+  if(std::abs(1-x[i])<0.001)
    test++;
-  //else
-  // cout<<i<<";";
+  /*else
+   std::cout<<i<<";";*/
  }
  if(n-test>0){
   return false;

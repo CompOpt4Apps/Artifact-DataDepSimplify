@@ -26,6 +26,7 @@
 
 #define TRUE 1
 #undef DEBUG
+#define METIS 1
 
 using namespace std;
 

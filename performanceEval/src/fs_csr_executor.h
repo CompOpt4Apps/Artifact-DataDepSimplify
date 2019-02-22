@@ -34,7 +34,7 @@ void fs_csr_executor_H2 (int n, int* rowPtr, int* colIdx, double* val, double *b
     for (int k1 = parPtr[j1]; k1 < parPtr[j1 + 1]; ++k1) {
      int i = partition[k1];
 
-      int tmp = b[i];
+      double tmp = b[i];
       for (int j=rowPtr[i]; j<rowPtr[i+1]-1;j++) {
         tmp -= val[j]*x[colIdx[j]];
       }
