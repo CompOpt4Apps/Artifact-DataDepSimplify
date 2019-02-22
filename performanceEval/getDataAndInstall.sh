@@ -50,7 +50,7 @@ rm msdoor.tar.gz
 cd ..
 g++ -O3 -o performance performance.cc -std=c++11
 make clean
-cmake .
+cmake -DBUILDTYPE=release .
 make
 
 

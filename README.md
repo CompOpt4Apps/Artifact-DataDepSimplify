@@ -57,7 +57,7 @@ run the following in the main directory:
 ```
 
 This will generate inspector codes that are needed for runtime inspection
-of the remianing maybe satisfiable dependences.
+of the remaining maybe satisfiable dependences.
 Then, go to performanceEval directory, and run the following to
 install performance evaluation specific requirements, download the input
 matricies used in the evaluations, and run evaluation drivers:
