@@ -5,18 +5,18 @@
       "CHILL analysis info" : 
       [
         {
-           "Script file" : "data/tempData/staticleftChol_csc.py",
-           "Source" : "data/staticleftChol_csc.c",
-           "Destination" : "data/tempData/staticleftChol_csc_mod.c",
+           "Script file" : "data/tempData/lchol_csc.py",
+           "Source" : "data/lchol_csc.c",
+           "Destination" : "data/tempData/lchol_csc_mod.c",
            "Procedure" : "staticleftChol_csc",
            "Loop" : "0",
-           "Output file" : "data/tempData/staticleftChol_csc.txt",
+           "Output file" : "data/tempData/lchol_csc.txt",
            "Private Arrays" : "f",
            "Reduction Statements" : ""
         }
       ],
 
-      "Result" : "results/staticleftChol_csc.out",
+      "Result" : "results/lchol_csc.out",
 
       "UFS" :
       [

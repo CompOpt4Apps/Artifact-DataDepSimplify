@@ -53,7 +53,7 @@ run the following in the main directory:
 
 
 ```
-  ./codegen list.txt
+  ./codegen codeGenlist.txt
 ```
 
 This will generate inspector codes that are needed for runtime inspection
@@ -144,6 +144,32 @@ Assertions can be defined and added to the environment with following syntax:
   currentEnv.addUniQuantRule( uqRule );
 ```
 **The addUniQuantRule( uqRule ) call adds the assertion to the environment.**
+
+
+# Code generation limitations
+We use Omega+ to generate inspector codes. Omega+ has limited support to handle
+uninterpreted functions calls. As a consequence, we need to do preprocessing inside our drivers
+so that Omega+ can handle our dependences. One of the preprocessing steps include
+reodering iterators in a way that Omega+ can utilize equality constraints to
+remove loops from inspectors. At this time Omega+ can only take advantage of such equality 
+constraints if only the iterator that its loop can be removed is the inner most loop.
+For instance consider following made up dependence:
+```
+{ [i,ip,jp]: i = c(jp) and 0<i,ip<n and r(ip)<jp<r(ip+1)}
+```
+We do not need a loop for i-iterator in the inspector for above example, since we have
+"i = c(jp)".
+In oredr to enable Omega+ to utilize the equality, we reorder the dependence iterators
+as follow:
+```
+{ [ip,jp,i]: i = c(jp) and 0<i,ip<n and r(ip)<jp<r(ip+1)}
+```
+However, at this time, our driver does not check for the correctness of this reordering.
+We have verified the correctness for our kernels by hand at this time.
+Due to such complications, we also cannot use Omega+ to generate inspectors
+for Incomplete Cholesky kerne. Consequently, we have included hand written
+inspectors for this kernel, similar to inspectors that Omega+ can produce.
+At the moment, we are working to address these limitations.
 
 
 # How to build the artifact:
