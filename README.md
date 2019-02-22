@@ -58,32 +58,26 @@ run the following in the main directory:
 
 This will generate inspector codes that are needed for runtime inspection
 of the remianing maybe satisfiable dependences.
-
-Then, go to performanceEval directory:
-
-```
-  ./cd performanceEval
-```
-
-To install performance evaluation specific requirements, and download the input
-matricies used in the evaluations run:
+Then, go to performanceEval directory, and run the following to
+install performance evaluation specific requirements, download the input
+matricies used in the evaluations, and run evaluation drivers:
 
 ```bash
+./cd performanceEval
 ./getDataAndInstall.sh
 ```
 
 The script will install the Metis library (requirement), get the input matrices
-(listed in Table 3 of the paper), and compile and run the performance drivers.
+(listed in Table 3 of the paper), and compile and run the performance drivers. 
+After the run finishes, the results, Table 4, and Figure 7 and 8 of the paper,
+will be in the results directory (performanceEval/results).
 
-
-Run following to reproduce the performance evaluation results:
+To rerun performance evaluations after running above script once 
+run the following command:
 
 ```bash
 ./performance execList.txt
 ```
-After the run finishes, the results, Table 4, and Figure 7 and 8 of the paper,
-will be in the results directory (performanceEval/results).
-
 
 
 # Specifying index array properties
