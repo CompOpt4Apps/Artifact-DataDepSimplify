@@ -167,7 +167,7 @@ as follow:
 However, at this time, our driver does not check for the correctness of this reordering.
 We have verified the correctness for our kernels by hand at this time.
 Due to such complications, we also cannot use Omega+ to generate inspectors
-for Incomplete Cholesky kerne. Consequently, we have included hand written
+for Incomplete Cholesky kernel. Consequently, we have included hand written
 inspectors for this kernel, similar to inspectors that Omega+ can produce.
 At the moment, we are working to address these limitations.
 
