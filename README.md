@@ -21,7 +21,7 @@ To download and build all of the software needed execute the following command.
 The last section in this README provides more details about installation if you run
 into difficulties.
 ```
-sudo ./install.sh
+./install.sh
 ```
 
 The following provides details on how to reproduce the results in the paper.
