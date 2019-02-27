@@ -27,7 +27,7 @@ git checkout 365bb6857c
 ./build
 cd $ROSEHOME
 ${ROSE_SRC}/configure --prefix=$ROSEHOME --enable-languages=c,c++ --with-boost=${BOOSTHOME} --without-java
-make -j6 install-rose-library FRONTEND_CXX_VENDOR_AND_VERSION2=gnu-5.3
+make -j2 install-rose-library FRONTEND_CXX_VENDOR_AND_VERSION2=gnu-5.3
 cd ..
 
 
@@ -45,7 +45,7 @@ cd chill
 mkdir build
 cd build
 cmake .. -DROSEHOME=$ROSEHOME -DBOOSTHOME=$BOOSTHOME -DIEGENHOME=$IEGENHOME
-make -j6
+make -j2
 cd ../..
 
 
