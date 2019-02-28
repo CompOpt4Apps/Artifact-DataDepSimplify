@@ -13,7 +13,7 @@ There are two parts to the results with details for each below:
 
 # QuickStart
 
-The build has only been tested on Ubuntu 16.04 and 18.04 machines.  Due to the need for
+The build has only been tested on Ubuntu 16.04 machine.  Due to the need for
 Boost and ROSE for the CHiLL compiler, building all of the software on other platforms
 could be excessively challenging.
 

@@ -331,9 +331,7 @@ void driver(string list)
 
  } // End of input json file list loop
 
-   int cmdErr = system ("cd results");
-   cmdErr = system ("gnuplot gnpUnSatSimp.gnu");
-   cmdErr = system ("cd ..");
+   int cmdErr = system ("cd results && gnuplot gnpUnSatSimp.gnu && cd ..");
 
 }
 // ----------- End of driver function --------------------------------------
