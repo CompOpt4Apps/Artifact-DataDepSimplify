@@ -20,7 +20,7 @@ set boxwidth 0.5 relative
 set style fill solid 1.0 border -1
 
 plot newhistogram "In. Chol.", 'ic0_csc.csv' using 2 t "Less than equal to Kernel" lt rgb "#329632", '' using 3:xtic(1) t "More than Kernel" lt rgb "#c89696", \
-newhistogram "L. Chol.", 'staticleftChol_csc.csv' using 2 t "" lt rgb "#329632", '' using 3:xtic(1) t "" lt rgb "#c89696", \
+newhistogram "L. Chol.", 'lchol_csc.csv' using 2 t "" lt rgb "#329632", '' using 3:xtic(1) t "" lt rgb "#c89696", \
 newhistogram "I. LU0", 'ilu0_csr.csv' using 2 t "" lt rgb "#329632", '' using 3:xtic(1) t "" lt rgb "#c89696", \
 newhistogram "FS CSC", 'fs_csc.csv' using 2 t "" lt rgb "#329632", '' using 3:xtic(1) t "" lt rgb "#c89696", \
 newhistogram "FS CSR", 'fs_csr.csv'  using 2 t "" lt rgb "#329632", '' using 3:xtic(1) t "" lt rgb "#c89696", \
