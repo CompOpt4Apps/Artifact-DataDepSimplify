@@ -31,7 +31,8 @@ After building the driver and its dependencies (by running install.sh)
 run the following:
 
 ```
-  ./simplification list.txt
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./boost/lib
+./simplification list.txt
 ```
 
 Figure 6 is generated and stored in the results directory at the end.
