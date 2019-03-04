@@ -1,4 +1,4 @@
-set terminal pdf size 5,1.8
+set terminal pdf size 8,6
 set rmargin 5
 set bmargin 8
 set output "unsatSimp.pdf"
