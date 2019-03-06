@@ -1,0 +1,10 @@
+#include<vector>
+#include <cassert>
+#include<set>
+
+/*
+ ****** Inspector for level set parallelization of Forward Solve CSC's outer most loop
+ */
+void fs_csr_inspector(int n, int* rowPtr, int* colIdx, std::vector<std::vector<int>> &DAG){
+
+

@@ -1,0 +1,13 @@
+#include <cstdio>
+#include <vector>
+#include <assert.h>
+#include<set>
+
+
+
+/*
+ * Computes the DAG of dependency after simplification
+*/
+void lchol_csc_inspector(int n, int *prunePtr, int *pruneSet, std::vector<std::vector<int>>& DAG){
+
+
