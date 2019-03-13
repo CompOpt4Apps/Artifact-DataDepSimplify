@@ -49,7 +49,8 @@ rm msdoor.tar.gz
 # Building the performance drivers
 cd ..
 g++ -O3 -o performance performance.cc -std=c++11
-make clean
+cmake -DBUILDTYPE=release .
+cmake -DBUILDTYPE=release .
 cmake -DBUILDTYPE=release .
 make
 

@@ -77,7 +77,7 @@ To rerun performance evaluations after running above script once
 run the following command:
 
 ```bash
-./performance execList.txt
+./genFig7A8.sh
 ```
 
 
