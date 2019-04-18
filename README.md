@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2644665.svg)](https://doi.org/10.5281/zenodo.2644665)
+
+
 # Overview 
 
 This artifact reproduces the evaluation results for the following paper accepted in PLDI 2019:
