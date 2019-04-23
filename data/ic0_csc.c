@@ -1,3 +1,6 @@
+// Incomplete Cholesky0
+// From SparseLib++ library:
+//      https://math.nist.gov/sparselib++/
 
 //#include <math.h>
 

@@ -1,5 +1,5 @@
-
 // sparse matrix vector multiply (SpMV) for CSR format
+// Implemented by authors
 
 void spMV_Mul_csr(int n, int* rowPtr, int* col, double* val, double *x, double *y)
 {

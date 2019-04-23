@@ -1,3 +1,9 @@
+// A modified version of Left Cholesky implementation from SuiteSparse:
+//    http://faculty.cse.tamu.edu/davis/suitesparse.html
+// Modifications are based on the work:
+//    Kazem Cheshmi, Shoaib Kamil, Michelle Mills Strout, and Maryam Mehri Dehnavi. 2017. 
+//    Sympiler: Transforming Sparse Matrix Codes by Decoupling Symbolic Analysis. 
+//    In Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC ’17).
 
 extern double sqrt(double in);
 

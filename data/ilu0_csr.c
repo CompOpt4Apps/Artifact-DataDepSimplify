@@ -1,3 +1,8 @@
+// Incomplete LU0 CSR
+// From Intel MKL library:
+//   Endong Wang, Qing Zhang, Bo Shen, Guangyong Zhang, Xiaowei Lu, Qing Wu, and Yajuan Wang. 2014. 
+//   Intel math kernel library. In High-Performance Computing on the Intel® Xeon Phi. Springer, 167–188. 
+
 
 void ilu0_csr(int m,int *rowptr, int *colidx, int *diagptr, double*values ) 
 { 

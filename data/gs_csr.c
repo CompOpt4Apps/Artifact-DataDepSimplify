@@ -1,4 +1,8 @@
 // Gauss-Seidel CSR
+// From Intel MKL library:
+//   Endong Wang, Qing Zhang, Bo Shen, Guangyong Zhang, Xiaowei Lu, Qing Wu, and Yajuan Wang. 2014. 
+//   Intel math kernel library. In High-Performance Computing on the Intel® Xeon Phi. Springer, 167–188.     
+
 
 void gs_csr(int n, int *rowptr, int *colidx,int *idiag, double *values, double *y, const double *b)
 {
