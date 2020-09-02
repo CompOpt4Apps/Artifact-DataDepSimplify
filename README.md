@@ -14,9 +14,28 @@ There are two parts to the results with details for each below:
 (1) Data dependency simplification analysis evaluation, presented as Figure 6 in the paper. 
 (2) Performance evaluation results presented in Figures 7 and 8 in the paper.
 
+# Docker Container
+The artifact is avaiable "kingmahdi/pldi19_artifact" public docker container.
+
+Get the container:
+
+```
+sudo docker pull kingmahdi/pldi19_artifact
+```
+
+(2) Run the container:
+
+```
+sudo docker run --name pldi19_artifact -it ubuntu:latest bash
+```
+
+Once inside the running docker container, you can use the instruction
+on section (1) of this Readme to reproduce the results.
+
+
 # QuickStart
 
-The build has only been tested on Ubuntu 16.04 machine.  Due to the need for
+The build has only been tested on Ubuntu 16.04 and 18.04. Due to the need for
 Boost and ROSE for the CHiLL compiler, building all of the software on other platforms
 could be excessively challenging.
 
