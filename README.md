@@ -15,7 +15,8 @@ There are two parts to the results with details for each below:
 (2) Performance evaluation results presented in Figures 7 and 8 in the paper.
 
 # Docker Container
-The artifact is avaiable "kingmahdi/pldi19_artifact" public docker container.
+The already build/installed artifact is avaiable inside a
+public docker container:
 
 Get the container:
 
@@ -23,7 +24,7 @@ Get the container:
 sudo docker pull kingmahdi/pldi19_artifact
 ```
 
-(2) Run the container:
+Run the container:
 
 ```
 sudo docker run --name pldi19_artifact -it ubuntu:latest bash
